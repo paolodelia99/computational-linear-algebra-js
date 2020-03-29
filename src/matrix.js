@@ -33,17 +33,30 @@ class Matrix {
 
     /**
      * Return the identity matrix of the given dimension
-     * @param dim
+     * @param {number} dim
      * @returns {any[][]}
      */
-    static getIdentityMatrix = (dim) => {
+    static createIdentityMatrix = (dim) => {
         let idMatrix = Array(dim).fill().map( () => Array(dim).fill(0));
 
-        for(let i in dim)
+        for(let i = 0; i< idMatrix.length; i++)
             idMatrix[i][i] = 1;
 
         return idMatrix;
     };
+
+    /**
+     *
+     * @returns {(Buffer | SharedArrayBuffer | T[] | BigUint64Array | Uint8ClampedArray | Uint32Array | Blob | Int16Array | T[] | Float64Array | string | Uint16Array | ArrayBuffer | Int32Array | Float32Array | BigInt64Array | Uint8Array | Int8Array | T[])[]}
+     */
+    cloneMatrix = () => this.matrix.map( a => a.slice())
+
+    /**
+     *
+     * @param matrix
+     * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
+     */
+    static copyMatrix = matrix => matrix.map( a => a.slice())
 
     /**
      * Check if a matrix is square
@@ -70,11 +83,12 @@ class Matrix {
 
     /**
      * Static function the return the transpose of the given matrix
-     * @param matrix
+     * @param {*[][]} matrix
      * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
      */
-    static getTranspose = (matrix) =>
-        matrix[0].map( (col,i) => this.matrix.map(row => row[i]))
+    static getTranspose = matrix =>
+        matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
+
 
     /**
      * Print the matrix
@@ -93,14 +107,30 @@ class Matrix {
 
 
     getInverse = () => {
+        if(!this.isMatrixSquare)
+            throw "You can't get the inverse of a non square matrix";
+        else{
+            let identityMatrix = Matrix.createIdentityMatrix(this.rows);
+            let inverse = [];
 
+            for(let j = 0;j< this.rows;j++)
+                inverse.push(this.solveUsingLU(this.getCol(identityMatrix,j)));
+
+            return inverse;
+        }
     };
 
+    /**
+     *
+     * @param matrix
+     * @param col
+     * @returns {[]}
+     */
     getCol = (matrix,col) => {
-        let column = []
+        let column = [];
 
         for(let i = 0;i < matrix.length; i++)
-            column.push(matrix[i][col])
+            column.push(matrix[i][col]);
 
         return column;
     };
@@ -114,7 +144,7 @@ class Matrix {
         if(!this.isMatrixSquare)
             throw "You can do LU Decomposition only with Square matrices";
         else{
-            let mat  = this.matrix;
+            let mat  = this.cloneMatrix();
             let n = this.matrix.length;
             let lower = Array(n).fill().map( () => Array(n).fill(0)), upper = Array(n).fill().map( () => Array(n).fill(0));
 
@@ -149,7 +179,7 @@ class Matrix {
             throw "You can do LU Decomposition only with Square matrices";
         else{
 
-            let n = this.matrix.length;
+            let n = rightPart.length;
 
             //Calculate the solutions of Ly = b using forward substitution
             let y = Array(n).fill(0);
@@ -178,4 +208,8 @@ class Matrix {
     }
 }
 
-module.exports = Matrix
+//Utilis Functions
+
+const newMatrix = matrix => matrix.map( a => a.slice())
+
+module.exports = Matrix;

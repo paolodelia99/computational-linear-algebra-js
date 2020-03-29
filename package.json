@@ -1,0 +1,26 @@
+{
+  "name": "test-linear-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paolodelia99/paolodelia99.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paolodelia99/paolodelia99/issues"
+  },
+  "homepage": "https://github.com/paolodelia99/paolodelia99#readme",
+  "dependencies": {
+    "mocha": "^7.1.1"
+  }
+}
