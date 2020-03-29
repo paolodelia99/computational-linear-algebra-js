@@ -62,7 +62,15 @@ describe('test copy and clone matrix', () => {
 
         assert.deepStrictEqual(mat1, mat2);
     });
-})
+});
+
+describe('test getCol Method', () => {
+    it('should give the col of a matrix', () => {
+        const matrix = [[1,2,-1],[1,4,2],[2,6,5]];
+
+        assert.deepStrictEqual(Matrix.getCol(matrix,0),[1,1,2]);
+    })
+});
 
 describe('test matrix transposition', () => {
     it('should give the transpose', () => {

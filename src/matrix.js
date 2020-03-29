@@ -114,7 +114,7 @@ class Matrix {
             let inverse = [];
 
             for(let j = 0;j< this.rows;j++)
-                inverse.push(this.solveUsingLU(this.getCol(identityMatrix,j)));
+                inverse.push(this.solveUsingLU(Matrix.getCol(identityMatrix,j)));
 
             return inverse;
         }
@@ -126,7 +126,7 @@ class Matrix {
      * @param col
      * @returns {[]}
      */
-    getCol = (matrix,col) => {
+    static getCol = (matrix,col) => {
         let column = [];
 
         for(let i = 0;i < matrix.length; i++)
