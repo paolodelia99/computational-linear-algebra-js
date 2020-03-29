@@ -1,5 +1,8 @@
 class Matrix {
 
+    lower;
+    upper;
+
     /**
      * Constructor of the matrix class
      * @param {number[][]} matrix :  can be a bidimensional array or a list of
@@ -8,6 +11,7 @@ class Matrix {
     constructor(matrix) {
         this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : arguments;
         this.isSquare = this.isMatrixSquare();
+        this.luDecomposition();
     }
 
     /**
@@ -16,14 +20,14 @@ class Matrix {
      * @param {number} col
      * @returns {Array[][]}
      */
-    static createEmptyMatrix = (row,col) => Array(row).fill(Array(col).fill(0));
+    static createEmptyMatrix = (row,col) => Array(row).fill().map( () => Array(col).fill(0));
 
     /**
      * Create an empty square matrix of the given dimension
      * @param {number} dim  : dimension of the matrix
      * @returns {Array[][]} empty square matrix
      */
-    static createEmptySquareMatrix = (dim) => Array(dim).fill(Array(dim).fill(0))
+    static createEmptySquareMatrix = (dim) => Array(dim).fill().map( () => Array(dim).fill(0));
 
     /**
      * Check if a matrix is square
@@ -48,7 +52,43 @@ class Matrix {
     printMatrix = () =>
         this.matrix.map( x => console.log(x));
 
+    /**
+     * The LU Decomposition function that decompose the matrix in L and U
+     */
+    luDecomposition = () => {
+        //throw an error is the matrix is not square
+        if(!this.isMatrixSquare)
+            throw "You can do LU Decomposition only with Square matrices";
+        else{
+            let mat  = this.matrix;
+            let n = this.matrix.length;
+            let lower = Array(n).fill().map( () => Array(n).fill(0)), upper = Array(n).fill().map( () => Array(n).fill(0));
 
+           for(let k = 0; k < n; k++){
+               lower[k][k] = 1;
+               upper[k][k] = mat[k][k];
+
+               for(let i = k +1; i < n; i++){
+                   lower[i][k] = (mat[i][k]/upper[k][k])
+                   upper[k][i] = mat[k][i]
+               }
+
+               for(let i = k+1; i < n;i++){
+                   for(let j = k +1; j< n;j++)
+                       mat[i][j] -= (lower[i][k] * upper[k][j])
+               }
+           }
+
+            this.lower = lower;
+            this.upper = upper;
+        }
+    };
+
+    /**
+     * Solve the linear sistem using lu decomposition
+     * @param rightPart
+     * @returns {any[]} - solution of the linear system
+     */
     solveUsingLU = (rightPart) => {
         //throw an error is the matrix is not square
         if(!this.isMatrixSquare)
@@ -56,40 +96,27 @@ class Matrix {
         else{
 
             let n = this.matrix.length;
-            let lu = Array(n).fill(Array(n).fill(0));
-            let sum = 0;
-
-            for(let i = 0; i < n; i++){
-                for(let j = i;j < n; j++){
-                    sum = 0;
-                    for(let k=0;k< i;k++)
-                        sum += lu[i][k] *lu[k][j];
-                    lu[i][j] = this.matrix[i][j] - sum
-                }
-                for(let j = i+1;j < n;j++){
-                    sum = 0;
-                    for(let k = 0;k < i;k++)
-                        sum += lu[j][k] * lu[k][i];
-                    lu[j][i] = (1/lu[i][i]) * (this.matrix[j][i] - sum);
-                }
-            }
 
              //lu = L+U-I
-            //Calcolo delle soluzioni di Ly = b
+            //Calculate the solutions of Ly = b
             let y = Array(n).fill(0);
-            for(let i = 0;i<n; i++){
-                sum = 0;
+            for(let i = 0;i < n; i++){
+                let sum = 0;
+
                 for(let k = 0;k < i;k++)
-                    sum += lu[i][k] * y[k];
-                y[i] = rightPart[i] - sum;
+                    sum += this.lower[i][k] * y[k];
+
+                y[i] = (rightPart[i] - sum)/this.lower[i][i];
             }
 
             let x = Array(n).fill(0);
             for(let i = n - 1; i >= 0; i--){
-                sum = 0;
+                let sum = 0;
+
                 for(let k =i+1;k < n;k++)
-                    sum += lu[i][k] * x[k];
-                x[i] = (1/lu[i][i]) * (y[i] -sum)
+                    sum += this.upper[i][k] * x[k];
+
+                x[i] = (1/this.upper[i][i]) * (y[i] - sum)
             }
 
             return x;

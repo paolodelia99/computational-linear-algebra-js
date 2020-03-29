@@ -17,7 +17,5 @@ console.log(vett1.vector)
 
 console.log(vett1.product(b))
 
-const matrix = new Matrix([[1,1,-1],[1,-2,3],[2,3,1]]);
-const res = matrix.solveUsingLU([4,-6,7])
-matrix.printMatrix()
-console.log(`risultato ${res}`)
+const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+console.log(matrix.solveUsingLU([1,1,10]));
