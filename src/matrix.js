@@ -1,16 +1,18 @@
 class Matrix {
 
-    lower;
-    upper;
+    lower; // The lower decomposition of the matrix
+    upper; // The Upper decomposition of the matrix
 
     /**
      * Constructor of the matrix class
-     * @param {number[][]} matrix :  can be a bidimensional array or a list of
+     * @param {*[][]} matrix :  can be a bidimensional array or a list of
      *                arrays
      */
     constructor(matrix) {
         this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : arguments;
         this.isSquare = this.isMatrixSquare();
+        this.rows = matrix.length;
+        this.cols = matrix[0].length;
         this.luDecomposition();
     }
 
@@ -18,16 +20,30 @@ class Matrix {
      * Create an empty matrix of the given dimension
      * @param {number} row
      * @param {number} col
-     * @returns {Array[][]}
+     * @returns {*[][]}
      */
     static createEmptyMatrix = (row,col) => Array(row).fill().map( () => Array(col).fill(0));
 
     /**
      * Create an empty square matrix of the given dimension
      * @param {number} dim  : dimension of the matrix
-     * @returns {Array[][]} empty square matrix
+     * @returns {*[][]} empty square matrix
      */
     static createEmptySquareMatrix = (dim) => Array(dim).fill().map( () => Array(dim).fill(0));
+
+    /**
+     * Return the identity matrix of the given dimension
+     * @param dim
+     * @returns {any[][]}
+     */
+    static getIdentityMatrix = (dim) => {
+        let idMatrix = Array(dim).fill().map( () => Array(dim).fill(0));
+
+        for(let i in dim)
+            idMatrix[i][i] = 1;
+
+        return idMatrix;
+    };
 
     /**
      * Check if a matrix is square
@@ -42,8 +58,23 @@ class Matrix {
                 break;
             }
 
-        return isSquare
+        return isSquare;
     };
+
+    /**
+     * Get the transpose of the matrix
+     * @returns {*[][]} the traspose matrix
+     */
+    getTranspose = () =>
+        this.matrix[0].map( (col,i) => this.matrix.map(row => row[i]))
+
+    /**
+     * Static function the return the transpose of the given matrix
+     * @param matrix
+     * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
+     */
+    static getTranspose = (matrix) =>
+        matrix[0].map( (col,i) => this.matrix.map(row => row[i]))
 
     /**
      * Print the matrix
@@ -51,6 +82,29 @@ class Matrix {
      */
     printMatrix = () =>
         this.matrix.map( x => console.log(x));
+
+    /**
+     * Static method for printing matrix
+     * @param matrix
+     * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | void[] | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
+     */
+    static printMatrix  = (matrix) =>
+        matrix.map( x => console.log(x));
+
+
+    getInverse = () => {
+
+    };
+
+    getCol = (matrix,col) => {
+        let column = []
+
+        for(let i = 0;i < matrix.length; i++)
+            column.push(matrix[i][col])
+
+        return column;
+    };
+
 
     /**
      * The LU Decomposition function that decompose the matrix in L and U
@@ -85,7 +139,7 @@ class Matrix {
     };
 
     /**
-     * Solve the linear sistem using lu decomposition
+     * Solve the linear system using lu decomposition
      * @param rightPart
      * @returns {any[]} - solution of the linear system
      */
@@ -97,8 +151,7 @@ class Matrix {
 
             let n = this.matrix.length;
 
-             //lu = L+U-I
-            //Calculate the solutions of Ly = b
+            //Calculate the solutions of Ly = b using forward substitution
             let y = Array(n).fill(0);
             for(let i = 0;i < n; i++){
                 let sum = 0;
@@ -109,6 +162,7 @@ class Matrix {
                 y[i] = (rightPart[i] - sum)/this.lower[i][i];
             }
 
+            //Calculate the solution of Ux = y using back substitution
             let x = Array(n).fill(0);
             for(let i = n - 1; i >= 0; i--){
                 let sum = 0;
