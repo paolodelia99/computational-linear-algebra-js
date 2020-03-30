@@ -8,7 +8,7 @@ class Vector{
      * @param vector can be an array of a list of integers
      */
     constructor(vector) {
-        this.vector = Array.isArray(vector) ? vector : arguments;
+        this.vector = Array.isArray(vector) ? vector : Array.from(arguments);
     }
 
     /**
@@ -20,8 +20,8 @@ class Vector{
 
     /**
      * Compute the scalarProduct
-     * @param scalar
-     * @returns {array[]}: the scalar product of the vector
+     * @param {number} scalar
+     * @returns {number[]}: the scalar product of the vector
      */
     scalarProduct = (scalar) =>
        this.vector.map( x => x*scalar);
@@ -29,22 +29,29 @@ class Vector{
     /**
      * Compute the vector product with the input vector
      * @param vector2 array
-     * @returns {array} the
+     * @returns {number} the
      */
     product = (vector2) =>
-        (zip(this.vector,vector2).map( x => x.reduce( (a,b) => a*b,0))).reduce( (a,b) => a+b,0)
+        (zip(this.vector,vector2).map( x => x.reduce( (a,b) => a*b,0))).reduce( (a,b) => a+b,0);
 
     /**
      * Return the sum of the arrays as a arguments
      * @returns {array[]}: sum of the inputs array
      */
-    static sum () {
-        let sumVector = new Array(arguments[0].length).fill(0)
-        for(let i = 0; i < arguments.length;i++)
-            for(let j =0;j < arguments[i].length;j++)
-                sumVector[j] += arguments[i][j]
+    static sum (vector1, vector2) {
+        vector1 = typeof vector1 === "object" ? vector1.vector : vector1;
+        vector2 = typeof vector2 === "object" ? vector2.vector : vector2;
 
-        return sumVector;
+        if(vector1.length !== vector2.length)
+            throw "The two vectors haven't the same Length";
+        else{
+            let sumVector = [];
+
+            for(let i = 0; i < vector1.length;i++)
+                    sumVector.push(vector1[i] + vector2[i]);
+
+            return sumVector;
+        }
     }
 };
 

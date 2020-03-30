@@ -51,17 +51,11 @@ describe('test isMatrixSquare method', () => {
 describe('test copy and clone matrix', () => {
     it('should be equal the the created matrix', function () {
         const matrix = new Matrix([[1,-2,-1],[1,4,1],[2,2,5]])
-        const mat = matrix.cloneMatrix();
+        const mat = Matrix.cloneMatrix(matrix.matrix);
 
         assert.deepStrictEqual(matrix.matrix, mat);
     });
 
-    it('should copy the give matrix', function () {
-        const mat1 = [[1,-2,-1],[1,4,1],[2,2,5]];
-        const mat2 = Matrix.copyMatrix(mat1);
-
-        assert.deepStrictEqual(mat1, mat2);
-    });
 });
 
 describe('test getCol Method', () => {
@@ -79,6 +73,36 @@ describe('test matrix transposition', () => {
         assert.deepStrictEqual(Matrix.getTranspose(matrix.matrix).valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
     })
 });
+
+describe('test inverse of a matrix', () => {
+    it('should give the inverse of the sample matrix', function () {
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const inverse = matrix.getInverse();
+
+        assert.deepStrictEqual(inverse, [[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]])
+    });
+
+    it('should the right inverse for a upper triangular matrix', function () {
+        const matrix = new Matrix([[1,2,-1],[0,2,3],[0,0,4]]);
+        const inverse = matrix.getInverse();
+
+        assert.deepStrictEqual(inverse, [[1,-1,1],[0,0.5,-0.375],[0,0,0.25]])
+    });
+});
+
+describe('test determinant', () => {
+    it('should give the diagonal product of U', function () {
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+
+        assert.equal(matrix.getDeterminant(),8 )
+    });
+
+    it('tets determinat for upper triangual matrix', function () {
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+
+        assert.equal(matrix.getDeterminant(),8 )
+    });
+})
 
 //fixme: test matrice identità non funziona
 
