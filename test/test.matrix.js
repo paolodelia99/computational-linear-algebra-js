@@ -74,6 +74,39 @@ describe('test matrix transposition', () => {
     })
 });
 
+
+describe('Test matrix sum', () => {
+    it('the static method should work', function () {
+        const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
+        const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
+
+        assert.deepStrictEqual(Matrix.sumMatrices(matrix1,matrix2), [[2,4,-2],[1,6,5],[2,6,9]])
+    });
+
+    it('the instance method should work' , () => {
+        const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix2 = new Matrix([[1,2,-1],[0,2,3],[0,0,4]]);
+
+        assert.deepStrictEqual(matrix1.sum(matrix2), [[2,4,-2],[1,6,5],[2,6,9]])
+    })
+});
+
+describe('Test matrix subtraction', () => {
+    it('the static method should work', function () {
+        const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
+        const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
+
+        assert.deepStrictEqual(Matrix.subMatrices(matrix1,matrix2), [[0,0,0],[1,2,-1],[2,6,1]])
+    });
+
+    it('the instance method should work' , () => {
+        const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix2 = new Matrix([[1,2,-1],[0,2,3],[0,0,4]]);
+
+        assert.deepStrictEqual(matrix1.sub(matrix2), [[0,0,0],[1,2,-1],[2,6,1]])
+    })
+});
+
 describe('test inverse of a matrix', () => {
     it('should give the inverse of the sample matrix', function () {
         const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
@@ -103,6 +136,25 @@ describe('test determinant', () => {
         assert.equal(matrix.getDeterminant(),8 )
     });
 })
+
+describe('Test matrix multiplication', () => {
+    describe('tets ijk Multiplication', () => {
+        it('the ijkMultiplication static method should give the right result', function () {
+            const matrix1 = [[2,4,5],[-1,2,1],[4,-1,3]];
+            const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
+
+            assert.deepStrictEqual(Matrix.ijkMultiplication(matrix1,matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
+
+        it('the ijkMultiplication instance method should give the right result', function () {
+            const matrix1 = new Matrix([[2,4,5],[-1,2,1],[4,-1,3]]);
+            const matrix2 = new Matrix([[6,0,2],[4,-1,4],[3,4,1]]);
+
+            assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
+    });
+
+});
 
 //fixme: test matrice identità non funziona
 

@@ -27,12 +27,12 @@ class Vector{
        this.vector.map( x => x*scalar);
 
     /**
-     * Compute the vector product with the input vector
+     * Compute the product column vector for row vector
      * @param vector2 array
      * @returns {number} the
      */
     product = (vector2) =>
-        (zip(this.vector,vector2).map( x => x.reduce( (a,b) => a*b,0))).reduce( (a,b) => a+b,0);
+        (zip(this.vector,vector2).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0);
 
     /**
      * Return the sum of the arrays as a arguments

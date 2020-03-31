@@ -40,13 +40,22 @@ describe('test sum of vectors', () => {
     });
 });
 
-//fixme : product is wrong
+describe('test zip function', () => {
+    it('should give the zip of two arrays', function () {
+        //zip function
+        const zip = (arr1,arr2) => arr1.map((k,i) => [k,arr2[i]]);
+        const arr1 = [1,2,1];
+        const arr2 = [2,6,-5];
 
-// describe('test the vector product', () => {
-//     it('should give the vector product', function () {
-//         const vector1 = new Vector([1,2,1]);
-//         const vector2 = new Vector([3,2,6]);
-//
-//         assert.equal(vector1.product(vector2.vector), 13)
-//     });
-// });
+        assert.deepStrictEqual(zip(arr1,arr2), [[1,2],[2,6],[1,-5]]);
+    });
+})
+
+describe('test the product between the column vector and the row vector', () => {
+    it('should give the vector col multiply for the the row vector', function () {
+        const vector1 = new Vector([1,2,1]);
+        const vector2 = new Vector([3,2,6]);
+
+        assert.equal(vector1.product(vector2.vector), 13)
+    });
+});

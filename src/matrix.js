@@ -160,6 +160,61 @@ class Matrix {
         return column;
     };
 
+    /**
+     *
+     * @param matrix1
+     * @param matrix2
+     * @returns {*[][]}
+     */
+    static sumMatrices = (matrix1, matrix2) => {
+        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
+            throw "Cannot sum two matrices with different dimension";
+        else{
+            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
+
+            for(let i = 0;i < matrix1.length;i++)
+                for(let j = 0; j < matrix2.length;j++)
+                    resMatrix[i][j] = matrix1[i][j] + matrix2[i][j];
+
+            return resMatrix;
+        }
+    };
+
+    /**
+     * Instance method the compute the sum of two matrices calling the static method
+     * @param matrix
+     * @returns {*[][]|undefined} the sum of the two matrices
+     */
+    sum = matrix =>
+        Matrix.sumMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+
+    /**
+     *
+     * @param matrix1
+     * @param matrix2
+     * @returns {*[][]}
+     */
+    static subMatrices = (matrix1, matrix2) => {
+        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
+            throw "Cannot sum two matrices with different dimension";
+        else{
+            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
+
+            for(let i = 0;i < matrix1.length;i++)
+                for(let j = 0; j < matrix2.length;j++)
+                    resMatrix[i][j] = matrix1[i][j] - matrix2[i][j];
+
+            return resMatrix;
+        }
+    };
+
+    /**
+     *
+     * @param matrix
+     * @returns {*[][]|undefined}
+     */
+    sub = matrix =>
+        Matrix.subMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
 
     /**
      * The LU Decomposition function that decompose the matrix in L and U
@@ -223,7 +278,7 @@ class Matrix {
             throw "You can do LU Decomposition only with Square matrices";
         else
              return Matrix.solveUsingLU(this.lower,this.upper,rightPart);
-    }
+    };
 
     /**
      *
@@ -264,6 +319,99 @@ class Matrix {
             return x;
         }
     }
+
+    /**
+     *
+     * @param matrix1
+     * @param matrix2
+     * @returns {*[][]}
+     */
+    static ijkMultiplication = (matrix1, matrix2) => {
+        //check if the input matrix has the right dimension
+        if (matrix1[0].length !== matrix2.length)
+            throw "Cannot do the multiplication";
+        else {
+            let resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length);
+
+            for (let i = 0; i < matrix1.length; i++)
+                for (let j = 0; j < matrix2[0].length; j++)
+                    for (let k = 0;k < matrix1[0].length; k++)
+                        resMatrix[i][j] += (matrix1[i][k] * matrix2[k][j]);
+
+            return resMatrix;
+        }
+    };
+
+    /**
+     *
+     * @param matrix
+     * @returns {*[][]|undefined}
+     */
+    ijkMultiplication = (matrix) =>
+        Matrix.ijkMultiplication(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+
+
+    static strassenMultiplication = function(a, b, c, leafSize) {
+        //fixme: da rivedere tutto
+        if (a.n <= leafSize) {
+            Matrix.ijkMultiplication(a, b, c);
+            return;
+        }
+
+        let A = growNextPowerOf2(a);
+        let B = growNextPowerOf2(b);
+
+        let n = A.n;
+
+        let A11 = A.partition(0,   0,   n/2, n/2, "A11");
+        let A12 = A.partition(0,   n/2, n/2, n,   "A12");
+        let A21 = A.partition(n/2, 0,   n,   n/2, "A21");
+        let A22 = A.partition(n/2, n/2, n,   n,   "A22");
+
+        let B11 = B.partition(0,   0,   n/2, n/2, "B11");
+        let B12 = B.partition(0,   n/2, n/2, n,   "B12");
+        let B21 = B.partition(n/2, 0,   n,   n/2, "B21");
+        let B22 = B.partition(n/2, n/2, n,   n,   "B22");
+
+        let M1 = Matrix.createEmptySquareMatrix(n);
+        let M2 = Matrix.createEmptySquareMatrix(n);
+        let M3 = Matrix.createEmptySquareMatrix(n);
+        let M4 = Matrix.createEmptySquareMatrix(n);
+        let M5 = Matrix.createEmptySquareMatrix(n);
+        let M6 = Matrix.createEmptySquareMatrix(n);
+        let M7 = Matrix.createEmptySquareMatrix(n);
+
+        Matrix.strassenMultiplication(A11.add(A22), B11.add(B22), M1, leafSize);
+        Matrix.strassenMultiplication(A21.add(A22), B11, M2, leafSize);
+        Matrix.strassenMultiplication(A11, B12.sub(B22), M3, leafSize);
+        Matrix.strassenMultiplication(A22, B21.sub(B11), M4, leafSize);
+        Matrix.strassenMultiplication(A11.add(A12), B22, M5, leafSize);
+        Matrix.strassenMultiplication(A21.sub(A11), B11.add(B12), M6, leafSize);
+        Matrix.strassenMultiplication(A12.sub(A22), B21.add(B22), M7, leafSize);
+
+        let C11 = M1.add(M4).sub(M5).add(M7);
+        let C12 = M3.add(M5);
+        let C21 = M2.add(M4);
+        let C22 = M1.add(M3).sub(M2).add(M6);
+
+        let halfN = C11.n;
+        for (let i = 0; i < c.n; i++) {
+            for (let j = 0; j < c.n; j++) {
+                if (i < halfN && j < halfN) {
+                    c.set(i, j, C11.get(i, j));
+                }
+                else if (i < halfN && j >= halfN) {
+                    c.set(i, j, C12.get(i, j - halfN));
+                }
+                else if (i >= halfN && j < halfN) {
+                    c.set(i, j, C21.get(i - halfN, j));
+                }
+                else if (i >= halfN && j >= halfN) {
+                    c.set(i, j, C22.get(i - halfN, j - halfN));
+                }
+            }
+        }
+    };
 }
 
 //TODO:
