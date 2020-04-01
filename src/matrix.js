@@ -13,7 +13,7 @@ class Matrix {
         this.isSquare = this.isMatrixSquare();
         this.rows = matrix.length;
         this.cols = matrix[0].length;
-        this.luDecomposition() //decompose using LU decomposition
+        this.rows === this.cols ? this.luDecomposition() : //Do nothing
         this.determinant = this.getDeterminant();
     }
 
@@ -189,12 +189,12 @@ class Matrix {
         Matrix.sumMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
 
     /**
-     *
+     * Static method that compute the subtraction of two matrices
      * @param matrix1
      * @param matrix2
-     * @returns {*[][]}
+     * @returns {*[][]} the substract matrix
      */
-    static subMatrices = (matrix1, matrix2) => {
+    static subtractMatrices = (matrix1, matrix2) => {
         if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
             throw "Cannot sum two matrices with different dimension";
         else{
@@ -209,12 +209,41 @@ class Matrix {
     };
 
     /**
-     *
+     * Subtract the given matrix to the matrix object
      * @param matrix
-     * @returns {*[][]|undefined}
+     * @returns {*[][]}
      */
     sub = matrix =>
-        Matrix.subMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+        Matrix.subtractMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+
+    /**
+     *
+     * @param matrix
+     * @param rowStart
+     * @param rowEnd
+     * @param colStart
+     * @param colEnd
+     * @returns {*[][]}
+     */
+    static getSubMatrix = (matrix,rowStart,rowEnd,colStart,colEnd) => {
+        let subMatrix = Matrix.createEmptyMatrix(rowEnd-rowStart,colEnd-colStart,)
+
+        for(let i =0 ;i < matrix.length;i++)
+            for(let j = 0;j < matrix[i].length;j++)
+                subMatrix[i][j] = matrix[rowStart+i][rowEnd+j]
+
+        return subMatrix;
+    }
+
+    /**
+     *
+     * @param rowStart
+     * @param rowEnd
+     * @param colStart
+     * @param colEnd
+     * @returns {*[][]}
+     */
+    getSubMatrix = (rowStart,rowEnd,colStart,colEnd) => Matrix.getSubMatrix(this.matrix,rowStart,rowEnd,colStart,colEnd);
 
     /**
      * The LU Decomposition function that decompose the matrix in L and U
@@ -234,7 +263,7 @@ class Matrix {
     /**
      * Compute the LU decomposition of the given matrix
      * @param {*[][]} matrix
-     * @returns {{U: *[][], L: *[][]}}
+     * @returns {{U: *[][], L: *[][]}} Object that contain U matrix and L matrix
      */
     static getLUDecomposition = (matrix) => {
         //throw an error is the matrix is not square
@@ -357,7 +386,7 @@ class Matrix {
             Matrix.ijkMultiplication(a, b, c);
             return;
         }
-
+        //fixme: capisci cosa cazzo è questo
         let A = growNextPowerOf2(a);
         let B = growNextPowerOf2(b);
 
