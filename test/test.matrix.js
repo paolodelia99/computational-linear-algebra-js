@@ -69,8 +69,10 @@ describe('test getCol Method', () => {
 describe('test matrix transposition', () => {
     it('should give the transpose', () => {
         const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
 
-        assert.deepStrictEqual(Matrix.getTranspose(matrix.matrix).valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
+        assert.deepStrictEqual(matrix.getTranspose().valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
+        assert.deepStrictEqual(Matrix.getTranspose(matrix1).valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
     })
 });
 

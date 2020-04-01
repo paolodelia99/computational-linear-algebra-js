@@ -85,19 +85,19 @@ class Matrix {
     };
 
     /**
-     * Get the transpose of the matrix
-     * @returns {*[][]} the transpose matrix
-     */
-    getTranspose = () =>
-        this.matrix[0].map( (col,i) => this.matrix.map(row => row[i]))
-
-    /**
      * Static function the return the transpose of the given matrix
      * @param {*[][]} matrix
      * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
      */
     static getTranspose = matrix =>
         matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
+
+    /**
+     * Get the transpose of the matrix
+     * @returns {*[][]} the transpose matrix
+     */
+    getTranspose = () =>
+        Matrix.getTranspose(this.matrix);
 
     /**
      * Static method for printing matrix
