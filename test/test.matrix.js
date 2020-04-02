@@ -109,6 +109,32 @@ describe('Test matrix subtraction', () => {
     })
 });
 
+describe('Test get partition Matrix', () => {
+    describe('Test Static method' , () => {
+        it('should give a partition of the give matrix', function () {
+            const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
+
+            assert.deepStrictEqual(Matrix.getSubMatrix(matrix1,0,1,0,1),[[1,2],[1,4]]);
+            assert.deepStrictEqual(Matrix.getSubMatrix(matrix1,1,2,1,2),[[4,2],[6,5]]);
+            assert.deepStrictEqual(Matrix.getSubMatrix(matrix1,0,2,0,1),[[1,2],[1,4],[2,6]]);
+            assert.deepStrictEqual(Matrix.getSubMatrix(matrix1,1,2,0,2),[[1,4,2],[2,6,5]]);
+
+        });
+
+        describe('Test Instance method', () => {
+            it('should give a partition of the matrix', function () {
+                const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+
+                assert.deepStrictEqual(matrix1.getSubMatrix(0,1,0,1),[[1,2],[1,4]]);
+                assert.deepStrictEqual(matrix1.getSubMatrix(1,2,1,2),[[4,2],[6,5]]);
+                assert.deepStrictEqual(matrix1.getSubMatrix(0,2,0,1),[[1,2],[1,4],[2,6]]);
+                assert.deepStrictEqual(matrix1.getSubMatrix(1,2,0,2),[[1,4,2],[2,6,5]]);
+
+            });
+        })
+    })
+});
+
 describe('test inverse of a matrix', () => {
     it('should give the inverse of the sample matrix', function () {
         const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
@@ -158,12 +184,10 @@ describe('Test matrix multiplication', () => {
 
 });
 
-//fixme: test matrice identità non funziona
+describe('test create identity matrix', () => {
+    it('should give the right identity matrix', () => {
+        const idMatrix = Matrix.createIdentityMatrix(4);
 
-// describe('test create identity matrix', () => {
-//     it('should give the right identity matrix', () => {
-//         const idMatrix = Matrix.createEmptySquareMatrix(4);
-//
-//         assert.deepStrictEqual(idMatrix.valueOf(), [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ]);
-//     })
-// });
+        assert.deepStrictEqual(idMatrix,[ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ]);
+    })
+});

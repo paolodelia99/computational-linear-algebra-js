@@ -1,7 +1,7 @@
 class Matrix {
 
-    lower; // The lower decomposition of the matrix
-    upper; // The Upper decomposition of the matrix
+    lower; // The lower decomposition of the matrix using LU decomp
+    upper; // The Upper decomposition of the matrix using LU decomp
 
     /**
      * Constructor of the matrix class
@@ -12,7 +12,7 @@ class Matrix {
         this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : arguments;
         this.isSquare = this.isMatrixSquare();
         this.rows = matrix.length;
-        this.cols = matrix[0].length;
+        this.cols = this.isSquare ? this.rows : matrix[0].length;
         this.rows === this.cols ? this.luDecomposition() : //Do nothing
         this.determinant = this.getDeterminant();
     }
@@ -38,9 +38,9 @@ class Matrix {
      * @returns {any[][]}
      */
     static createIdentityMatrix = (dim) => {
-        let idMatrix = Array(dim).fill().map( () => Array(dim).fill(0));
+        let idMatrix = Matrix.createEmptySquareMatrix(dim);
 
-        for(let i = 0; i < idMatrix.length; i++)
+        for(let i = 0; i < dim ; i++)
             idMatrix[i][i] = 1;
 
         return idMatrix;
@@ -53,23 +53,8 @@ class Matrix {
     static cloneMatrix = (matrix) => matrix.map( a => a.slice());
 
     /**
-     * Check if a matrix is square
-     * @returns {boolean} true if is square otherwise false
-     */
-    isMatrixSquare = () => {
-        let isSquare = true;
-
-        for(let i = 0;i < this.matrix.length-1;i++)
-            if(this.matrix[i].length  !== this.matrix[i+1].length){
-                isSquare = false;
-                break;
-            }
-
-        return isSquare;
-    };
-
-    /**
      * static method that checks if a matrix is square
+     * @param {*[][]} matrix
      * @returns {boolean} true if is square otherwise false
      */
     static isMatrixSquare = (matrix) => {
@@ -83,6 +68,12 @@ class Matrix {
 
         return isSquare;
     };
+
+    /**
+     * Check if a matrix is square
+     * @returns {boolean} true if is square otherwise false
+     */
+    isMatrixSquare = () => Matrix.isMatrixSquare(this.matrix);
 
     /**
      * Static function the return the transpose of the given matrix
@@ -104,8 +95,14 @@ class Matrix {
      * @param matrix
      * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | void[] | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
      */
-    static printMatrix  = (matrix) =>
-        matrix.map( x => console.log(x));
+    static printMatrix  = (matrix) => matrix.map( x => console.log(x));
+
+    /**
+     * Print the matrix
+     */
+    printMatrix = () => Matrix.printMatrix(this.matrix);
+
+    //todo:static method for the inverse
 
     /**
      * Compute the inverse of a matrix
@@ -217,31 +214,31 @@ class Matrix {
         Matrix.subtractMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
 
     /**
-     *
-     * @param matrix
-     * @param rowStart
-     * @param rowEnd
-     * @param colStart
-     * @param colEnd
+     * Get a subMatrix of the given matrix
+     * @param {*[][]} matrix
+     * @param {number} rowStart
+     * @param {number} rowEnd
+     * @param {number} colStart
+     * @param {number} colEnd
      * @returns {*[][]}
      */
     static getSubMatrix = (matrix,rowStart,rowEnd,colStart,colEnd) => {
-        let subMatrix = Matrix.createEmptyMatrix(rowEnd-rowStart,colEnd-colStart,)
+        let subMatrix = Matrix.createEmptyMatrix((rowEnd-rowStart)+1,(colEnd-colStart)+1);
 
-        for(let i =0 ;i < matrix.length;i++)
-            for(let j = 0;j < matrix[i].length;j++)
-                subMatrix[i][j] = matrix[rowStart+i][rowEnd+j]
+        for(let i =0 ;i < subMatrix.length;i++)
+            for(let j = 0;j < subMatrix[i].length;j++)
+                subMatrix[i][j] = matrix[rowStart+i][colStart+j];
 
         return subMatrix;
-    }
+    };
 
     /**
-     *
-     * @param rowStart
-     * @param rowEnd
-     * @param colStart
-     * @param colEnd
-     * @returns {*[][]}
+     * Get the sub matrix
+     * @param {number} rowStart
+     * @param {number} rowEnd
+     * @param {number} colStart
+     * @param {number} colEnd
+     * @returns {*[][]} sub matrix
      */
     getSubMatrix = (rowStart,rowEnd,colStart,colEnd) => Matrix.getSubMatrix(this.matrix,rowStart,rowEnd,colStart,colEnd);
 
@@ -279,7 +276,7 @@ class Matrix {
                 upper[k][k] = mat[k][k];
 
                 for(let i = k +1; i < n; i++){
-                    lower[i][k] = (mat[i][k]/upper[k][k])
+                    lower[i][k] = (mat[i][k]/upper[k][k]);
                     upper[k][i] = mat[k][i]
                 }
 
@@ -350,9 +347,9 @@ class Matrix {
     }
 
     /**
-     *
-     * @param matrix1
-     * @param matrix2
+     * Compute the matrix multiplication using the naive method
+     * @param {*[][]| Matrix} matrix1
+     * @param {*[][]| Matrix} matrix2
      * @returns {*[][]}
      */
     static ijkMultiplication = (matrix1, matrix2) => {
@@ -361,7 +358,9 @@ class Matrix {
             throw "Cannot do the multiplication";
         else {
             let resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length);
+            //todo : more flexibility for the inputs
 
+            //Compute the calculation
             for (let i = 0; i < matrix1.length; i++)
                 for (let j = 0; j < matrix2[0].length; j++)
                     for (let k = 0;k < matrix1[0].length; k++)
@@ -373,79 +372,111 @@ class Matrix {
 
     /**
      *
-     * @param matrix
+     * @param {*[][]| Matrix} matrix
      * @returns {*[][]|undefined}
      */
     ijkMultiplication = (matrix) =>
         Matrix.ijkMultiplication(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
 
+    /**
+     * todo: da completare
+     * @param A
+     * @param B
+     * @returns {*[][]}
+     */
+    static strassenMultiplication = (A , B) => {
+        //Check the input type
+        if(!(Array.isArray(A) && Array.isArray(B)))
+            throw "Type Error";
 
-    static strassenMultiplication = function(a, b, c, leafSize) {
-        //fixme: da rivedere tutto
-        if (a.n <= leafSize) {
-            Matrix.ijkMultiplication(a, b, c);
-            return;
-        }
-        //fixme: capisci cosa cazzo è questo
-        let A = growNextPowerOf2(a);
-        let B = growNextPowerOf2(b);
+        //Check if matrices are square matrices
+        if(A.length === A[0].length && B.length === B[0].length && A.length === B.length)
+            throw "The matrices aren't square matrices";
 
-        let n = A.n;
+        let nextPowerOfTow = n => Math.pow(2,Math.ceil(Math.log2(n)));
+        let n = A.length;
+        let m = nextPowerOfTow(n);
 
-        let A11 = A.partition(0,   0,   n/2, n/2, "A11");
-        let A12 = A.partition(0,   n/2, n/2, n,   "A12");
-        let A21 = A.partition(n/2, 0,   n,   n/2, "A21");
-        let A22 = A.partition(n/2, n/2, n,   n,   "A22");
+        let ACopy = Matrix.createEmptySquareMatrix(m);
+        let BCopy = Matrix.createEmptySquareMatrix(m);
 
-        let B11 = B.partition(0,   0,   n/2, n/2, "B11");
-        let B12 = B.partition(0,   n/2, n/2, n,   "B12");
-        let B21 = B.partition(n/2, 0,   n,   n/2, "B21");
-        let B22 = B.partition(n/2, n/2, n,   n,   "B22");
-
-        let M1 = Matrix.createEmptySquareMatrix(n);
-        let M2 = Matrix.createEmptySquareMatrix(n);
-        let M3 = Matrix.createEmptySquareMatrix(n);
-        let M4 = Matrix.createEmptySquareMatrix(n);
-        let M5 = Matrix.createEmptySquareMatrix(n);
-        let M6 = Matrix.createEmptySquareMatrix(n);
-        let M7 = Matrix.createEmptySquareMatrix(n);
-
-        Matrix.strassenMultiplication(A11.add(A22), B11.add(B22), M1, leafSize);
-        Matrix.strassenMultiplication(A21.add(A22), B11, M2, leafSize);
-        Matrix.strassenMultiplication(A11, B12.sub(B22), M3, leafSize);
-        Matrix.strassenMultiplication(A22, B21.sub(B11), M4, leafSize);
-        Matrix.strassenMultiplication(A11.add(A12), B22, M5, leafSize);
-        Matrix.strassenMultiplication(A21.sub(A11), B11.add(B12), M6, leafSize);
-        Matrix.strassenMultiplication(A12.sub(A22), B21.add(B22), M7, leafSize);
-
-        let C11 = M1.add(M4).sub(M5).add(M7);
-        let C12 = M3.add(M5);
-        let C21 = M2.add(M4);
-        let C22 = M1.add(M3).sub(M2).add(M6);
-
-        let halfN = C11.n;
-        for (let i = 0; i < c.n; i++) {
-            for (let j = 0; j < c.n; j++) {
-                if (i < halfN && j < halfN) {
-                    c.set(i, j, C11.get(i, j));
-                }
-                else if (i < halfN && j >= halfN) {
-                    c.set(i, j, C12.get(i, j - halfN));
-                }
-                else if (i >= halfN && j < halfN) {
-                    c.set(i, j, C21.get(i - halfN, j));
-                }
-                else if (i >= halfN && j >= halfN) {
-                    c.set(i, j, C22.get(i - halfN, j - halfN));
-                }
+        //Copy the the matrices
+        for(let i = 0; i < n; i++)
+            for(let j = 0; j < n;j++){
+                ACopy[i][j] = A[i][j];
+                BCopy[i][j] = B[i][j];
             }
+
+        return Matrix.strassenAlgorithm(ACopy,BCopy);
+    };
+
+    /**
+     * Implementation of the strassen algorithm
+     * @param {*[][]} A
+     * @param {*[][]} B
+     * @param {number} leafSize
+     * @returns {*[][]}
+     */
+    static strassenAlgorithm = function(A, B , leafSize = 8) {
+        if (A.length <= leafSize)
+            return Matrix.ijkMultiplication(A, B);
+        else{
+
+            let n = A.length;
+            let newSize = n/2;
+
+            //Create the A and B subMatrices
+            let A11 = Matrix.getSubMatrix(A,0,Math.floor(n/2),0,Math.floor(n/2));
+            let A12 = Matrix.getSubMatrix(A,0,Math.floor(n/2),Math.floor(n/2),n-1);
+            let A21 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,0,Math.floor(n/2));
+            let A22 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,Math.floor(n/2),n-1);
+
+            let B11 = Matrix.getSubMatrix(A,0,Math.floor(n/2),0,Math.floor(n/2));
+            let B12 = Matrix.getSubMatrix(A,0,Math.floor(n/2),Math.floor(n/2),n-1);
+            let B21 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,0,Math.floor(n/2));
+            let B22 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,Math.floor(n/2),n-1)
+
+            //Seven matrices for the final result
+            let M1 = Matrix.createEmptySquareMatrix(n);
+            let M2 = Matrix.createEmptySquareMatrix(n);
+            let M3 = Matrix.createEmptySquareMatrix(n);
+            let M4 = Matrix.createEmptySquareMatrix(n);
+            let M5 = Matrix.createEmptySquareMatrix(n);
+            let M6 = Matrix.createEmptySquareMatrix(n);
+            let M7 = Matrix.createEmptySquareMatrix(n);
+
+            Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A22), Matrix.sumMatrices(A11,A22));
+            Matrix.strassenAlgorithm(Matrix.sumMatrices(A21,A22), B11);
+            Matrix.strassenAlgorithm(A11, Matrix.subtractMatrices(B12,B22));
+            Matrix.strassenAlgorithm(A22, Matrix.subtractMatrices(B21,B11));
+            Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A12), B22);
+            Matrix.strassenAlgorithm(Matrix.subtractMatrices(A11,A12), Matrix.sumMatrices(B11,B12));
+            Matrix.strassenAlgorithm(Matrix.subtractMatrices(A11,A12), Matrix.sumMatrices(B21,B22));
+
+            let C11 = Matrix.subtractMatrices(Matrix.sumMatrices(M1,M4),Matrix.sumMatrices(M5,M7)); // C11 = M1 + M4 - M5 + M7
+            let C12 = Matrix.sumMatrices(M3,M5); // C12 = M3 + M5
+            let C21 = Matrix.sumMatrices(M2,M4); // C21 = M2 + M4
+            let C22 = Matrix.sumMatrices(Matrix.subtractMatrices(M1,M2),Matrix.sumMatrices(M3,M6)); // C22 = M1 - M2 + M3 + M6
+
+            let C = Matrix.createEmptySquareMatrix(n);
+
+            for(let i = 0; i < newSize;i++)
+                for(let j=0;j< newSize;j++){
+                    C[i][j] = C11[i][j];
+                    C[i][j + newSize] = C12[i][j];
+                    C[i + newSize][j] = C21[i][j];
+                    C[i + newSize][j + newSize] = C22[i][j];
+                }
+
+            return C;
         }
     };
 }
 
 //TODO:
-// - identity matrix
+// - test strassen
 // - other decomposition
-// - multiplication (most efficient way)
+// - multiplication (most efficient way)(maybe i gotta use C++ for it)
+// - rank
 
 module.exports = Matrix;
