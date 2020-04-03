@@ -11,36 +11,61 @@ class Vector{
         this.vector = Array.isArray(vector) ? vector : Array.from(arguments);
     }
 
+    //todo:test it
+    /**
+     * Static method that compute the norm of a vector
+     * @param {*[]} vector
+     * @returns {number} the norm of a vector
+     */
+    static getNorm = (vector) => Math.sqrt(vector.map( x => x*x).reduce( (a,b) => a+b,0));
+
     /**
      * Compute the norm of a vector
      * @returns {number}: the norm of a vector
      */
-    getNorm = () =>
-        Math.sqrt(this.vector.map( x => x*x).reduce( (a,b) => a+b, 0))
+    getNorm = () => Vector.getNorm(this.vector);
+
+    /**
+     *
+     * @param vector
+     * @param scalar
+     * @returns {*|Uint8Array|BigInt64Array|number[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+     */
+    static scalarProduct = (vector,scalar) => vector.map( x => x*scalar);
 
     /**
      * Compute the scalarProduct
      * @param {number} scalar
      * @returns {number[]}: the scalar product of the vector
      */
-    scalarProduct = (scalar) =>
-       this.vector.map( x => x*scalar);
+    scalarProduct = (scalar) => Vector.scalarProduct(this.vector,scalar);
+
+    /**
+     * Compute the product column vector for row vector (static method)
+     * @param {*[]} vector1
+     * @param {*[]} vector2
+     * @returns {number} the product of the row vector and the col vector
+     */
+    static product = (vector1, vector2) =>
+        (zip(vector1 = Array.isArray(vector1) ? vector1 : vector1.vector,vector2 = Array.isArray(vector2) ? vector2 : vector2.vector).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0)
 
     /**
      * Compute the product column vector for row vector
-     * @param vector2 array
-     * @returns {number} the
+     * @param {*[]} vector2
+     * @returns {number} the product of the row vector and the col vector
      */
-    product = (vector2) =>
-        (zip(this.vector,vector2).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0);
+    product = (vector2) => Vector.product(this.vector, vector2);
 
     /**
-     * Return the sum of the arrays as a arguments
-     * @returns {array[]}: sum of the inputs array
+     * Compute the sum of the two vectors (static method)
+     * @param {*[]} vector1
+     * @param {*[]} vector2
+     * @returns {*[]} The sum of the two vectors
      */
     static sum (vector1, vector2) {
-        vector1 = typeof vector1 === "object" ? vector1.vector : vector1;
-        vector2 = typeof vector2 === "object" ? vector2.vector : vector2;
+        //Check the input types
+        vector1 = Array.isArray(vector1) ? vector1 : vector1.vector;
+        vector2 = Array.isArray(vector2) ? vector2 : vector2.vector;
 
         if(vector1.length !== vector2.length)
             throw "The two vectors haven't the same Length";
@@ -53,6 +78,14 @@ class Vector{
             return sumVector;
         }
     }
+
+    //todo: test it
+    /**
+     * Sum the vector with the given vector (instance method)
+     * @param {*[]} vector
+     * @returns {Array[]} the sum of the two vectors
+     */
+    sum = (vector) => Vector.sum(this.vector,vector);
 };
 
 //Utility functions

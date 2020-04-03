@@ -15,11 +15,12 @@ describe('test vector creation', () => {
 describe('test the get norm function', () => {
     it('should give the norm of the vector', () => {
         const vector1 = new Vector([1,2,1]);
-        const vector2 = new Vector([45,6,7])
+        const vector2 = new Vector([45,6,7]);
+        const vector3 = [1,3,2];
 
         assert.equal(vector1.getNorm(), Math.sqrt(6));
-
         assert.equal(vector2.getNorm(), Math.sqrt((45*45)+(6*6)+(7*7)));
+        assert.equal(Vector.getNorm(vector3), Math.sqrt(14));
     })
 });
 
@@ -36,7 +37,8 @@ describe('test sum of vectors', () => {
         const vector1 = new Vector([2,3,1]);
         const vector2 = new Vector([-1,2,-1]);
 
-        assert.deepStrictEqual(Vector.sum(vector1,vector2), [1,5,0])
+        assert.deepStrictEqual(Vector.sum(vector1,vector2), [1,5,0]);
+        assert.deepStrictEqual(vector1.sum(vector2),[1,5,0]);
     });
 });
 
@@ -56,6 +58,7 @@ describe('test the product between the column vector and the row vector', () => 
         const vector1 = new Vector([1,2,1]);
         const vector2 = new Vector([3,2,6]);
 
-        assert.equal(vector1.product(vector2.vector), 13)
+        assert.equal(vector1.product(vector2.vector), 13);
+        assert.equal(Vector.product(vector1,vector2),13);
     });
 });
