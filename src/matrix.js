@@ -9,7 +9,7 @@ class Matrix {
      *                arrays
      */
     constructor(matrix) {
-        this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : arguments;
+        this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : Array.from(arguments);
         this.isSquare = this.isMatrixSquare();
         this.rows = matrix.length;
         this.cols = this.isSquare ? this.rows : matrix[0].length;
@@ -379,7 +379,7 @@ class Matrix {
         Matrix.ijkMultiplication(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
 
     /**
-     * todo: da completare
+     * Stassen multiplication method that calls the strassen algorithm
      * @param A
      * @param B
      * @returns {*[][]}
@@ -460,6 +460,7 @@ class Matrix {
 
             let C = Matrix.createEmptySquareMatrix(n);
 
+            //Calcualte C
             for(let i = 0; i < newSize;i++)
                 for(let j=0;j< newSize;j++){
                     C[i][j] = C11[i][j];

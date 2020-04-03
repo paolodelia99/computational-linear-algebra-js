@@ -1,20 +1,34 @@
+const Matrix = require('./matrix');
+
 class LinearTrasformation {
 
     transformationMatrix;
     domainDim; //row of the associated matrix
     imageDim; // col of the associated matrix
 
+    /**
+     *
+     */
     constructor() {
-        if(arguments.length === 1)
-            this.matrixConstructor(arguments[0])
+        if(arguments.length === 1 && Array.isArray(arguments) && Array.isArray(arguments[0]))
+            this.matrixConstructor(arguments[0]);
         else
-            this.vectorConstructor()
+            this.vectorConstructor(arguments)
     }
 
-    vectorConstructor(){
-        //Da fare
+    /**
+     *
+     * @param vectors
+     */
+    vectorConstructor(vectors){
+        let matTransformation = new Matrix(vectors);
+        this.matrixConstructor(matTransformation.getTranspose());
     }
 
+    /**
+     *
+     * @param matTransformation
+     */
     matrixConstructor(matTransformation){
         this.transformationMatrix = matTransformation;
         this.domainDim = matTransformation.length;

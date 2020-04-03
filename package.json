@@ -1,7 +1,7 @@
 {
-  "name": "test-linear-js",
+  "name": "computational-linear-algebra-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "A linear algebra library for npm",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/paolodelia99/paolodelia99.git"
   },
-  "keywords": [],
+  "keywords": ["linear algebra","math","computational math"],
   "author": "",
   "license": "ISC",
   "bugs": {
