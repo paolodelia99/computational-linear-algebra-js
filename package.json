@@ -2,6 +2,7 @@
   "name": "computational-linear-algebra-js",
   "version": "1.0.0",
   "description": "A linear algebra library for npm",
+  "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -14,7 +15,6 @@
     "url": "git+https://github.com/paolodelia99/paolodelia99.git"
   },
   "keywords": ["linear algebra","math","computational math"],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/paolodelia99/paolodelia99/issues"

@@ -1,12 +1,31 @@
 # Computational Linear Algebra
 
-Js libary for Linear algebra
+Js library for Linear algebra
+
+## Quick Start
+
+## Matrices
+
+## Vectors
+
+## Linear Transformations
 
 ## Todos
 
-- [ ] Implement a more efficent multiplication
-- [ ] Vectoral Spaces
-- [ ] Implement other decomposition like QR,....
+- [ ] Implement a more efficient multiplication
+- [ ] Vector Spaces
+- [ ] Implement other decomposition
+    - [ ] QR
+    - [ ] Cholesky
+    - [ ] Singular Value Decomposition
 - [ ] matrix validity method
 - [ ] rank of the matrix
+- [ ] eigenvalues and eigenvectors
+- [ ] Analytical Geometry ??
+    - [ ] inner products
+    - [ ] length and distances
+    - [ ] Angles and orthogonality
+    - [ ] rotations
+    
+
 
