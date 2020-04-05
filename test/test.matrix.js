@@ -50,10 +50,12 @@ describe('test isMatrixSquare method', () => {
 
 describe('test copy and clone matrix', () => {
     it('should be equal the the created matrix', function () {
-        const matrix = new Matrix([[1,-2,-1],[1,4,1],[2,2,5]])
+        const matrix = new Matrix([[1,-2,-1],[1,4,1],[2,2,5]]);
         const mat = Matrix.cloneMatrix(matrix.matrix);
+        const mat1 = Matrix.cloneMatrix(matrix); //passing the matrix obj
 
         assert.deepStrictEqual(matrix.matrix, mat);
+        assert.deepStrictEqual(matrix.matrix, mat1);
     });
 
 });

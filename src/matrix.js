@@ -1,15 +1,18 @@
 class Matrix {
+    get matrix() {
+        return this._matrix;
+    }
 
     lower; // The lower decomposition of the matrix using LU decomp
     upper; // The Upper decomposition of the matrix using LU decomp
 
     /**
      * Constructor of the matrix class
-     * @param {*[][]} matrix :  can be a bidimensional array or a list of
+     * @param {number[][]} matrix :  can be a bidimensional array or a list of
      *                arrays
      */
     constructor(matrix) {
-        this.matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : Array.from(arguments);
+        this._matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : Array.from(arguments);
         this.isSquare = this.isMatrixSquare();
         this.rows = matrix.length;
         this.cols = this.isSquare ? this.rows : matrix[0].length;
@@ -50,7 +53,13 @@ class Matrix {
      * Clone the matrix
      * @returns {(Buffer | SharedArrayBuffer | T[] | BigUint64Array | Uint8ClampedArray | Uint32Array | Blob | Int16Array | T[] | Float64Array | string | Uint16Array | ArrayBuffer | Int32Array | Float32Array | BigInt64Array | Uint8Array | Int8Array | T[])[]}
      */
-    static cloneMatrix = (matrix) => matrix.map( a => a.slice());
+    static cloneMatrix = (matrix) => Array.isArray(matrix) ?  matrix.map( a => a.slice()) : matrix._matrix.map(a => a.slice());
+
+    /**
+     * Get a copy of the matrix
+     * @returns {(Buffer|SharedArrayBuffer|T[]|BigUint64Array|Uint8ClampedArray|Uint32Array|Blob|Int16Array|Float64Array|string|Uint16Array|ArrayBuffer|Int32Array|Float32Array|BigInt64Array|Uint8Array|Int8Array)[]}
+     */
+    getCopy = () => Matrix.cloneMatrix(this.matrix);
 
     /**
      * static method that checks if a matrix is square
@@ -73,7 +82,7 @@ class Matrix {
      * Check if a matrix is square
      * @returns {boolean} true if is square otherwise false
      */
-    isMatrixSquare = () => Matrix.isMatrixSquare(this.matrix);
+    isMatrixSquare = () => Matrix.isMatrixSquare(this._matrix);
 
     /**
      * Static function the return the transpose of the given matrix
@@ -88,7 +97,7 @@ class Matrix {
      * @returns {*[][]} the transpose matrix
      */
     getTranspose = () =>
-        Matrix.getTranspose(this.matrix);
+        Matrix.getTranspose(this._matrix);
 
     /**
      * Static method for printing matrix
@@ -100,7 +109,7 @@ class Matrix {
     /**
      * Print the matrix
      */
-    printMatrix = () => Matrix.printMatrix(this.matrix);
+    printMatrix = () => Matrix.printMatrix(this._matrix);
 
     //todo:static method for the inverse
 
@@ -183,7 +192,7 @@ class Matrix {
      * @returns {*[][]|undefined} the sum of the two matrices
      */
     sum = matrix =>
-        Matrix.sumMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+        Matrix.sumMatrices(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
 
     /**
      * Static method that compute the subtraction of two matrices
@@ -211,7 +220,7 @@ class Matrix {
      * @returns {*[][]}
      */
     sub = matrix =>
-        Matrix.subtractMatrices(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+        Matrix.subtractMatrices(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
 
     /**
      * Get a subMatrix of the given matrix
@@ -240,7 +249,7 @@ class Matrix {
      * @param {number} colEnd
      * @returns {*[][]} sub matrix
      */
-    getSubMatrix = (rowStart,rowEnd,colStart,colEnd) => Matrix.getSubMatrix(this.matrix,rowStart,rowEnd,colStart,colEnd);
+    getSubMatrix = (rowStart,rowEnd,colStart,colEnd) => Matrix.getSubMatrix(this._matrix,rowStart,rowEnd,colStart,colEnd);
 
     /**
      * The LU Decomposition function that decompose the matrix in L and U
@@ -250,7 +259,7 @@ class Matrix {
         if(!this.isMatrixSquare)
             throw "You can do LU Decomposition only with Square matrices";
         else{
-           const res = Matrix.getLUDecomposition(this.matrix);
+           const res = Matrix.getLUDecomposition(this._matrix);
 
             this.lower = res.L;
             this.upper = res.U;
@@ -376,7 +385,7 @@ class Matrix {
      * @returns {*[][]|undefined}
      */
     ijkMultiplication = (matrix) =>
-        Matrix.ijkMultiplication(this.matrix, typeof matrix === "object" ? matrix.matrix : matrix);
+        Matrix.ijkMultiplication(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
 
     /**
      * Stassen multiplication method that calls the strassen algorithm

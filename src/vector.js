@@ -1,15 +1,20 @@
+const zip = require('./utils/functions');
+
 /**
  * Class the implements a vector
  */
 class Vector{
-
     /**
      * Constructor of the vector Object
      * @param vector can be an array of a list of integers
      */
     constructor(vector) {
-        this.vector = Array.isArray(vector) ? vector : Array.from(arguments);
+        this._vector = Array.isArray(vector) ? vector : Array.from(arguments);
     }
+
+    static clone = (vector1) => vector1.slice();
+
+    getCopy = () => Vector.clone(this.vector);
 
     //todo:test it
     /**
@@ -23,7 +28,7 @@ class Vector{
      * Compute the norm of a vector
      * @returns {number}: the norm of a vector
      */
-    getNorm = () => Vector.getNorm(this.vector);
+    getNorm = () => Vector.getNorm(this._vector);
 
     /**
      *
@@ -38,7 +43,7 @@ class Vector{
      * @param {number} scalar
      * @returns {number[]}: the scalar product of the vector
      */
-    scalarProduct = (scalar) => Vector.scalarProduct(this.vector,scalar);
+    scalarProduct = (scalar) => Vector.scalarProduct(this._vector,scalar);
 
     /**
      * Compute the product column vector for row vector (static method)
@@ -47,14 +52,14 @@ class Vector{
      * @returns {number} the product of the row vector and the col vector
      */
     static product = (vector1, vector2) =>
-        (zip(vector1 = Array.isArray(vector1) ? vector1 : vector1.vector,vector2 = Array.isArray(vector2) ? vector2 : vector2.vector).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0)
+        (zip(vector1 = Array.isArray(vector1) ? vector1 : vector1.vector,vector2 = Array.isArray(vector2) ? vector2 : vector2.vector).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0);
 
     /**
      * Compute the product column vector for row vector
      * @param {*[]} vector2
      * @returns {number} the product of the row vector and the col vector
      */
-    product = (vector2) => Vector.product(this.vector, vector2);
+    product = (vector2) => Vector.product(this._vector, vector2);
 
     /**
      * Compute the sum of the two vectors (static method)
@@ -85,18 +90,16 @@ class Vector{
      * @param {*[]} vector
      * @returns {Array[]} the sum of the two vectors
      */
-    sum = (vector) => Vector.sum(this.vector,vector);
+    sum = (vector) => Vector.sum(this._vector,vector);
+
+    /**
+     * vector field getter
+     * @returns {unknown[] | *}
+     */
+    get vector() {
+        return this._vector;
+    }
 };
 
-//Utility functions
-
-/**
- * Returns a zip of the two given arrays
- * @param arr1
- * @param arr2
- * @returns array[][] bidimensional array that is the zip between the two arrays
- */
-const zip = (arr1,arr2) => arr1.map((k,i) => [k,arr2[i]]);
-
-module.exports = Vector;
+module.exports = Vector, {zip};
 

@@ -1,6 +1,4 @@
 const Vector = require('./src/vector');
 const Matrix = require('./src/matrix');
+const LinearTransformation = require('./src/linearTrasformation');
 
-const idMatrix = Matrix.createIdentityMatrix(4);
-
-console.log(idMatrix)
