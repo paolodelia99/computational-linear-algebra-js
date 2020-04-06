@@ -27,5 +27,5 @@ Js library for Linear algebra
     - [ ] Angles and orthogonality
     - [ ] rotations
     
-
+- [ ] compile js in prev version using babel
 

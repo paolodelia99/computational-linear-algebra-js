@@ -168,7 +168,7 @@ describe('test determinant', () => {
 })
 
 describe('Test matrix multiplication', () => {
-    describe('tets ijk Multiplication', () => {
+    describe('test ijk Multiplication', () => {
         it('the ijkMultiplication static method should give the right result', function () {
             const matrix1 = [[2,4,5],[-1,2,1],[4,-1,3]];
             const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
@@ -183,6 +183,15 @@ describe('Test matrix multiplication', () => {
             assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
         });
     });
+
+    describe('Test Strassen Multiplication', () => {
+        it('should give the right result', function () {
+            const matrix1 = [[2,4,5],[-1,2,1],[4,-1,3]];
+            const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
+
+            assert.deepStrictEqual(Matrix.strassenMultiplication(matrix1, matrix2 , 2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
+    })
 
 });
 

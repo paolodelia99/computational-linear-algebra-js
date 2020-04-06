@@ -388,18 +388,19 @@ class Matrix {
         Matrix.ijkMultiplication(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
 
     /**
-     * Stassen multiplication method that calls the strassen algorithm
-     * @param A
-     * @param B
+     * Strassen multiplication method that calls the strassen algorithm
+     * @param {number[][]} A
+     * @param {number[][]} B
+     * @param {number} leafSize
      * @returns {*[][]}
      */
-    static strassenMultiplication = (A , B) => {
+    static strassenMultiplication = (A , B,leafSize = 8) => {
         //Check the input type
         if(!(Array.isArray(A) && Array.isArray(B)))
             throw "Type Error";
 
         //Check if matrices are square matrices
-        if(A.length === A[0].length && B.length === B[0].length && A.length === B.length)
+        if(!(A.length === A[0].length && B.length === B[0].length && A.length === B[0].length))
             throw "The matrices aren't square matrices";
 
         let nextPowerOfTow = n => Math.pow(2,Math.ceil(Math.log2(n)));
@@ -416,60 +417,59 @@ class Matrix {
                 BCopy[i][j] = B[i][j];
             }
 
-        return Matrix.strassenAlgorithm(ACopy,BCopy);
+        const CCopy = Matrix.strassenAlgorithm(ACopy,BCopy,leafSize);
+        const C = Matrix.createEmptySquareMatrix(n);
+
+        for(let i = 0; i < n;i++)
+            for(let j = 0; j < n;j++)
+                C[i][j] = CCopy[i][j];
+
+        return C;
     };
 
     /**
-     * Implementation of the strassen algorithm
+     * Implementation of the Strassen algorithm
      * @param {*[][]} A
      * @param {*[][]} B
      * @param {number} leafSize
      * @returns {*[][]}
      */
     static strassenAlgorithm = function(A, B , leafSize = 8) {
-        if (A.length <= leafSize)
+        let n = A.length;
+        if (n <= leafSize)
             return Matrix.ijkMultiplication(A, B);
         else{
 
-            let n = A.length;
-            let newSize = n/2;
+            let newSize = Math.floor(n/2);
 
             //Create the A and B subMatrices
-            let A11 = Matrix.getSubMatrix(A,0,Math.floor(n/2),0,Math.floor(n/2));
-            let A12 = Matrix.getSubMatrix(A,0,Math.floor(n/2),Math.floor(n/2),n-1);
-            let A21 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,0,Math.floor(n/2));
-            let A22 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,Math.floor(n/2),n-1);
+            let A11 = Matrix.getSubMatrix(A,0,newSize-1,0,newSize-1);
+            let A12 = Matrix.getSubMatrix(A,0,newSize-1,newSize,n-1);
+            let A21 = Matrix.getSubMatrix(A,newSize,n-1,0,Math.floor(newSize)-1);
+            let A22 = Matrix.getSubMatrix(A,newSize,n-1,newSize,n-1);
 
-            let B11 = Matrix.getSubMatrix(A,0,Math.floor(n/2),0,Math.floor(n/2));
-            let B12 = Matrix.getSubMatrix(A,0,Math.floor(n/2),Math.floor(n/2),n-1);
-            let B21 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,0,Math.floor(n/2));
-            let B22 = Matrix.getSubMatrix(A,Math.floor(n/2),n-1,Math.floor(n/2),n-1)
+            let B11 = Matrix.getSubMatrix(B,0,newSize-1,0,newSize-1);
+            let B12 = Matrix.getSubMatrix(B,0,newSize-1,newSize,n-1);
+            let B21 = Matrix.getSubMatrix(B,newSize,n-1,0,newSize-1);
+            let B22 = Matrix.getSubMatrix(B,newSize,n-1,newSize,n-1);
 
             //Seven matrices for the final result
-            let M1 = Matrix.createEmptySquareMatrix(n);
-            let M2 = Matrix.createEmptySquareMatrix(n);
-            let M3 = Matrix.createEmptySquareMatrix(n);
-            let M4 = Matrix.createEmptySquareMatrix(n);
-            let M5 = Matrix.createEmptySquareMatrix(n);
-            let M6 = Matrix.createEmptySquareMatrix(n);
-            let M7 = Matrix.createEmptySquareMatrix(n);
+            let M1 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A22), Matrix.sumMatrices(B11,B22),leafSize);
+            let M2 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A21,A22), B11,leafSize);
+            let M3 = Matrix.strassenAlgorithm(A11, Matrix.subtractMatrices(B12,B22),leafSize);
+            let M4 = Matrix.strassenAlgorithm(A22, Matrix.subtractMatrices(B21,B11),leafSize);
+            let M5 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A12), B22,leafSize);
+            let M6 = Matrix.strassenAlgorithm(Matrix.subtractMatrices(A21,A11), Matrix.sumMatrices(B11,B12),leafSize);
+            let M7 = Matrix.strassenAlgorithm(Matrix.subtractMatrices(A12,A22), Matrix.sumMatrices(B21,B22),leafSize);
 
-            Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A22), Matrix.sumMatrices(A11,A22));
-            Matrix.strassenAlgorithm(Matrix.sumMatrices(A21,A22), B11);
-            Matrix.strassenAlgorithm(A11, Matrix.subtractMatrices(B12,B22));
-            Matrix.strassenAlgorithm(A22, Matrix.subtractMatrices(B21,B11));
-            Matrix.strassenAlgorithm(Matrix.sumMatrices(A11,A12), B22);
-            Matrix.strassenAlgorithm(Matrix.subtractMatrices(A11,A12), Matrix.sumMatrices(B11,B12));
-            Matrix.strassenAlgorithm(Matrix.subtractMatrices(A11,A12), Matrix.sumMatrices(B21,B22));
-
-            let C11 = Matrix.subtractMatrices(Matrix.sumMatrices(M1,M4),Matrix.sumMatrices(M5,M7)); // C11 = M1 + M4 - M5 + M7
+            let C11 = Matrix.sumMatrices(Matrix.subtractMatrices(Matrix.sumMatrices(M1,M4),M5),M7); // C11 = M1 + M4 - M5 + M7
             let C12 = Matrix.sumMatrices(M3,M5); // C12 = M3 + M5
             let C21 = Matrix.sumMatrices(M2,M4); // C21 = M2 + M4
-            let C22 = Matrix.sumMatrices(Matrix.subtractMatrices(M1,M2),Matrix.sumMatrices(M3,M6)); // C22 = M1 - M2 + M3 + M6
+            let C22 = Matrix.sumMatrices(Matrix.sumMatrices(Matrix.subtractMatrices(M1,M2),M3),M6); // C22 = M1 - M2 + M3 + M6
 
             let C = Matrix.createEmptySquareMatrix(n);
 
-            //Calcualte C
+            //Calculate C
             for(let i = 0; i < newSize;i++)
                 for(let j=0;j< newSize;j++){
                     C[i][j] = C11[i][j];
