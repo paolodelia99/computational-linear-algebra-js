@@ -28,4 +28,5 @@ Js library for Linear algebra
     - [ ] rotations
     
 - [ ] compile js in prev version using babel
-
+- [ ] build npm package
+- [ ] documentation

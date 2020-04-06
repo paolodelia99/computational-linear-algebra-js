@@ -173,14 +173,18 @@ class Matrix {
      * @returns {*[][]}
      */
     static sumMatrices = (matrix1, matrix2) => {
-        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
+        //Check matrices types
+        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix2.matrix;
+        let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
+
+        if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
             throw "Cannot sum two matrices with different dimension";
         else{
-            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
+            const resMatrix = Matrix.createEmptyMatrix(matrix1Copy.length, matrix1Copy[0].length);
 
-            for(let i = 0;i < matrix1.length;i++)
-                for(let j = 0; j < matrix2.length;j++)
-                    resMatrix[i][j] = matrix1[i][j] + matrix2[i][j];
+            for(let i = 0;i < matrix1Copy.length;i++)
+                for(let j = 0; j < matrix2Copy.length;j++)
+                    resMatrix[i][j] = matrix1Copy[i][j] + matrix2Copy[i][j];
 
             return resMatrix;
         }
@@ -188,11 +192,11 @@ class Matrix {
 
     /**
      * Instance method the compute the sum of two matrices calling the static method
-     * @param matrix
+     * @param {number[][] | Matrix} matrix
      * @returns {*[][]|undefined} the sum of the two matrices
      */
     sum = matrix =>
-        Matrix.sumMatrices(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
+        Matrix.sumMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
      * Static method that compute the subtraction of two matrices
@@ -201,14 +205,18 @@ class Matrix {
      * @returns {*[][]} the substract matrix
      */
     static subtractMatrices = (matrix1, matrix2) => {
-        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
+        //Check matrices types
+        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix2.matrix;
+        let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
+
+        if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
             throw "Cannot sum two matrices with different dimension";
         else{
-            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
+            const resMatrix = Matrix.createEmptyMatrix(matrix1Copy.length, matrix1Copy[0].length);
 
-            for(let i = 0;i < matrix1.length;i++)
-                for(let j = 0; j < matrix2.length;j++)
-                    resMatrix[i][j] = matrix1[i][j] - matrix2[i][j];
+            for(let i = 0;i < matrix1Copy.length;i++)
+                for(let j = 0; j < matrix2Copy.length;j++)
+                    resMatrix[i][j] = matrix1Copy[i][j] - matrix2Copy[i][j];
 
             return resMatrix;
         }
@@ -216,11 +224,11 @@ class Matrix {
 
     /**
      * Subtract the given matrix to the matrix object
-     * @param matrix
+     * @param {number[][] | Matrix} matrix
      * @returns {*[][]}
      */
     sub = matrix =>
-        Matrix.subtractMatrices(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
+        Matrix.subtractMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
      * Get a subMatrix of the given matrix
@@ -385,7 +393,7 @@ class Matrix {
      * @returns {*[][]|undefined}
      */
     ijkMultiplication = (matrix) =>
-        Matrix.ijkMultiplication(this._matrix, typeof matrix === "object" ? matrix._matrix : matrix);
+        Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
      * Strassen multiplication method that calls the strassen algorithm
@@ -484,7 +492,6 @@ class Matrix {
 }
 
 //TODO:
-// - test strassen
 // - other decomposition
 // - multiplication (most efficient way)(maybe i gotta use C++ for it)
 // - rank
