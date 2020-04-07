@@ -51,14 +51,24 @@ describe('test zip function', () => {
 
         assert.deepStrictEqual(zip(arr1,arr2), [[1,2],[2,6],[1,-5]]);
     });
-})
+});
 
 describe('test the product between the column vector and the row vector', () => {
     it('should give the vector col multiply for the the row vector', function () {
         const vector1 = new Vector([1,2,1]);
         const vector2 = new Vector([3,2,6]);
 
-        assert.equal(vector1.product(vector2.vector), 13);
-        assert.equal(Vector.product(vector1,vector2),13);
+        assert.equal(vector1.dotProduct(vector2.vector), 13);
+        assert.equal(Vector.dotProduct(vector1,vector2),13);
+    });
+});
+
+describe('test the cross product between two vectors', () => {
+    it('should give a 3d vector that is the res ', function () {
+        const vector1 = new Vector([1,2,1]);
+        const vector2 = new Vector([3,2,6]);
+
+        assert.deepStrictEqual(vector1.crossProduct(vector2), [10, -3 , -4]);
+        assert.deepStrictEqual(Vector.crossProduct(vector1,vector2), [10, -3 , -4]);
     });
 });

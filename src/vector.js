@@ -51,7 +51,7 @@ class Vector{
      * @param {*[]} vector2
      * @returns {number} the product of the row vector and the col vector
      */
-    static product = (vector1, vector2) =>
+    static dotProduct = (vector1, vector2) =>
         (zip(vector1 = Array.isArray(vector1) ? vector1 : vector1.vector,vector2 = Array.isArray(vector2) ? vector2 : vector2.vector).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0);
 
     /**
@@ -59,7 +59,36 @@ class Vector{
      * @param {*[]} vector2
      * @returns {number} the product of the row vector and the col vector
      */
-    product = (vector2) => Vector.product(this._vector, vector2);
+    dotProduct = (vector2) => Vector.dotProduct(this._vector, vector2);
+
+    /**
+     * Compute the cross product between two 3D Vector
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {number[]} the cross product between vector1 and vector2
+     */
+    static crossProduct = (vector1, vector2) => {
+        //Check Vector Type
+        let x1 = Array.isArray(vector1) ? vector1 : vector1.vector;
+        let x2 = Array.isArray(vector2) ? vector2 : vector2.vector;
+        // Cross product of two 3D vectors.
+        if(x1.length !== 3 && x2.length !== 3)
+            throw 'crossProduct is defined only for 3d vectors.';
+        else
+            return [
+                x1[1]*x2[2] - x1[2]*x2[1],
+                x1[2]*x2[0] - x1[0]*x2[2],
+                x1[0]*x2[1] - x1[1]*x2[0]
+            ]
+    };
+
+    /**
+     * Compute the cross product with the give 3D Vector
+     * @param {number[] | Vector} vector
+     * @returns {number[]} the cross product between vector1 and vector2
+     */
+    crossProduct = (vector) => Vector.crossProduct(this.vector, vector);
+
 
     /**
      * Compute the sum of the two vectors (static method)

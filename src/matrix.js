@@ -1,7 +1,4 @@
 class Matrix {
-    get matrix() {
-        return this._matrix;
-    }
 
     lower; // The lower decomposition of the matrix using LU decomp
     upper; // The Upper decomposition of the matrix using LU decomp
@@ -24,21 +21,39 @@ class Matrix {
      * Create an empty matrix of the given dimension
      * @param {number} row
      * @param {number} col
-     * @returns {*[][]}
+     * @returns {number[][]} return a empty matrix of the give dimension
      */
     static createEmptyMatrix = (row,col) => Array(row).fill().map( () => Array(col).fill(0));
 
     /**
      * Create an empty square matrix of the given dimension
      * @param {number} dim  : dimension of the matrix
-     * @returns {*[][]} empty square matrix
+     * @returns {number[][]} empty square matrix of the given dimension
      */
     static createEmptySquareMatrix = (dim) => Array(dim).fill().map( () => Array(dim).fill(0));
 
     /**
+     *
+     * @param rows
+     * @param cols
+     * @param min
+     * @param max
+     * @returns {number[][]}
+     */
+    static createRandomMatrix = (rows, cols, min, max ) => {
+        let matrix = Matrix.createEmptyMatrix(rows, cols);
+
+        for(let i = 0; i < matrix.length;i++)
+            for(let j = 0; j <matrix[i].length; j++)
+                matrix[i][j] = Math.random() * (max - min) + min;
+
+        return matrix;
+    };
+
+    /**
      * Return the identity matrix of the given dimension
      * @param {number} dim
-     * @returns {any[][]}
+     * @returns {number[][]} Return the identity matrix of the given dimension
      */
     static createIdentityMatrix = (dim) => {
         let idMatrix = Matrix.createEmptySquareMatrix(dim);
@@ -111,7 +126,28 @@ class Matrix {
      */
     printMatrix = () => Matrix.printMatrix(this._matrix);
 
-    //todo:static method for the inverse
+    //todo: to test
+    /**
+     * Static method that compute the inverse of the give matrix
+     * @param {number[][] | Matrix} matrix
+     * @returns {number[][]} Return the inverse of the given matrix
+     */
+    static getInverse = matrix => {
+        if(!Matrix.isMatrixSquare(matrix))
+            throw "You can't get the inverse of a non square matrix";
+        //todo: check if the determinant is different than zero
+        else{
+            let identityMatrix = Matrix.createIdentityMatrix(this.rows);
+            let inverse = [];
+            const {L, U} = Matrix.luDecompostion(matrix);
+
+            for(let j = 0;j< matrix.length;j++)
+                inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix,j)));
+
+            //Transpose the inverse before returning
+            return Matrix.getTranspose(inverse);
+        }
+    };
 
     /**
      * Compute the inverse of a matrix
@@ -120,7 +156,8 @@ class Matrix {
     getInverse = () => {
         if(!this.isMatrixSquare)
             throw "You can't get the inverse of a non square matrix";
-        else if(this.determinant === 0)
+
+        if(this.determinant === 0)
             throw "The determinant is 0! The inverse does not exist!";
         else{
             let identityMatrix = Matrix.createIdentityMatrix(this.rows);
@@ -260,6 +297,21 @@ class Matrix {
     getSubMatrix = (rowStart,rowEnd,colStart,colEnd) => Matrix.getSubMatrix(this._matrix,rowStart,rowEnd,colStart,colEnd);
 
     /**
+     * static method for the LU Decomposition of the given matrix
+     * @param {number[][] | Matrix } matrix
+     * @returns {{U: *[][], L: *[][]}} object containing the L and the U matrix
+     */
+    static luDecompostion = matrix => {
+        //Check matrix type
+        let matrixCopy = Array.isArray(matrix) ? matrix : matrix.matrix;
+        //throw an error is the matrix is not square
+        if(!Matrix.isMatrixSquare(matrix))
+            throw "You can do LU Decomposition only with Square matrices";
+        else
+            return  Matrix.getLUDecomposition(matrix);
+    };
+
+    /**
      * The LU Decomposition function that decompose the matrix in L and U
      */
     luDecomposition = () => {
@@ -311,19 +363,6 @@ class Matrix {
     };
 
     /**
-     * Solve the linear system using lu decomposition
-     * @param rightPart
-     * @returns {any[]} - solution of the linear system
-     */
-    solveUsingLU = (rightPart) => {
-        //throw an error is the matrix is not square
-        if(!this.isMatrixSquare)
-            throw "You can do LU Decomposition only with Square matrices";
-        else
-             return Matrix.solveUsingLU(this.lower,this.upper,rightPart);
-    };
-
-    /**
      *
      * @param lower
      * @param upper
@@ -361,7 +400,20 @@ class Matrix {
 
             return x;
         }
-    }
+    };
+
+    /**
+     * Solve the linear system using lu decomposition
+     * @param rightPart
+     * @returns {any[]} - solution of the linear system
+     */
+    solveUsingLU = (rightPart) => {
+        //throw an error is the matrix is not square
+        if(!this.isMatrixSquare)
+            throw "You can do LU Decomposition only with Square matrices";
+        else
+             return Matrix.solveUsingLU(this.lower,this.upper,rightPart);
+    };
 
     /**
      * Compute the matrix multiplication using the naive method
@@ -489,11 +541,22 @@ class Matrix {
             return C;
         }
     };
+
+    /**
+     * matrix attribute getter
+     * @returns {number[][]|unknown[]|*}
+     */
+    get matrix() {
+        return this._matrix;
+    }
 }
 
 //TODO:
 // - other decomposition
 // - multiplication (most efficient way)(maybe i gotta use C++ for it)
 // - rank
+// - determinant of the inverse
+// -Hadamard product
+// - Kronecker product
 
 module.exports = Matrix;

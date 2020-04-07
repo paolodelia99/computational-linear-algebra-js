@@ -52,6 +52,24 @@ class LinearTransformation {
     apply = vector => LinearTransformation.apply(this._transformationMatrix, vector);
 
     /**
+     * Apply the inverse mapping of the given transformation
+     * @param {number[][] | Matrix} transformation
+     * @param {number[] | Vector | number[][] | Matrix} x
+     * @returns {number[] | number[][]}
+     */
+    static applyInverse = (transformation, x) => {
+      let inverseMat = Matrix.getInverse(transformation);
+      return LinearTransformation.apply(transformation, x);
+    };
+
+    /**
+     * Instance method that apply the inverse mapping
+     * @param {number[] | Vector | number[][] | Matrix} x
+     * @returns {number[]|number[][]}
+     */
+    applyInverse = x => LinearTransformation.applyInverse(this.transformationMatrix,x);
+
+    /**
      * @returns {*} the matrix transformation
      */
     get transformationMatrix() {
@@ -59,5 +77,10 @@ class LinearTransformation {
     }
 }
 
+
+//todo
+// - mapping composition
+// - inverse
+// -injective, subjective (rank of the matrix)
 module.exports = LinearTransformation;
 
