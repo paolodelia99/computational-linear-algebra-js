@@ -1,3 +1,5 @@
+'use strict';
+
 const Matrix = require('./matrix');
 const zip = require('./utils/functions');
 
@@ -77,10 +79,5 @@ class LinearTransformation {
     }
 }
 
-
-//todo
-// - mapping composition
-// - inverse
-// -injective, subjective (rank of the matrix)
 module.exports = LinearTransformation;
 

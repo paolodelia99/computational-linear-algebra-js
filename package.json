@@ -1,7 +1,7 @@
 {
   "name": "computational-linear-algebra-js",
-  "version": "1.0.0",
-  "description": "A linear algebra library for npm",
+  "version": "0.1.0",
+  "description": "A linear algebra library",
   "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
   "main": "index.js",
   "directories": {
@@ -22,5 +22,8 @@
   "homepage": "https://github.com/paolodelia99/paolodelia99#readme",
   "dependencies": {
     "mocha": "^7.1.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }

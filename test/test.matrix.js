@@ -84,7 +84,7 @@ describe('Test matrix sum', () => {
         const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
         const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
 
-        assert.deepStrictEqual(Matrix.sumMatrices(matrix1,matrix2), [[2,4,-2],[1,6,5],[2,6,9]])
+        assert.deepStrictEqual(Matrix.sumMatrices(matrix1,matrix2), [[2,4,-2],[1,6,5],[2,6,9]] )
     });
 
     it('the instance method should work' , () => {
@@ -92,7 +92,15 @@ describe('Test matrix sum', () => {
         const matrix2 = new Matrix([[1,2,-1],[0,2,3],[0,0,4]]);
 
         assert.deepStrictEqual(matrix1.sum(matrix2), [[2,4,-2],[1,6,5],[2,6,9]])
-    })
+    });
+
+    it('should work for different types', function () {
+        const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
+
+        assert.deepStrictEqual(matrix1.sum(matrix2), [[2,4,-2],[1,6,5],[2,6,9]]);
+        assert.deepStrictEqual(Matrix.sumMatrices(matrix1, matrix2), [[2,4,-2],[1,6,5],[2,6,9]]);
+    });
 });
 
 describe('Test matrix subtraction', () => {
@@ -108,7 +116,15 @@ describe('Test matrix subtraction', () => {
         const matrix2 = new Matrix([[1,2,-1],[0,2,3],[0,0,4]]);
 
         assert.deepStrictEqual(matrix1.sub(matrix2), [[0,0,0],[1,2,-1],[2,6,1]])
-    })
+    });
+
+    it('should work for different types', function () {
+        const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
+
+        assert.deepStrictEqual(matrix1.sub(matrix2), [[0,0,0],[1,2,-1],[2,6,1]]);
+        assert.deepStrictEqual(Matrix.subtractMatrices(matrix1, matrix2), [[0,0,0],[1,2,-1],[2,6,1]]);
+    });
 });
 
 describe('Test get partition Matrix', () => {

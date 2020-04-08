@@ -1,3 +1,5 @@
+'use strict';
+
 const zip = require('./utils/functions');
 
 /**
@@ -16,10 +18,9 @@ class Vector{
 
     getCopy = () => Vector.clone(this.vector);
 
-    //todo:test it
     /**
      * Static method that compute the norm of a vector
-     * @param {*[]} vector
+     * @param {number[]} vector
      * @returns {number} the norm of a vector
      */
     static getNorm = (vector) => Math.sqrt(vector.map( x => x*x).reduce( (a,b) => a+b,0));
@@ -92,9 +93,9 @@ class Vector{
 
     /**
      * Compute the sum of the two vectors (static method)
-     * @param {*[]} vector1
-     * @param {*[]} vector2
-     * @returns {*[]} The sum of the two vectors
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {number[]} The sum of the two vectors
      */
     static sum (vector1, vector2) {
         //Check the input types
@@ -113,7 +114,6 @@ class Vector{
         }
     }
 
-    //todo: test it
     /**
      * Sum the vector with the given vector (instance method)
      * @param {*[]} vector
@@ -123,12 +123,12 @@ class Vector{
 
     /**
      * vector field getter
-     * @returns {unknown[] | *}
+     * @returns {number[] }
      */
     get vector() {
         return this._vector;
     }
 };
 
-module.exports = Vector, {zip};
+module.exports = Vector;
 

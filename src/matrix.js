@@ -1,3 +1,5 @@
+'use strict';
+
 class Matrix {
 
     lower; // The lower decomposition of the matrix using LU decomp
@@ -204,14 +206,14 @@ class Matrix {
     };
 
     /**
-     *
-     * @param matrix1
-     * @param matrix2
-     * @returns {*[][]}
+     * Static method that compute sum sum of the given matrices
+     * @param {number[][] | Matrix} matrix1
+     * @param {number[][] | Matrix} matrix2
+     * @returns {number[][]}
      */
     static sumMatrices = (matrix1, matrix2) => {
         //Check matrices types
-        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix2.matrix;
+        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix1.matrix;
         let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
 
         if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
@@ -233,7 +235,7 @@ class Matrix {
      * @returns {*[][]|undefined} the sum of the two matrices
      */
     sum = matrix =>
-        Matrix.sumMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
+        Matrix.sumMatrices(this._matrix, matrix);
 
     /**
      * Static method that compute the subtraction of two matrices
@@ -243,7 +245,7 @@ class Matrix {
      */
     static subtractMatrices = (matrix1, matrix2) => {
         //Check matrices types
-        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix2.matrix;
+        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix1.matrix;
         let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
 
         if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
