@@ -1,6 +1,6 @@
 # Computational Linear Algebra
 
-Js library for Linear algebra
+Computational Linear algebra is an extensive Javascript library for linear algebra.
 
 ## Features 
 
@@ -96,8 +96,12 @@ Then, the tests can be executed:
 ## Todos
 
 - Matrix
+    - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
     - [ ] rank of the matrix
+    - [ ] determinant of the inverse
+    - [ ] Hadamard product
+    - [ ] Kronecker product
     - [ ] Implement a more efficient multiplication
         - Using c++ ??
         - Using paralellization
@@ -113,8 +117,10 @@ Then, the tests can be executed:
 - Linear Transformation
     - [ ] Injective, Surjective => Bijective
     - [ ] Linear Transformation applyed to matrices
-        
-- [ ] class Vector Spaces ?? (see if it does make sense)
+
+- Tensors
+  
+- class Vector Spaces ?? (see if it does make sense)
 
 - Analytical Geometry ??
     - [ ] inner products

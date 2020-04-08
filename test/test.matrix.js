@@ -181,7 +181,7 @@ describe('test determinant', () => {
 
         assert.equal(matrix.getDeterminant(),8 )
     });
-})
+});
 
 describe('Test matrix multiplication', () => {
     describe('test ijk Multiplication', () => {
@@ -198,6 +198,14 @@ describe('Test matrix multiplication', () => {
 
             assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
         });
+
+        it('should work with both inputs types', function () {
+            const matrix1 = new Matrix([[2,4,5],[-1,2,1],[4,-1,3]]);
+            const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
+
+            assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
+            assert.deepStrictEqual(Matrix.ijkMultiplication(matrix1,matrix2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
     });
 
     describe('Test Strassen Multiplication', () => {
@@ -206,6 +214,21 @@ describe('Test matrix multiplication', () => {
             const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
 
             assert.deepStrictEqual(Matrix.strassenMultiplication(matrix1, matrix2 , 2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
+
+        it('should work with the matrices objects', function () {
+            const matrix1 = new Matrix([[2,4,5],[-1,2,1],[4,-1,3]]);
+            const matrix2 = new Matrix([[6,0,2],[4,-1,4],[3,4,1]]);
+
+            assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2 , 2), [[43,16,25],[5,2,7],[29,13,7]]);
+        });
+
+        it('should work with the inputs types', function () {
+            const matrix1 = new Matrix([[2,4,5],[-1,2,1],[4,-1,3]]);
+            const matrix2 = [[6,0,2],[4,-1,4],[3,4,1]];
+
+            assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2 , 2), [[43,16,25],[5,2,7],[29,13,7]]);
+            assert.deepStrictEqual(Matrix.strassenMultiplication(matrix1,matrix2 , 2), [[43,16,25],[5,2,7],[29,13,7]]);
         });
     })
 

@@ -424,12 +424,14 @@ class Matrix {
      * @returns {*[][]}
      */
     static ijkMultiplication = (matrix1, matrix2) => {
+        //Check  the inputs types
+        matrix1 = Array.isArray(matrix1) ? matrix1 : matrix1.matrix;
+        matrix2 = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
         //check if the input matrix has the right dimension
         if (matrix1[0].length !== matrix2.length)
             throw "Cannot do the multiplication";
         else {
             let resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length);
-            //todo : more flexibility for the inputs
 
             //Compute the calculation
             for (let i = 0; i < matrix1.length; i++)
@@ -451,12 +453,16 @@ class Matrix {
 
     /**
      * Strassen multiplication method that calls the strassen algorithm
-     * @param {number[][]} A
-     * @param {number[][]} B
+     * @param {number[][] | Matrix } A
+     * @param {number[][] | Matrix } B
      * @param {number} leafSize
-     * @returns {*[][]}
+     * @returns {*[][]} the multiplication of the two matrices
      */
     static strassenMultiplication = (A , B,leafSize = 8) => {
+        //Check  the inputs types
+        A = Array.isArray(A) ? A : A.matrix;
+        B = Array.isArray(B) ? B : B.matrix;
+
         //Check the input type
         if(!(Array.isArray(A) && Array.isArray(B)))
             throw "Type Error";
@@ -488,6 +494,14 @@ class Matrix {
 
         return C;
     };
+
+    /**
+     * Strassen multiplication of the two given matrices
+     * @param {number[][] | Matrix} matrix
+     * @param {number} leafsize
+     * @returns {number[][]}
+     */
+    strassenMultiplication = (matrix, leafsize) => Matrix.strassenMultiplication(this.matrix, matrix, leafsize);
 
     /**
      * Implementation of the Strassen algorithm
@@ -546,19 +560,11 @@ class Matrix {
 
     /**
      * matrix attribute getter
-     * @returns {number[][]|unknown[]|*}
+     * @returns {number[][]}
      */
     get matrix() {
         return this._matrix;
     }
 }
-
-//TODO:
-// - other decomposition
-// - multiplication (most efficient way)(maybe i gotta use C++ for it)
-// - rank
-// - determinant of the inverse
-// -Hadamard product
-// - Kronecker product
 
 module.exports = Matrix;
