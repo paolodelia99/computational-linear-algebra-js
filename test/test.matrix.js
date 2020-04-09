@@ -1,28 +1,6 @@
 const Matrix = require('../src/matrix');
 const assert = require('assert');
 
-describe('test lu decomposition', function() {
-    it('should decompose the matrix n x n', () => {
-
-        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
-
-        assert.deepStrictEqual(matrix.upper.valueOf(), [[1,2,-1],[0,2,3],[0,0,4]]);
-
-        assert.deepStrictEqual(matrix.lower.valueOf(), [[1,0,0],[1,1,0],[2,1,1]])
-
-    });
-});
-
-describe('test solving linear system', () => {
-    it('should give the right answer', () => {
-        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
-
-        const res = matrix.solveUsingLU([1,1,10]);
-
-        assert.deepStrictEqual(res, [ 9, -3, 2 ]);
-    })
-});
-
 describe('test create square matrix', () => {
     it('should give an empty square matrix', () => {
         const matrix = Matrix.createEmptySquareMatrix(3);
@@ -45,7 +23,15 @@ describe('test isMatrixSquare method', () => {
         const matrix = new Matrix(mat);
 
         assert.equal(matrix.isMatrixSquare(), true);
-    })
+    });
+
+    it('should give false', function () {
+        const matrix = new Matrix([[0,0],[1,2,4],[9,4,5,1]]);
+        const matrix2 = Matrix.createEmptyMatrix(3,2);
+
+        assert.equal(Matrix.isMatrixSquare(matrix), false);
+        assert.equal(Matrix.isMatrixSquare(matrix2), false);
+    });
 });
 
 describe('test copy and clone matrix', () => {
@@ -60,11 +46,27 @@ describe('test copy and clone matrix', () => {
 
 });
 
+describe('test checkMatrixType method', () => {
+    it('should give the two dimensional array that represent the matrix', function () {
+        const matrix1 = new Matrix([[1,-2,-1],[1,4,1],[2,2,5]]);
+        const matrix2 = [[1,-2,-1],[1,4,1],[2,2,5]];
+
+        //Test the static method
+        assert.deepStrictEqual(Matrix.checkMatrixType(matrix1), [[1,-2,-1],[1,4,1],[2,2,5]]);
+        //Test the instance method
+        assert.deepStrictEqual(matrix1.checkMatrixType(matrix2),[[1,-2,-1],[1,4,1],[2,2,5]]);
+    });
+});
+
 describe('test getCol Method', () => {
     it('should give the col of a matrix', () => {
         const matrix = [[1,2,-1],[1,4,2],[2,6,5]];
+        const matrix2 = new Matrix(Matrix.createEmptyMatrix(4,5));
 
+        // test static method
         assert.deepStrictEqual(Matrix.getCol(matrix,0),[1,1,2]);
+        //test instance method
+        assert.deepStrictEqual(matrix2.getCol(2), [0,0,0,0]);
     })
 });
 
@@ -73,11 +75,12 @@ describe('test matrix transposition', () => {
         const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
         const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
 
+        // test static method
         assert.deepStrictEqual(matrix.getTranspose().valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
+        //test instance method
         assert.deepStrictEqual(Matrix.getTranspose(matrix1).valueOf(), [[1,1,2],[2,4,6],[-1,2,5]]);
-    })
+    });
 });
-
 
 describe('Test matrix sum', () => {
     it('the static method should work', function () {
@@ -98,10 +101,13 @@ describe('Test matrix sum', () => {
         const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
         const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
 
+        // test static method
         assert.deepStrictEqual(matrix1.sum(matrix2), [[2,4,-2],[1,6,5],[2,6,9]]);
+        //test instance method
         assert.deepStrictEqual(Matrix.sumMatrices(matrix1, matrix2), [[2,4,-2],[1,6,5],[2,6,9]]);
     });
 });
+
 
 describe('Test matrix subtraction', () => {
     it('the static method should work', function () {
@@ -122,7 +128,9 @@ describe('Test matrix subtraction', () => {
         const matrix1 = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
         const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]];
 
+        // test static method
         assert.deepStrictEqual(matrix1.sub(matrix2), [[0,0,0],[1,2,-1],[2,6,1]]);
+        //test instance method
         assert.deepStrictEqual(Matrix.subtractMatrices(matrix1, matrix2), [[0,0,0],[1,2,-1],[2,6,1]]);
     });
 });
@@ -181,6 +189,28 @@ describe('test determinant', () => {
 
         assert.equal(matrix.getDeterminant(),8 )
     });
+});
+
+describe('test lu decomposition', function() {
+    it('should decompose the matrix n x n', () => {
+
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+
+        assert.deepStrictEqual(matrix.upper.valueOf(), [[1,2,-1],[0,2,3],[0,0,4]]);
+
+        assert.deepStrictEqual(matrix.lower.valueOf(), [[1,0,0],[1,1,0],[2,1,1]])
+
+    });
+});
+
+describe('test solving linear system', () => {
+    it('should give the right answer', () => {
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+
+        const res = matrix.solveUsingLU([1,1,10]);
+
+        assert.deepStrictEqual(res, [ 9, -3, 2 ]);
+    })
 });
 
 describe('Test matrix multiplication', () => {

@@ -16,7 +16,7 @@ class Matrix {
         this.rows = matrix.length;
         this.cols = this.isSquare ? this.rows : matrix[0].length;
         this.rows === this.cols ? this.luDecomposition() : //Do nothing
-        this.determinant = this.getDeterminant();
+        this.determinant = this.isSquare ? this.getDeterminant() : null;
     }
 
     /**
@@ -67,6 +67,22 @@ class Matrix {
     };
 
     /**
+     * Method that return the two dimensional array that represent the matrix
+     * no matter if it passed a matrix object or a two dimensional array
+     * @param {number[][] | Matrix} matrix
+     * @returns {number[][]} the two dimensional array thar represent the matrix
+     */
+    static checkMatrixType = matrix => Array.isArray(matrix) ? matrix : matrix.matrix;
+
+    /**
+     * Method that return the two dimensional array that represent the matrix
+     * no matter if it passed a matrix object or a two dimensional array
+     * @param {number[][] | Matrix} matrix
+     * @returns {number[][]} the two dimensional array thar represent the matrix
+     */
+    checkMatrixType = matrix => Matrix.checkMatrixType(matrix);
+
+    /**
      * Clone the matrix
      * @returns {(Buffer | SharedArrayBuffer | T[] | BigUint64Array | Uint8ClampedArray | Uint32Array | Blob | Int16Array | T[] | Float64Array | string | Uint16Array | ArrayBuffer | Int32Array | Float32Array | BigInt64Array | Uint8Array | Int8Array | T[])[]}
      */
@@ -80,14 +96,18 @@ class Matrix {
 
     /**
      * static method that checks if a matrix is square
-     * @param {*[][]} matrix
+     * @param {number[][] | Matrix} matrix
      * @returns {boolean} true if is square otherwise false
      */
     static isMatrixSquare = (matrix) => {
-        let isSquare = true;
+        //Check the matrix type
+        matrix = Array.isArray(matrix) ? matrix : matrix.matrix;
 
-        for(let i = 0;i < matrix.length-1;i++)
-            if(matrix[i].length  !== matrix[i+1].length){
+        let isSquare = true;
+        let n = matrix.length; //dimension of the matrix
+
+        for(let i = 0;i < n;i++)
+            if(matrix[i].length !== n){
                 isSquare = false;
                 break;
             }
@@ -103,11 +123,11 @@ class Matrix {
 
     /**
      * Static function the return the transpose of the given matrix
-     * @param {*[][]} matrix
-     * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
+     * @param {number[][] | Matrix} matrix
+     * @returns {number[][]}
      */
     static getTranspose = matrix =>
-        matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
+        Array.isArray(matrix) ? matrix[0].map((_, iCol) => matrix.map(row => row[iCol])) : matrix.matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
 
     /**
      * Get the transpose of the matrix
@@ -118,10 +138,9 @@ class Matrix {
 
     /**
      * Static method for printing matrix
-     * @param matrix
-     * @returns {Uint8Array | BigInt64Array | *[] | Float64Array | void[] | Int8Array | Float32Array | Int32Array | Uint32Array | Uint8ClampedArray | BigUint64Array | Int16Array | Uint16Array}
+     * @param { number[][] }matrix
      */
-    static printMatrix  = (matrix) => matrix.map( x => console.log(x));
+    static printMatrix  = (matrix) => Array.isArray(matrix) ? matrix.map( x => console.log(x)) : matrix.matrix.map( x => console.log(x));
 
     /**
      * Print the matrix
@@ -191,12 +210,14 @@ class Matrix {
     };
 
     /**
-     *
-     * @param matrix
-     * @param col
-     * @returns {[]}
+     * Static method that return the input column of the given matrix
+     * @param {number[][] | Matrix} matrix
+     * @param {number} col the requested column
+     * @returns {number[]}  requested column in form of the col
      */
     static getCol = (matrix,col) => {
+        matrix = Matrix.checkMatrixType(matrix);
+
         let column = [];
 
         for(let i = 0;i < matrix.length; i++)
@@ -204,6 +225,13 @@ class Matrix {
 
         return column;
     };
+
+    /**
+     * return the given column of the matrix
+     * @param {number} col
+     * @returns {number[]} the request column of the matrix
+     */
+    getCol = col => Matrix.getCol(this.matrix, col);
 
     /**
      * Static method that compute sum sum of the given matrices
