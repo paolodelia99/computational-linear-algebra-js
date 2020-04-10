@@ -58,7 +58,7 @@ describe('test the product between the column vector and the row vector', () => 
         const vector1 = new Vector([1,2,1]);
         const vector2 = new Vector([3,2,6]);
 
-        assert.equal(vector1.dotProduct(vector2.vector), 13);
+        assert.equal(vector1.dotProduct(vector2), 13);
         assert.equal(Vector.dotProduct(vector1,vector2),13);
     });
 });

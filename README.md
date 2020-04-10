@@ -4,8 +4,9 @@ Computational Linear algebra is an extensive Javascript library for linear algeb
 
 ## Features 
 
+- OOP oriented
+- type flexible
 - open source
-- other stuff
 
 ## Usage
 
@@ -14,6 +15,8 @@ Computational-linear-algebra.js can be used in both node.js and in the browser.
 Install computational-linear-algebra.js using npm
 
     npm install computational-linear-algebra
+    
+Note: not yet available on npm, It will be soon
 
 ## Matrices
 
@@ -44,12 +47,18 @@ const Vector = require('Vector');
 const vector1 = new Vector([1,2,1]);
 const vector2 = new Vector(-1,0,1);
 
-console.log(vector1.getNorm); // 6
+//Get the norm of a vector
+console.log(vector1.getNorm()); // 6
+//Multiply a vector by a scalar
 console.log(vector1.scalarProduct(5));//[5,10,5]
+//Sum two vectors 
 console.log(vector1.sum(vector2));  //[1,5,0]
-console.log(matrix1.sub(matrix2)); // [[0,0,0],[1,2,-1],[2,6,1]]
-//todo: other stuff
-
+//Subtract two vectors
+console.log(vector1.sub(vector2)); // [[0,0,0],[1,2,-1],[2,6,1]]
+//Dot product between two vectors
+console.log(vector1.dotProduct(vector2)) //0
+//Cross product between two vectors
+console.log(vector1.crossProduct(vector2))// [2, -2, 2]
 ```
 
 ## Linear Transformations
@@ -80,6 +89,7 @@ console.log(t1.apply(vector)) //[1,4,-1]
 First clone the project from github:
     
     git clone git://https://github.com/paolodelia99/linear-algebra.js
+    
     cd computational-linear-algebra
 
 Install the project dependencies:
@@ -109,6 +119,7 @@ Then, the tests can be executed:
     - [ ] Kronecker product
     - [ ] Implement a more efficient multiplication
         - Using c++ ??
+        - Gpu.js
         - Using paralellization
     - [ ] Implement other decomposition
         - [ ] QR
@@ -138,9 +149,6 @@ Then, the tests can be executed:
     - [ ] build npm package
     - [ ] documentation
     
-## Author
-
-Paolo D'Elia
 
 ## License
 
