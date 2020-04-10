@@ -70,6 +70,18 @@ describe('test getCol Method', () => {
     })
 });
 
+describe('Test the matrix trace', () => {
+    it('should give the trace of the given matrix', function () {
+        const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);
+        const matrix1 = [[1,2,-1],[1,4,2],[2,6,5]];
+
+        //Test the static method
+        assert.equal(Matrix.trace(matrix1), 10);
+        //Test instance method
+        assert.equal(matrix.getTrace(), 10);
+    });
+})
+
 describe('test matrix transposition', () => {
     it('should give the transpose', () => {
         const matrix = new Matrix([[1,2,-1],[1,4,2],[2,6,5]]);

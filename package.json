@@ -8,13 +8,19 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "eslint ./src",
+    "build": "npm run lint && babel ./src -d ./lib"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paolodelia99/paolodelia99.git"
   },
-  "keywords": ["linear algebra","math","computational math"],
+  "keywords": [
+    "linear algebra",
+    "math",
+    "computational math"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/paolodelia99/paolodelia99/issues"
@@ -25,5 +31,14 @@
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "eslint": "^6.8.0",
+    "gulp": "^4.0.2",
+    "webpack": "^4.42.1"
   }
 }

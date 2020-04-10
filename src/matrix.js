@@ -1,5 +1,3 @@
-'use strict';
-
 class Matrix {
 
     lower; // The lower decomposition of the matrix using LU decomp
@@ -122,6 +120,29 @@ class Matrix {
     isMatrixSquare = () => Matrix.isMatrixSquare(this._matrix);
 
     /**
+     * If the passed matrix is square it return the trace of the given matrix
+     * @param {number[][] | Matrix} matrix
+     * @returns {number} the trace of the give matrix
+     */
+    static trace = matrix => {
+        //Check matrix type
+        matrix = Matrix.checkMatrixType(matrix);
+        //Initialize the trace
+        let trace = 0;
+
+        for(let i = 0; i < matrix.length ; i++)
+            trace += matrix[i][i];
+
+        return trace;
+    };
+
+    /**
+     * Return the matrix trace, if the matrix is square
+     * @returns {number} the trace of the matrix
+     */
+    getTrace = () => Matrix.trace(this.matrix);
+
+    /**
      * Static function the return the transpose of the given matrix
      * @param {number[][] | Matrix} matrix
      * @returns {number[][]}
@@ -241,17 +262,17 @@ class Matrix {
      */
     static sumMatrices = (matrix1, matrix2) => {
         //Check matrices types
-        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix1.matrix;
-        let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
+        matrix1 = Matrix.checkMatrixType(matrix1);
+        matrix2 = Matrix.checkMatrixType(matrix2);
 
-        if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
+        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
             throw "Cannot sum two matrices with different dimension";
         else{
-            const resMatrix = Matrix.createEmptyMatrix(matrix1Copy.length, matrix1Copy[0].length);
+            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
 
-            for(let i = 0;i < matrix1Copy.length;i++)
-                for(let j = 0; j < matrix2Copy.length;j++)
-                    resMatrix[i][j] = matrix1Copy[i][j] + matrix2Copy[i][j];
+            for(let i = 0;i < matrix1.length;i++)
+                for(let j = 0; j < matrix2.length;j++)
+                    resMatrix[i][j] = matrix1[i][j] + matrix2[i][j];
 
             return resMatrix;
         }
@@ -273,17 +294,17 @@ class Matrix {
      */
     static subtractMatrices = (matrix1, matrix2) => {
         //Check matrices types
-        let matrix1Copy = Array.isArray(matrix1) ? matrix1 : matrix1.matrix;
-        let matrix2Copy = Array.isArray(matrix2) ? matrix2 : matrix2.matrix;
+        matrix1 = Matrix.checkMatrixType(matrix1);
+        matrix2 = Matrix.checkMatrixType(matrix2);
 
-        if(matrix1Copy.length !== matrix2Copy.length || matrix1Copy[0].length !== matrix2Copy[0].length)
+        if(matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length)
             throw "Cannot sum two matrices with different dimension";
         else{
-            const resMatrix = Matrix.createEmptyMatrix(matrix1Copy.length, matrix1Copy[0].length);
+            const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length);
 
-            for(let i = 0;i < matrix1Copy.length;i++)
-                for(let j = 0; j < matrix2Copy.length;j++)
-                    resMatrix[i][j] = matrix1Copy[i][j] - matrix2Copy[i][j];
+            for(let i = 0;i < matrix1.length;i++)
+                for(let j = 0; j < matrix2.length;j++)
+                    resMatrix[i][j] = matrix1[i][j] - matrix2[i][j];
 
             return resMatrix;
         }
@@ -333,7 +354,7 @@ class Matrix {
      */
     static luDecompostion = matrix => {
         //Check matrix type
-        let matrixCopy = Array.isArray(matrix) ? matrix : matrix.matrix;
+        matrix = Array.isArray(matrix) ? matrix : matrix.matrix;
         //throw an error is the matrix is not square
         if(!Matrix.isMatrixSquare(matrix))
             throw "You can do LU Decomposition only with Square matrices";
@@ -358,7 +379,7 @@ class Matrix {
 
     /**
      * Compute the LU decomposition of the given matrix
-     * @param {*[][]} matrix
+     * @param {number[][] | Matrix} matrix
      * @returns {{U: *[][], L: *[][]}} Object that contain U matrix and L matrix
      */
     static getLUDecomposition = (matrix) => {
@@ -397,7 +418,7 @@ class Matrix {
      * @param lower
      * @param upper
      * @param rightPart
-     * @returns {any[]}
+     * @returns {number[]}
      */
     static solveUsingLU = (lower, upper, rightPart) => {
         //throw an error is the matrix is not square
@@ -484,12 +505,12 @@ class Matrix {
      * @param {number[][] | Matrix } A
      * @param {number[][] | Matrix } B
      * @param {number} leafSize
-     * @returns {*[][]} the multiplication of the two matrices
+     * @returns {number[][]} the multiplication of the two matrices
      */
     static strassenMultiplication = (A , B,leafSize = 8) => {
         //Check  the inputs types
-        A = Array.isArray(A) ? A : A.matrix;
-        B = Array.isArray(B) ? B : B.matrix;
+        A = Matrix.checkMatrixType(A);
+        B = Matrix.checkMatrixType(B);
 
         //Check the input type
         if(!(Array.isArray(A) && Array.isArray(B)))
@@ -533,10 +554,10 @@ class Matrix {
 
     /**
      * Implementation of the Strassen algorithm
-     * @param {*[][]} A
-     * @param {*[][]} B
+     * @param {number[][]} A
+     * @param {number[][]} B
      * @param {number} leafSize
-     * @returns {*[][]}
+     * @returns {number[][]}
      */
     static strassenAlgorithm = function(A, B , leafSize = 8) {
         let n = A.length;

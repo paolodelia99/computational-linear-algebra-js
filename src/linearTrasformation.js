@@ -1,5 +1,3 @@
-'use strict';
-
 const Matrix = require('./matrix');
 const zip = require('./utils/functions');
 
@@ -53,6 +51,7 @@ class LinearTransformation {
      */
     apply = vector => LinearTransformation.apply(this._transformationMatrix, vector);
 
+    //todo: to test
     /**
      * Apply the inverse mapping of the given transformation
      * @param {number[][] | Matrix} transformation
@@ -61,7 +60,7 @@ class LinearTransformation {
      */
     static applyInverse = (transformation, x) => {
       let inverseMat = Matrix.getInverse(transformation);
-      return LinearTransformation.apply(transformation, x);
+      return LinearTransformation.apply(inverseMat, x);
     };
 
     /**

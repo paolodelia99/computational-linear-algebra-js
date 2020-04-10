@@ -1,5 +1,3 @@
-'use strict';
-
 const zip = require('./utils/functions');
 
 /**
@@ -14,7 +12,7 @@ class Vector{
         this._vector = Array.isArray(vector) ? vector : Array.from(arguments);
     }
 
-    static clone = (vector1) => vector1.slice();
+    static clone = vector1 => vector1.slice();
 
     getCopy = () => Vector.clone(this.vector);
 
