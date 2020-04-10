@@ -447,9 +447,9 @@ class Matrix {
 
     /**
      * Compute the matrix multiplication using the naive method
-     * @param {*[][]| Matrix} matrix1
-     * @param {*[][]| Matrix} matrix2
-     * @returns {*[][]}
+     * @param {number[][]| Matrix} matrix1
+     * @param {number[][]| Matrix} matrix2
+     * @returns {number[][]} the result of the product of the matrix1 and the matrix2
      */
     static ijkMultiplication = (matrix1, matrix2) => {
         //Check  the inputs types
@@ -472,9 +472,9 @@ class Matrix {
     };
 
     /**
-     *
-     * @param {*[][]| Matrix} matrix
-     * @returns {*[][]|undefined}
+     * Instance method that return thr multiplication of matrix
+     * @param {number[][]| Matrix} matrix
+     * @returns {number[][]}
      */
     ijkMultiplication = (matrix) =>
         Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
