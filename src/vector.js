@@ -12,9 +12,18 @@ class Vector{
         this._vector = Array.isArray(vector) ? vector : Array.from(arguments);
     }
 
-    static clone = vector1 => vector1.slice();
+    /**
+     *
+     * @param {number[]} vector1
+     * @returns {*}
+     */
+    static getCopy = (vector1) => vector1.slice();
 
-    getCopy = () => Vector.clone(this.vector);
+    /**
+     *
+     * @returns {*}
+     */
+    getCopy = () => Vector.getCopy(this.vector);
 
     /**
      * Static method that compute the norm of a vector
@@ -115,7 +124,7 @@ class Vector{
     /**
      * Sum the vector with the given vector (instance method)
      * @param {*[]} vector
-     * @returns {Array[]} the sum of the two vectors
+     * @returns {number[]} the sum of the two vectors
      */
     sum = (vector) => Vector.sum(this._vector,vector);
 

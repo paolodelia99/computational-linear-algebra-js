@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "description": "A linear algebra library",
   "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
-  "main": "index.js",
+  "main": "",
   "directories": {
-    "test": "test"
+    "test": "./test",
+    "src": "./src"
   },
   "scripts": {
     "test": "mocha",
-    "lint": "eslint ./src",
+    "lint": "standard --env=mocha",
     "build": "npm run lint && babel ./src -d ./lib"
   },
   "repository": {
@@ -21,7 +22,7 @@
     "math",
     "computational math"
   ],
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/paolodelia99/paolodelia99/issues"
   },
@@ -37,8 +38,9 @@
     "@babel/preset-env": "^7.9.5",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
-    "eslint": "^6.8.0",
     "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "standard": "^14.3.3",
     "webpack": "^4.42.1"
   }
 }

@@ -3,15 +3,11 @@ const zip = require('./utils/functions');
 
 class LinearTransformation {
 
-    kernel;
-    image;
-    _transformationMatrix;
-    surective;
-    injective;
+    _transformationMatrix
 
     /**
      * Constructor for the linearTransformation
-     * @param {*[][]| Matrix} matTransformation
+     * @param {number[][]| Matrix} matTransformation
      */
     constructor(matTransformation) {
         this._transformationMatrix = !Array.isArray(matTransformation) ? matTransformation.matrix : matTransformation;

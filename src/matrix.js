@@ -1,7 +1,7 @@
 class Matrix {
 
-    lower; // The lower decomposition of the matrix using LU decomp
-    upper; // The Upper decomposition of the matrix using LU decomp
+    lower // The lower decomposition of the matrix using LU decomp
+    upper // The Upper decomposition of the matrix using LU decomp
 
     /**
      * Constructor of the matrix class

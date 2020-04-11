@@ -133,6 +133,9 @@ Then, the tests can be executed:
 - Linear Transformation
     - [ ] Injective, Surjective => Bijective
     - [ ] Linear Transformation applyed to matrices
+    - [ ] kernel
+    - [ ] image
+    - [ ] injectvity and surjectivity
 
 - Tensors
   
