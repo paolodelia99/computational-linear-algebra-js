@@ -4,3 +4,5 @@
 # compile javascript
 /dist
 lib
+# nyc output
+.nyc_output
