@@ -3,5 +3,10 @@
   "plugins": [
     "@babel/plugin-proposal-class-properties",
     "dynamic-import-node"
+  ],
+  "ignore": [
+    "dist/*.js",
+    "lib/**/*.js",
+    "es/**/*.js"
   ]
 }

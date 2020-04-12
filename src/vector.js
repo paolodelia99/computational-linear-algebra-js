@@ -1,8 +1,5 @@
 import { zip } from './utils/functions'
 
-/**
- * Class the implements a vector
- */
 class Vector {
   /**
      * Constructor of the vector Object
@@ -141,4 +138,4 @@ class Vector {
     }
 };
 
-module.exports = Vector
+export default Vector

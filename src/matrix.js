@@ -616,4 +616,4 @@ class Matrix {
     }
 }
 
-module.exports = Matrix
+export default Matrix

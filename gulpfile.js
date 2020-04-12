@@ -1,21 +1,69 @@
 const gulp = require('gulp')
-const webpack = require('webpack-stream')
+const webpack = require('webpack')
+const babel = require('gulp-babel')
 const del = require('del')
+const log = require('fancy-log')
+const path = require('path')
+
+const COMPILE_SRC = './src/**/*.js'
+const COMPILE_LIB = './lib'
+const COMPILE_ES = './es'
+const FILE = 'linear.algebra.js'
+const DIST = path.join(__dirname, '/dist')
+const LINEAR_ALG = DIST + '/' + FILE
 
 const clean = () => {
   return del([
-    'dist/*'
+    'dist/*',
+    'lib/**/*',
   ])
 }
 
 const compile = () => {
-  // todo: ??
+  return gulp.src(COMPILE_SRC)
+    .pipe(babel())
+    .pipe(gulp.dest(COMPILE_LIB))
 }
 
-const bundle = () => {
-  return gulp.src('src/entry.js')
-    .pipe(webpack(require('./webpack.config.js')))
-    .pipe(gulp.dest('dist/'))
+function compileESModules () {
+  const babelOptions = JSON.parse(String(fs.readFileSync('./.babelrc')))
+
+  return gulp.src(COMPILE_SRC)
+    .pipe(babel({
+      ...babelOptions,
+      presets: [
+        ['@babel/preset-env', {
+          modules: false
+        }]
+      ]
+    }))
+    .pipe(gulp.dest(COMPILE_ES))
+}
+
+// create a single instance of the compiler to allow caching
+const compiler = webpack(require('./webpack.config.js'))
+
+const bundle = (done) => {
+  compiler.run(function (err, stats) {
+    if (err) {
+      log(err)
+      done(err)
+    }
+    const info = stats.toJson()
+
+    if (stats.hasWarnings()) {
+      log('Webpack warnings:\n' + info.warnings.join('\n'))
+    }
+
+    if (stats.hasErrors()) {
+      log('Webpack errors:\n' + info.errors.join('\n'))
+      done(new Error('Compile failed'))
+    }
+
+    log('bundled ' + LINEAR_ALG)
+
+    done()
+  })
 }
 
 gulp.task('watch', () => {
@@ -32,5 +80,6 @@ gulp.task('watch', () => {
 
 gulp.task('default', gulp.series(
   clean,
+  compile,
   bundle
 ))

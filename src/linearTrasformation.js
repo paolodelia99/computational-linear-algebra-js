@@ -73,4 +73,4 @@ class LinearTransformation {
     }
 }
 
-module.exports = LinearTransformation
+export default LinearTransformation
