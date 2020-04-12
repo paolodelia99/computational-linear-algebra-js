@@ -11,7 +11,9 @@
   "scripts": {
     "test": "mocha",
     "lint": "standard --env=mocha",
-    "build": "npm run lint && babel ./src -d ./lib"
+    "build": "gulp",
+    "compile": "gulp compile",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -46,6 +48,7 @@
     "gulp-babel": "^8.0.0",
     "standard": "^14.3.3",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-stream": "^5.2.1"
   }
 }

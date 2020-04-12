@@ -1,11 +1,8 @@
 const gulp = require('gulp');
-const webpack = require('webpack');
-const babel = require('gulp-babel');
+const webpack = require('webpack-stream');
 
-gulp.task('default', () =>
-  gulp.src('src/app.js')
-    .pipe(babel({
-      presets: ['@babel/preset-env']
-    }))
-    .pipe(gulp.dest('dist'))
-);
+gulp.task('default', () => {
+  return gulp.src('src/entry.js')
+    .pipe(webpack( require('./webpack.config.js') ))
+    .pipe(gulp.dest('dist/'))
+});
