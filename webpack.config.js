@@ -6,7 +6,9 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'linear.algebra.js'
+    filename: 'linear.algebra.js',
+    globalObject: 'this',
+    libraryTarget: 'umd'
   },
   mode: 'production',
   module: {
@@ -20,5 +22,9 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  optimization: {
+    minimize: false
+  },
+  cache: true
 }

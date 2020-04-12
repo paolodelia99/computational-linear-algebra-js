@@ -4,16 +4,20 @@ const babel = require('gulp-babel')
 const del = require('del')
 const log = require('fancy-log')
 const path = require('path')
+const fs = require('fs')
+const uglify = require('uglify-js')
 
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
 const FILE = 'linear.algebra.js'
 const DIST = path.join(__dirname, '/dist')
 const LINEAR_ALG = DIST + '/' + FILE
+const FILE_MIN = 'linear.algebra.min.js'
+const FILE_MAP = 'linear.algebra.min.map'
 
 const clean = () => {
   return del([
-    'dist/*',
+    'dist/**/*',
     'lib/**/*'
   ])
 }
@@ -50,6 +54,41 @@ const bundle = (done) => {
   })
 }
 
+const uglifyConfig = {
+  sourceMap: {
+    filename: FILE,
+    url: FILE_MAP
+  },
+  output: {
+    comments: /@license/
+  }
+}
+
+function minify (done) {
+  const oldCwd = process.cwd()
+  process.chdir(DIST)
+
+  try {
+    const result = uglify.minify({
+      'linear-algebra.js': fs.readFileSync(FILE, 'utf8')
+    }, uglifyConfig)
+
+    if (result.error) {
+      throw result.error
+    }
+
+    fs.writeFileSync(FILE_MIN, result.code)
+    fs.writeFileSync(FILE_MAP, result.map)
+
+    log('Minified ' + FILE_MIN)
+    log('Mapped ' + FILE_MAP)
+  } finally {
+    process.chdir(oldCwd)
+  }
+
+  done()
+}
+
 gulp.task('watch', () => {
   const files = ['package.json', 'src/*.js']
   const options = {
@@ -65,5 +104,6 @@ gulp.task('watch', () => {
 gulp.task('default', gulp.series(
   clean,
   compile,
-  bundle
+  bundle,
+  minify
 ))
