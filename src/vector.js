@@ -1,16 +1,16 @@
-const zip = require('./utils/functions');
+import { zip } from './utils/functions'
 
 /**
  * Class the implements a vector
  */
-class Vector{
-    /**
+class Vector {
+  /**
      * Constructor of the vector Object
      * @param vector can be an array of a list of integers
      */
-    constructor(vector) {
-        this._vector = Array.isArray(vector) ? vector : Array.from(arguments);
-    }
+  constructor (vector) {
+    this._vector = Array.isArray(vector) ? vector : Array.from(arguments)
+  }
 
     /**
      *
@@ -30,7 +30,7 @@ class Vector{
      * @param {number[]} vector
      * @returns {number} the norm of a vector
      */
-    static getNorm = (vector) => Math.sqrt(vector.map( x => x*x).reduce( (a,b) => a+b,0));
+    static getNorm = (vector) => Math.sqrt(vector.map(x => x * x).reduce((a, b) => a + b, 0));
 
     /**
      * Compute the norm of a vector
@@ -44,23 +44,28 @@ class Vector{
      * @param scalar
      * @returns {*|Uint8Array|BigInt64Array|number[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
-    static scalarProduct = (vector,scalar) => vector.map( x => x*scalar);
+    static scalarProduct = (vector, scalar) => vector.map(x => x * scalar);
 
     /**
      * Compute the scalarProduct
      * @param {number} scalar
      * @returns {number[]}: the scalar product of the vector
      */
-    scalarProduct = (scalar) => Vector.scalarProduct(this._vector,scalar);
+    scalarProduct = (scalar) => Vector.scalarProduct(this._vector, scalar);
 
     /**
      * Compute the product column vector for row vector (static method)
-     * @param {*[]} vector1
-     * @param {*[]} vector2
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
      * @returns {number} the product of the row vector and the col vector
      */
-    static dotProduct = (vector1, vector2) =>
-        (zip(vector1 = Array.isArray(vector1) ? vector1 : vector1.vector,vector2 = Array.isArray(vector2) ? vector2 : vector2.vector).map( x => x.reduce( (a,b) => a*b , 1))).reduce( (a,b) => a + b,0);
+    static dotProduct = (vector1, vector2) => {
+      // Check vectors type
+      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
+      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
+
+      return (zip(vector1, vector2).map(x => x.reduce((a, b) => a * b, 1))).reduce((a, b) => a + b, 0)
+    }
 
     /**
      * Compute the product column vector for row vector
@@ -76,18 +81,19 @@ class Vector{
      * @returns {number[]} the cross product between vector1 and vector2
      */
     static crossProduct = (vector1, vector2) => {
-        //Check Vector Type
-        let x1 = Array.isArray(vector1) ? vector1 : vector1.vector;
-        let x2 = Array.isArray(vector2) ? vector2 : vector2.vector;
-        // Cross product of two 3D vectors.
-        if(x1.length !== 3 && x2.length !== 3)
-            throw 'crossProduct is defined only for 3d vectors.';
-        else
-            return [
-                x1[1]*x2[2] - x1[2]*x2[1],
-                x1[2]*x2[0] - x1[0]*x2[2],
-                x1[0]*x2[1] - x1[1]*x2[0]
-            ]
+      // Check Vector Type
+      const x1 = Array.isArray(vector1) ? vector1 : vector1.vector
+      const x2 = Array.isArray(vector2) ? vector2 : vector2.vector
+      // Cross product of two 3D vectors.
+      if (x1.length !== 3 && x2.length !== 3) {
+        throw new Error('crossProduct is defined only for 3d vectors.')
+      } else {
+        return [
+          x1[1] * x2[2] - x1[2] * x2[1],
+          x1[2] * x2[0] - x1[0] * x2[2],
+          x1[0] * x2[1] - x1[1] * x2[0]
+        ]
+      }
     };
 
     /**
@@ -97,7 +103,6 @@ class Vector{
      */
     crossProduct = (vector) => Vector.crossProduct(this.vector, vector);
 
-
     /**
      * Compute the sum of the two vectors (static method)
      * @param {number[] | Vector} vector1
@@ -105,20 +110,19 @@ class Vector{
      * @returns {number[]} The sum of the two vectors
      */
     static sum (vector1, vector2) {
-        //Check the input types
-        vector1 = Array.isArray(vector1) ? vector1 : vector1.vector;
-        vector2 = Array.isArray(vector2) ? vector2 : vector2.vector;
+      // Check the input types
+      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
+      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
 
-        if(vector1.length !== vector2.length)
-            throw "The two vectors haven't the same Length";
-        else{
-            let sumVector = [];
+      if (vector1.length !== vector2.length) {
+        throw new Error("The two vectors haven't the same Length")
+      } else {
+        const sumVector = []
 
-            for(let i = 0; i < vector1.length;i++)
-                    sumVector.push(vector1[i] + vector2[i]);
+        for (let i = 0; i < vector1.length; i++) { sumVector.push(vector1[i] + vector2[i]) }
 
-            return sumVector;
-        }
+        return sumVector
+      }
     }
 
     /**
@@ -126,16 +130,15 @@ class Vector{
      * @param {*[]} vector
      * @returns {number[]} the sum of the two vectors
      */
-    sum = (vector) => Vector.sum(this._vector,vector);
+    sum = (vector) => Vector.sum(this._vector, vector);
 
     /**
      * vector field getter
      * @returns {number[] }
      */
-    get vector() {
-        return this._vector;
+    get vector () {
+      return this._vector
     }
 };
 
-module.exports = Vector;
-
+module.exports = Vector

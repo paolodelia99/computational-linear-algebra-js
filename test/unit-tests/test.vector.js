@@ -1,4 +1,4 @@
-const Vector = require('../src/vector')
+const Vector = require('../../src/vector')
 const assert = require('assert')
 
 describe('test vector creation', () => {

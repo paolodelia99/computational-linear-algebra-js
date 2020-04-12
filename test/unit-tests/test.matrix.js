@@ -1,4 +1,4 @@
-const Matrix = require('../src/matrix')
+const Matrix = require('../../src/matrix')
 const assert = require('assert')
 
 describe('test create square matrix', () => {

@@ -1,7 +1,7 @@
 const assert = require('assert')
-const LinearTransformation = require('../src/linearTrasformation')
-const Matrix = require('../src/Matrix')
-const Vector = require('../src/vector')
+const LinearTransformation = require('../../src/linearTrasformation')
+const Matrix = require('../../src/matrix')
+const Vector = require('../../src/vector')
 
 describe('Test linear creation', () => {
   it('should create properly a linear transformation', function () {
