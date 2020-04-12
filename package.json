@@ -38,6 +38,7 @@
     "@babel/preset-env": "^7.9.5",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "standard": "^14.3.3",

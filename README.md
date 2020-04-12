@@ -8,6 +8,15 @@ Computational Linear algebra is an extensive Javascript library for linear algeb
 - type flexible
 - open source
 
+## Table of contents
+
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Build](#build)
+- [Test](#test)
+- [Todos](#todos)
+- [License](#license)
+
 ## Usage
 
 Computational-linear-algebra.js can be used in both node.js and in the browser.
@@ -18,7 +27,9 @@ Install computational-linear-algebra.js using npm
     
 Note: not yet available on npm, It will be soon
 
-## Matrices
+## Documentation
+
+### Matrices
 
 ```javascript
 const Matrix = require('Matrix');
@@ -39,7 +50,7 @@ console.log(matrix.getInverse()) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.
 
 ```
 
-## Vectors
+### Vectors
 
 ```javascript
 const Vector = require('Vector');
@@ -61,7 +72,7 @@ console.log(vector1.dotProduct(vector2)) //0
 console.log(vector1.crossProduct(vector2))// [2, -2, 2]
 ```
 
-## Linear Transformations
+### Linear Transformations
 
 ```javascript
 const LinearTransformation = require('LinearTransformation');
@@ -77,12 +88,6 @@ console.log(t1.apply(vector)) //[1,4,-1]
 
 ```
 
-## Documentation
-
-- Getting started 
-- Examples
-- Overview
-- History
 
 ## Build 
 
