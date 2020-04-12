@@ -1,2 +1,5 @@
 .idea
+# dependencies
 /node_modules
+# compile javascript
+/dist
