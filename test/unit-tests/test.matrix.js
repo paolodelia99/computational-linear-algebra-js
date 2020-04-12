@@ -1,5 +1,5 @@
-const Matrix = require('../../src/matrix')
-const assert = require('assert')
+import assert from 'assert'
+import Matrix from '../../src/matrix'
 
 describe('test create square matrix', () => {
   it('should give an empty square matrix', () => {

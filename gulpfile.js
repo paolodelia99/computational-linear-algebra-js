@@ -7,7 +7,6 @@ const path = require('path')
 
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
-const COMPILE_ES = './es'
 const FILE = 'linear.algebra.js'
 const DIST = path.join(__dirname, '/dist')
 const LINEAR_ALG = DIST + '/' + FILE
@@ -15,7 +14,7 @@ const LINEAR_ALG = DIST + '/' + FILE
 const clean = () => {
   return del([
     'dist/*',
-    'lib/**/*',
+    'lib/**/*'
   ])
 }
 
@@ -23,21 +22,6 @@ const compile = () => {
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
-}
-
-function compileESModules () {
-  const babelOptions = JSON.parse(String(fs.readFileSync('./.babelrc')))
-
-  return gulp.src(COMPILE_SRC)
-    .pipe(babel({
-      ...babelOptions,
-      presets: [
-        ['@babel/preset-env', {
-          modules: false
-        }]
-      ]
-    }))
-    .pipe(gulp.dest(COMPILE_ES))
 }
 
 // create a single instance of the compiler to allow caching

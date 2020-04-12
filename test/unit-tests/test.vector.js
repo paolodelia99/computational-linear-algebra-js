@@ -1,5 +1,5 @@
-const Vector = require('../../src/vector')
-const assert = require('assert')
+import Vector from '../../src/vector'
+import assert from 'assert'
 
 describe('test vector creation', () => {
   it('should create the vector in both ways', function () {
