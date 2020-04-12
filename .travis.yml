@@ -12,3 +12,6 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
+    - script: npm run coverage
+      node_js: lts/*
+      name: Coverage

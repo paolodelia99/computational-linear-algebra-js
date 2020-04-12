@@ -1,6 +1,7 @@
 # Computational Linear Algebra
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+[![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra.js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js)
 
 
 Computational Linear algebra is an extensive Javascript library for linear algebra.
