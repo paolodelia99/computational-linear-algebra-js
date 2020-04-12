@@ -1,10 +1,14 @@
 language: node_js
-
 node_js:
-  - stable
+  - 8
+  - 10
+  - 12
 
-install:
-  - npm install
+script: npm run test:src
 
-script:
-  - npm test
+jobs:
+  include:
+    - stage: other
+      script: npm run lint
+      node_js: lts/*
+      name: Lint
