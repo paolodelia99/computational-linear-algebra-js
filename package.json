@@ -9,8 +9,8 @@
     "src": "./src"
   },
   "scripts": {
-    "test": "mocha",
-    "lint": "standard --env=mocha",
+    "test": "mocha --require babel-register",
+    "lint": "eslint . --config=eslintrc.json --fix --env=mocha",
     "build": "gulp",
     "compile": "gulp compile",
     "watch": "gulp watch"
@@ -36,14 +36,22 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
-    "babel": "^6.23.0",
+    "@babel/register": "^7.9.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.1.0",
+    "babel-plugin-dynamic-import-node": "^2.3.0",
     "babel-polyfill": "^6.26.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "standard": "^14.3.3",

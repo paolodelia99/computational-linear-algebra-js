@@ -15,7 +15,7 @@ class Vector{
     /**
      *
      * @param {number[]} vector1
-     * @returns {*}
+     * @returns {number[]}
      */
     static getCopy = (vector1) => vector1.slice();
 
