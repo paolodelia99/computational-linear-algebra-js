@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A linear algebra library",
   "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
-  "main": "",
+  "main": "./dist/linear.algebra.js",
   "directories": {
     "test": "./test",
     "src": "./src"
