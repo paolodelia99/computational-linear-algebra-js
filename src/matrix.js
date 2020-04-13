@@ -1,4 +1,4 @@
-class Matrix {
+export class Matrix {
     lower // The lower decomposition of the matrix using LU decomp
     upper // The Upper decomposition of the matrix using LU decomp
 
@@ -615,5 +615,3 @@ class Matrix {
       return this._matrix
     }
 }
-
-export default Matrix

@@ -1,7 +1,7 @@
-import Matrix from './matrix'
+import { Matrix } from './matrix'
 import { zip } from './utils/functions'
 
-class LinearTransformation {
+export class LinearTransformation {
     _transformationMatrix
 
     /**
@@ -72,5 +72,3 @@ class LinearTransformation {
       return this._transformationMatrix
     }
 }
-
-export default LinearTransformation

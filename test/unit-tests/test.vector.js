@@ -1,4 +1,4 @@
-import Vector from '../../src/vector'
+import { Vector } from '../../src/vector'
 import assert from 'assert'
 
 describe('test vector creation', () => {

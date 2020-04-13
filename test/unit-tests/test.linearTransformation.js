@@ -1,7 +1,7 @@
 import assert from 'assert'
-import LinearTransformation from '../../src/linearTrasformation'
-import Matrix from '../../src/matrix'
-import Vector from '../../src/vector'
+import { LinearTransformation } from '../../src/linearTrasformation'
+import { Matrix } from '../../src/matrix'
+import { Vector } from '../../src/vector'
 
 describe('Test linear creation', () => {
   it('should create properly a linear transformation', function () {

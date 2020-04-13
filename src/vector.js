@@ -1,6 +1,6 @@
 import { zip } from './utils/functions'
 
-class Vector {
+export class Vector {
   /**
      * Constructor of the vector Object
      * @param vector can be an array of a list of integers
@@ -136,6 +136,4 @@ class Vector {
     get vector () {
       return this._vector
     }
-};
-
-export default Vector
+}

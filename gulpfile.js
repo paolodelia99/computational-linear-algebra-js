@@ -9,6 +9,7 @@ const uglify = require('uglify-js')
 
 const COMPILE_SRC = './src/**/*.js'
 const COMPILE_LIB = './lib'
+const COMPILE_ES = './es' // es modules
 const FILE = 'linear.algebra.js'
 const DIST = path.join(__dirname, '/dist')
 const LINEAR_ALG = DIST + '/' + FILE
@@ -89,6 +90,21 @@ function minify (done) {
   done()
 }
 
+function compileESModules () {
+  const babelOptions = JSON.parse(String(fs.readFileSync('.babelrc')))
+
+  return gulp.src(COMPILE_SRC)
+    .pipe(babel({
+      ...babelOptions,
+      presets: [
+        ['@babel/preset-env', {
+          modules: false
+        }]
+      ]
+    }))
+    .pipe(gulp.dest(COMPILE_ES))
+}
+
 gulp.task('watch', () => {
   const files = ['package.json', 'src/*.js']
   const options = {
@@ -104,6 +120,7 @@ gulp.task('watch', () => {
 gulp.task('default', gulp.series(
   clean,
   compile,
+  compileESModules,
   bundle,
   minify
 ))

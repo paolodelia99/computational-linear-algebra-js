@@ -3,6 +3,7 @@
 /node_modules
 # compile javascript
 /dist
+es
 lib
 # nyc output
 .nyc_output

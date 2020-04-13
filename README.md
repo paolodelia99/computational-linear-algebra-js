@@ -36,7 +36,7 @@ Note: not yet available on npm, It will be soon
 ### Matrices
 
 ```javascript
-const Matrix = require('Matrix');
+const { Matrix } =  require('computational-linear-algebra-js')
 
 const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] );
 const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]] );
@@ -57,7 +57,7 @@ console.log(matrix.getInverse()) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.
 ### Vectors
 
 ```javascript
-const Vector = require('Vector');
+const { Vector } =  require('computational-linear-algebra-js')
 
 const vector1 = new Vector([1,2,1]);
 const vector2 = new Vector(-1,0,1);
@@ -79,7 +79,7 @@ console.log(vector1.crossProduct(vector2))// [2, -2, 2]
 ### Linear Transformations
 
 ```javascript
-const LinearTransformation = require('LinearTransformation');
+const { LinearTransformation } =  require('computational-linear-algebra-js')
 
 // You can instantiate a linear tranformation using a bidimensional array
 const t1 = new LinearTransformation([[1,0,1],[2,0,-1],[1,1,1]]);  
@@ -157,7 +157,7 @@ Then, the tests can be executed:
     - [ ] rotations
     
 - Code Stuff
-    - [ ] compile js in prev version using babel
+    - [x] compile js in prev version using babel
     - [ ] build npm package
     - [ ] documentation
     

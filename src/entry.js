@@ -1,9 +1,3 @@
-import Matrix from './matrix'
-import Vector from './vector'
-import LinearTransformation from './linearTrasformation'
-
-export default {
-  Matrix,
-  Vector,
-  LinearTransformation
-}
+export { Matrix } from './matrix'
+export { Vector } from './vector'
+export { LinearTransformation } from './linearTrasformation'
