@@ -179,9 +179,11 @@ export class Matrix {
       if (!Matrix.isMatrixSquare(matrix)) {
         throw new Error("You can't get the inverse of a non square matrix")
       } else {
-        const identityMatrix = Matrix.createIdentityMatrix(this.rows)
+        matrix = Array.isArray(matrix) ? matrix : matrix.matrix
+
+        const identityMatrix = Matrix.createIdentityMatrix(matrix.length)
         const inverse = []
-        const { L, U } = Matrix.luDecompostion(matrix)
+        const { L, U } = Matrix.luDecomposition(matrix)
 
         for (let j = 0; j < matrix.length; j++) { inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix, j))) }
 
@@ -297,7 +299,7 @@ export class Matrix {
       matrix2 = Matrix.checkMatrixType(matrix2)
 
       if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
-        throw new Error('Cannot sum two matrices with different dimension')
+        throw new Error('Cannot subtract two matrices with different dimension')
       } else {
         const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length)
 
@@ -351,12 +353,12 @@ export class Matrix {
      * @param {number[][] | Matrix } matrix
      * @returns {{U: *[][], L: *[][]}} object containing the L and the U matrix
      */
-    static luDecompostion = matrix => {
+    static luDecomposition = matrix => {
       // Check matrix type
-      matrix = Array.isArray(matrix) ? matrix : matrix.matrix
+      matrix = Matrix.checkMatrixType(matrix)
       // throw an error is the matrix is not square
       if (!Matrix.isMatrixSquare(matrix)) {
-        throw new Error('You can do LU Decomposition only with Square matrices')
+        throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         return Matrix.getLUDecomposition(matrix)
       }
@@ -368,7 +370,7 @@ export class Matrix {
     luDecomposition = () => {
       // throw an error is the matrix is not square
       if (!this.isMatrixSquare) {
-        throw new Error('You can do LU Decomposition only with Square matrices')
+        throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         const res = Matrix.getLUDecomposition(this._matrix)
 
@@ -385,7 +387,7 @@ export class Matrix {
     static getLUDecomposition = (matrix) => {
       // throw an error is the matrix is not square
       if (!Matrix.isMatrixSquare(matrix)) {
-        throw new Error('You can do LU Decomposition only with Square matrices')
+        throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         const mat = Matrix.cloneMatrix(matrix)
         const n = matrix.length
@@ -414,15 +416,15 @@ export class Matrix {
 
     /**
      * Static method that solves the linear system using lu decomposition
-     * @param lower
-     * @param upper
-     * @param rightPart
+     * @param {number[][]} lower
+     * @param {number[][]} upper
+     * @param {number[]} rightPart
      * @returns { number[] }
      */
     static solveUsingLU = (lower, upper, rightPart) => {
       // throw an error is the matrix is not square
       if (!Matrix.isMatrixSquare(lower) && !Matrix.isMatrixSquare(upper)) {
-        throw new Error('You can do LU Decomposition only with Square matrices')
+        throw new Error('Cannot solve the linear system')
       } else {
         const n = rightPart.length
 
@@ -457,8 +459,8 @@ export class Matrix {
      */
     solveUsingLU = (rightPart) => {
       // throw an error is the matrix is not square
-      if (!this.isMatrixSquare) {
-        throw new Error('You can do LU Decomposition only with Square matrices')
+      if (!this.isSquare) {
+        throw new Error('Cannot solve linear system using LU')
       } else {
         return Matrix.solveUsingLU(this.lower, this.upper, rightPart)
       }
@@ -472,8 +474,8 @@ export class Matrix {
      */
     static ijkMultiplication = (matrix1, matrix2) => {
       // Check  the inputs types
-      matrix1 = Array.isArray(matrix1) ? matrix1 : matrix1.matrix
-      matrix2 = Array.isArray(matrix2) ? matrix2 : matrix2.matrix
+      matrix1 = Matrix.checkMatrixType(matrix1)
+      matrix2 = Matrix.checkMatrixType(matrix2)
       // check if the input matrix has the right dimension
       if (matrix1[0].length !== matrix2.length) {
         throw new Error('Cannot do the multiplication')

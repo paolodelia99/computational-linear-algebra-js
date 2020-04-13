@@ -17,6 +17,34 @@ describe('test create matrix', () => {
   })
 })
 
+describe('test creation of a random matrix', () => {
+  it('should give a random matrix', function () {
+    const matrix = Matrix.createRandomMatrix(3, 3, 0, 10)
+
+    assert.deepStrictEqual(Array.isArray(matrix) && Array.isArray(matrix[0]), true)
+  })
+})
+
+describe('test printing matrix method', () => {
+  const print2dArray = (array) => {
+    array = Array.isArray(array) ? array : array.matrix
+
+    for (let i = 0; i < array.length; i++) {
+      console.log(array[i])
+    }
+  }
+
+  it('should print the matrix', function () {
+    const matrix = new Matrix([[1, -2, -1], [1, 4, 1], [2, 2, 5]])
+    const matrix1 = matrix.getCopy()
+
+    // Test instance
+    console.assert(matrix.printMatrix(), print2dArray(matrix))
+    // Test static method
+    console.assert(Matrix.printMatrix(matrix1), print2dArray(matrix1))
+  })
+})
+
 describe('test isMatrixSquare method', () => {
   it('should give true', () => {
     const mat = Matrix.createEmptySquareMatrix(3)
@@ -37,7 +65,7 @@ describe('test isMatrixSquare method', () => {
 describe('test copy and clone matrix', () => {
   it('should be equal the the created matrix', function () {
     const matrix = new Matrix([[1, -2, -1], [1, 4, 1], [2, 2, 5]])
-    const mat = Matrix.cloneMatrix(matrix.matrix)
+    const mat = matrix.getCopy() // instance method
     const mat1 = Matrix.cloneMatrix(matrix) // passing the matrix obj
 
     assert.deepStrictEqual(matrix.matrix, mat)
@@ -117,6 +145,20 @@ describe('Test matrix sum', () => {
     // test instance method
     assert.deepStrictEqual(Matrix.sumMatrices(matrix1, matrix2), [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
   })
+
+  it('should thorwn an exception if the matrices has two different dimensions', function () {
+    const matrix1 = new Matrix([[1, 2], [1, 4], [2, 6]])
+    const matrix2 = new Matrix([[1, 2, -1], [0, 2, 3]])
+
+    try {
+      matrix1.sum(matrix2)
+      assert.fail('Should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot sum two matrices with different dimension')
+      }
+    }
+  })
 })
 
 describe('Test matrix subtraction', () => {
@@ -142,6 +184,20 @@ describe('Test matrix subtraction', () => {
     assert.deepStrictEqual(matrix1.sub(matrix2), [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
     // test instance method
     assert.deepStrictEqual(Matrix.subtractMatrices(matrix1, matrix2), [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
+  })
+
+  it('should thorwn an exception if the matrices has two different dimensions', function () {
+    const matrix1 = new Matrix([[1, 2], [1, 4], [2, 6]])
+    const matrix2 = new Matrix([[1, 2, -1], [0, 2, 3]])
+
+    try {
+      matrix1.sub(matrix2)
+      assert.fail('Should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot subtract two matrices with different dimension')
+      }
+    }
   })
 })
 
@@ -172,9 +228,13 @@ describe('Test get partition Matrix', () => {
 describe('test inverse of a matrix', () => {
   it('should give the inverse of the sample matrix', function () {
     const matrix = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
+    const matrix1 = matrix.getCopy()
     const inverse = matrix.getInverse()
 
+    // Test instance method
     assert.deepStrictEqual(inverse, [[1, -2, 1], [-0.125, 0.875, -0.375], [-0.25, -0.25, 0.25]])
+    // Test static method
+    assert.deepStrictEqual(Matrix.getInverse(matrix1), [[1, -2, 1], [-0.125, 0.875, -0.375], [-0.25, -0.25, 0.25]])
   })
 
   it('should the right inverse for a upper triangular matrix', function () {
@@ -183,6 +243,21 @@ describe('test inverse of a matrix', () => {
 
     assert.deepStrictEqual(inverse, [[1, -1, 1], [0, 0.5, -0.375], [0, 0, 0.25]])
   })
+
+  it('should throw an error if the matrix isn\'t square', function () {
+    const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
+
+    try {
+      Matrix.getInverse(matrix)
+      assert.fail('expected exception not thrown')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, "You can't get the inverse of a non square matrix")
+      }
+    }
+  })
+
+  // todo: test instance method two types of exception
 })
 
 describe('test determinant', () => {
@@ -197,6 +272,19 @@ describe('test determinant', () => {
 
     assert.deepStrictEqual(matrix.getDeterminant(), 8)
   })
+
+  it('should throw an exception if the matrix in not square', function () {
+    const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
+
+    try {
+      matrix.getDeterminant()
+      assert.fail('expected exception not thrown')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Non square matrix has no determinant')
+      }
+    }
+  })
 })
 
 describe('test lu decomposition', function () {
@@ -207,6 +295,33 @@ describe('test lu decomposition', function () {
 
     assert.deepStrictEqual(matrix.lower.valueOf(), [[1, 0, 0], [1, 1, 0], [2, 1, 1]])
   })
+
+  // Testing instance method
+  it('should throw an exception if the matrix isn\'t square', () => {
+    try {
+      const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
+      matrix.luDecomposition()
+      assert.fail('should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot decompose with LU two non square matrices')
+      }
+    }
+  })
+
+  // Testing static method
+  it('should throw an exception if the matrix isn\'t square', () => {
+    const matrix = [[1, 2], [1, 4], [2, 6]]
+
+    try {
+      Matrix.luDecomposition(matrix)
+      assert.fail('should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot decompose with LU two non square matrices')
+      }
+    }
+  })
 })
 
 describe('test solving linear system', () => {
@@ -216,6 +331,35 @@ describe('test solving linear system', () => {
     const res = matrix.solveUsingLU([1, 1, 10])
 
     assert.deepStrictEqual(res, [9, -3, 2])
+  })
+
+  // Test static method
+  it('should throw an exception if the L and U matrices aren\'t square', function () {
+    const fakeL = [[1, 1, 1], [1, 1, 1]]
+    const fakeU = [[2, 2], [2, 2], [2, 2]]
+
+    try {
+      Matrix.solveUsingLU(fakeL, fakeU, [1, 2, 3])
+      assert.fail('should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot solve the linear system')
+      }
+    }
+  })
+
+  // Test instance method
+  it('should throw an exception if the matrix isn\'t square', function () {
+    const matrix = new Matrix([[1, -1], [1, 2], [2, 5]])
+
+    try {
+      matrix.solveUsingLU([1, 2, 3])
+      assert.fail('should thrown an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot solve linear system using LU')
+      }
+    }
   })
 })
 
@@ -242,6 +386,20 @@ describe('Test matrix multiplication', () => {
       assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
       assert.deepStrictEqual(Matrix.ijkMultiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
+
+    it('should throw an exception if the dimension don\'t match', function () {
+      const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+      const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1], [1, 2, 0]])
+
+      try {
+        matrix1.ijkMultiplication(matrix2)
+        assert.fail('Should throw an error')
+      } catch (e) {
+        if (e instanceof Error) {
+          assert.deepStrictEqual(e.message, 'Cannot do the multiplication')
+        }
+      }
+    })
   })
 
   describe('Test Strassen Multiplication', () => {
@@ -265,6 +423,20 @@ describe('Test matrix multiplication', () => {
 
       assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2, 2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
       assert.deepStrictEqual(Matrix.strassenMultiplication(matrix1, matrix2, 2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+    })
+
+    it('should throw an exception if the two matrices aren\'t square', function () {
+      const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+      const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1], [1, 2, 0]])
+
+      try {
+        matrix1.strassenMultiplication(matrix2, 2)
+        assert.fail('Should throw an error')
+      } catch (e) {
+        if (e instanceof Error) {
+          assert.deepStrictEqual(e.message, 'The matrices aren\'t square matrices')
+        }
+      }
     })
   })
 })

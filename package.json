@@ -17,7 +17,9 @@
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "compile": "gulp compile",
     "build": "gulp",
-    "watch": "gulp watch"
+    "build-and-test": "npm run build && npm run test:all && npm run lint",
+    "watch": "gulp watch",
+    "fix": "eslint . --config=.eslintrc --env=mocha --fix"
   },
   "repository": {
     "type": "git",
