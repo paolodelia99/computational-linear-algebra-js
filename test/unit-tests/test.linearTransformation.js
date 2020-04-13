@@ -3,7 +3,7 @@ import { LinearTransformation } from '../../src/linearTrasformation'
 import { Matrix } from '../../src/matrix'
 import { Vector } from '../../src/vector'
 
-describe('Test linear creation', () => {
+describe('Test creation of linear transformation', () => {
   it('should create properly a linear transformation', function () {
     const t = new LinearTransformation([[1, 0, 1], [2, 0, -1], [1, 1, 1]]) // Using the bidemisonal array
     const t1 = new LinearTransformation(new Matrix([[1, 0, 1], [2, 0, -1], [1, 1, 1]])) // Using the matrix Object
@@ -24,5 +24,20 @@ describe('Test the application of the linear Transformation', () => {
 
     assert.deepStrictEqual(resVector, [1, 4, -1]) // Test instance method
     assert.deepStrictEqual(LinearTransformation.apply(matrix2, vector2), [7, 5, 14]) // Test the static method
+  })
+
+  it('should throw an exception if the vector size don\'t match with the matrix', function () {
+    const matrix = new Matrix([[1, 0, 1], [2, 1, 2], [1, -1, 1]])
+    const vector = new Vector([1, 2, 0, 3])
+    const t = new LinearTransformation(matrix)
+
+    try {
+      t.apply(vector)
+      assert.fail('should throw an error')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot apply the linear Transformation')
+      }
+    }
   })
 })

@@ -127,9 +127,7 @@ Then, the tests can be executed:
     - [ ] Hadamard product
     - [ ] Kronecker product
     - [ ] Implement a more efficient multiplication
-        - Using c++ ??
-        - Gpu.js
-        - Using paralellization
+        - Using c++ || gpu.js || using parallelization
     - [ ] Implement other decomposition
         - [ ] QR
         - [ ] Cholesky
@@ -160,6 +158,7 @@ Then, the tests can be executed:
     - [x] compile js in prev version using babel
     - [ ] build npm package
     - [ ] documentation
+    - [ ] maximise the coverage
     
 
 ## License

@@ -54,6 +54,7 @@ export class LinearTransformation {
      * @returns {number[] | number[][]}
      */
     static applyInverse = (transformation, x) => {
+      transformation = Array.isArray(transformation) ? transformation : transformation.matrix
       const inverseMat = Matrix.getInverse(transformation)
       return LinearTransformation.apply(inverseMat, x)
     };
