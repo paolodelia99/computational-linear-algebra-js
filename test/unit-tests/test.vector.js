@@ -40,6 +40,19 @@ describe('test sum of vectors', () => {
     assert.deepStrictEqual(Vector.sum(vector1, vector2), [1, 5, 0])
     assert.deepStrictEqual(vector1.sum(vector2), [1, 5, 0])
   })
+
+  it('should throw an error if the vectors haven\'t the same dimension', function () {
+    const vector1 = new Vector([2, 3, 1, 4])
+    const vector2 = new Vector([-1, 2])
+
+    try {
+      Vector.sum(vector1, vector2)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'The two vectors haven\'t the same Length')
+      }
+    }
+  })
 })
 
 describe('test zip function', () => {
@@ -70,5 +83,19 @@ describe('test the cross product between two vectors', () => {
 
     assert.deepStrictEqual(vector1.crossProduct(vector2), [10, -3, -4])
     assert.deepStrictEqual(Vector.crossProduct(vector1, vector2), [10, -3, -4])
+  })
+
+  // Test Static method
+  it('should throw an error if the one of the vector isn\'t a 3d vector', function () {
+    const vector1 = new Vector([12, 2, 3])
+    const vector2 = new Vector([2, 3, 4, 5])
+
+    try {
+      Vector.crossProduct(vector1, vector2)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'crossProduct is defined only for 3d vectors')
+      }
+    }
   })
 })

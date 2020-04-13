@@ -41,3 +41,16 @@ describe('Test the application of the linear Transformation', () => {
     }
   })
 })
+
+describe('test apply inverse', () => {
+  it('should give the inverse', function () {
+    const matrix = new Matrix([[1, 2, 3], [-1, 2, 0], [0, -4, 1]])
+    const vector = new Vector([1, 1, 1])
+    const t = new LinearTransformation(matrix.matrix)
+
+    // Test static method
+    assert.deepStrictEqual(LinearTransformation.applyInverse(matrix, vector), [-9 / 8, -1 / 16, 3 / 4])
+    // Test instance Method
+    assert.deepStrictEqual(t.applyInverse(vector), [-9 / 8, -1 / 16, 3 / 4])
+  })
+})
