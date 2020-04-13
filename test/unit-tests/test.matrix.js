@@ -244,6 +244,7 @@ describe('test inverse of a matrix', () => {
     assert.deepStrictEqual(inverse, [[1, -1, 1], [0, 0.5, -0.375], [0, 0, 0.25]])
   })
 
+  // Test static method
   it('should throw an error if the matrix isn\'t square', function () {
     const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
 
@@ -253,6 +254,33 @@ describe('test inverse of a matrix', () => {
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, "You can't get the inverse of a non square matrix")
+      }
+    }
+  })
+
+  // Test instance method
+  it('should throw an error if the matrix isn\'t square', function () {
+    const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
+
+    try {
+      matrix.getInverse()
+      assert.fail('expected exception not thrown')
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, "You can't get the inverse of a non square matrix")
+      }
+    }
+  })
+
+  // Test instance method when the det is zero
+  it('should throw an error if the matrix has determinant equal to 0', function () {
+    const matrix = new Matrix([[1, 2, 1], [0, 0, 4], [0, 0, 0]])
+
+    try {
+      matrix.getInverse()
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'The determinant is 0! The inverse does not exist!')
       }
     }
   })
@@ -298,8 +326,9 @@ describe('test lu decomposition', function () {
 
   // Testing instance method
   it('should throw an exception if the matrix isn\'t square', () => {
+    const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
+
     try {
-      const matrix = new Matrix([[1, 2], [1, 4], [2, 6]])
       matrix.luDecomposition()
       assert.fail('should thrown an error')
     } catch (e) {

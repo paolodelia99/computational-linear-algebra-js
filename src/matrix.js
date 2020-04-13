@@ -197,7 +197,7 @@ export class Matrix {
      * @returns {Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
     getInverse = () => {
-      if (!this.isMatrixSquare) {
+      if (!this.isSquare) {
         throw new Error("You can't get the inverse of a non square matrix")
       }
 
@@ -369,7 +369,7 @@ export class Matrix {
      */
     luDecomposition = () => {
       // throw an error is the matrix is not square
-      if (!this.isMatrixSquare) {
+      if (!this.isSquare) {
         throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         const res = Matrix.getLUDecomposition(this._matrix)

@@ -98,4 +98,18 @@ describe('test the cross product between two vectors', () => {
       }
     }
   })
+
+  // Test instance method
+  it('should throw an error if the one of the vector isn\'t a 3d vector', function () {
+    const vector1 = new Vector([12, 2, 3])
+    const vector2 = new Vector([2, 3, 4, 5])
+
+    try {
+      vector1.crossProduct(vector2)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'crossProduct is defined only for 3d vectors')
+      }
+    }
+  })
 })
