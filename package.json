@@ -14,7 +14,7 @@
     "test": "npm run test:src && npm run lint",
     "test:src": "mocha test/unit-tests --recursive --require @babel/register --forbid-only",
     "lint": "eslint . --config=.eslintrc --env=mocha",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests --recursive --require @babel/register | coveralls",
     "compile": "gulp compile",
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
