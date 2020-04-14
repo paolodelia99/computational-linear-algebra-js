@@ -1,3 +1,5 @@
+const { GPU } = require('gpu.js')
+
 export class Matrix {
     lower // The lower decomposition of the matrix using LU decomp
     upper // The Upper decomposition of the matrix using LU decomp
@@ -500,6 +502,44 @@ export class Matrix {
      */
     ijkMultiplication = (matrix) =>
       Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
+
+    /**
+   *
+   * @param matrix1
+   * @param matrix2
+   * @returns {KernelOutput}
+   */
+    static multiplication = (matrix1, matrix2) => {
+      // Check matrices type
+      matrix1 = Matrix.checkMatrixType(matrix1)
+      matrix2 = Matrix.checkMatrixType(matrix2)
+
+      if (matrix1[0].length !== matrix2.length) {
+        throw new Error('Matrices dimensions are incompatible! Cannot do the multiplication')
+      } else {
+        const dim1 = matrix1[0].length // fixme: deve essere sbagliato
+        const dim2 = matrix2.length // fixme: deve essere sbagliato
+        const gpu = new GPU()
+
+        const computeMultiplication = gpu.createKernel(function (a, b) {
+          let sum = 0
+          for (let i = 0; i < 3; i++) {
+            sum += a[this.thread.y][i] * b[i][this.thread.x]
+          }
+          return sum
+        }).setOutput([dim1, dim2])
+
+        // fixme
+        // from a string array to int array
+        const resMatrix = computeMultiplication(matrix1, matrix2)
+
+        for (let i = 0; i < resMatrix.length; i++) {
+          resMatrix[i] = Array.from(resMatrix[i])
+        }
+
+        return resMatrix
+      }
+    };
 
     /**
      * Strassen multiplication method that calls the strassen algorithm

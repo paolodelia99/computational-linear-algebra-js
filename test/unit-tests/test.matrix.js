@@ -468,6 +468,15 @@ describe('Test matrix multiplication', () => {
       }
     })
   })
+
+  describe('Test parallel Multiplication', () => {
+    it('should give the right result', function () {
+      const matrix1 = [[2, 4, 5], [-1, 2, 1], [4, -1, 3]]
+      const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
+
+      assert.deepStrictEqual(Matrix.multiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+    })
+  })
 })
 
 describe('test create identity matrix', () => {
