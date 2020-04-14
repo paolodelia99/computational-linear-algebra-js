@@ -504,32 +504,32 @@ export class Matrix {
       Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
-   *
-   * @param matrix1
-   * @param matrix2
-   * @returns {KernelOutput}
+   * Efficent Multiplication run on the gpu with a parallel algorithm
+   * @param {number[][] | Matrix} matrix1
+   * @param {number[][] | Matrix} matrix2
+   * @returns {number[][]} the result of the multiplication
    */
     static multiplication = (matrix1, matrix2) => {
       // Check matrices type
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
-
+      // Check matrix compatibility
       if (matrix1[0].length !== matrix2.length) {
         throw new Error('Matrices dimensions are incompatible! Cannot do the multiplication')
       } else {
-        const dim1 = matrix1[0].length // fixme: deve essere sbagliato
-        const dim2 = matrix2.length // fixme: deve essere sbagliato
-        const gpu = new GPU()
+        const dim1 = matrix1[0].length // the common dimension
+        const dim2 = matrix1.length // rows of the first matrix
+        const dim3 = matrix2[0].length // col of the second matrix
+        const gpu = new GPU() // new GPU instance
 
         const computeMultiplication = gpu.createKernel(function (a, b) {
           let sum = 0
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < this.constants.length; i++) {
             sum += a[this.thread.y][i] * b[i][this.thread.x]
           }
           return sum
-        }).setOutput([dim1, dim2])
+        }, { constants: { length: dim1 }, output: [dim2, dim3] })
 
-        // fixme
         // from a string array to int array
         const resMatrix = computeMultiplication(matrix1, matrix2)
 

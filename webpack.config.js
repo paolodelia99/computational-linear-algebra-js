@@ -23,6 +23,9 @@ module.exports = {
       }
     ]
   },
+  externals: {
+    'gpu.js': 'gpu.js'
+  },
   optimization: {
     minimize: false
   },
