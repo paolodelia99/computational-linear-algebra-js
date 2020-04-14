@@ -158,7 +158,7 @@ Then, the tests can be executed:
     - [x] compile js in prev version using babel
     - [ ] build npm package
     - [ ] documentation
-    - [ ] maximise the coverage
+    - [x] maximise the coverage
     
 
 ## License
