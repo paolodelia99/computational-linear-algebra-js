@@ -11,10 +11,10 @@
   "jsdelivr": "dist/linear.algebra.min.js",
   "unpkg": "dist/linear.algebra.min.js",
   "scripts": {
-    "test": "npm run test:src && npm run lint",
+    "test": "cross-env NODE_ENV=test npm run test:src && npm run lint",
     "test:src": "mocha test/unit-tests --recursive --require @babel/register --forbid-only",
     "lint": "eslint . --config=.eslintrc --env=mocha",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc _mocha test/unit-tests --recursive --require @babel/register && nyc report --reporter=text-lcov | coveralls",
     "compile": "gulp compile",
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:all && npm run lint",
@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/paolodelia99/paolodelia99#readme",
   "dependencies": {
+    "gpu.js": "^2.9.3",
     "mocha": "^7.1.1"
   },
   "engines": {
@@ -50,12 +51,15 @@
     "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
+    "babel-plugin-istanbul": "^6.0.0",
     "babel-polyfill": "^6.26.0",
     "coveralls": "^3.0.11",
+    "cross-env": "^7.0.2",
     "del": "^5.1.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",

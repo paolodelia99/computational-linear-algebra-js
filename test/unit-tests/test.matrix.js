@@ -468,6 +468,39 @@ describe('Test matrix multiplication', () => {
       }
     })
   })
+
+  describe('Test parallel Multiplication', () => {
+    // fixme: gotta find a way to implement this in the coverage
+    if (process.env.NODE_ENV === 'test') {
+      it('should give the right result', function () {
+        const matrix1 = [[2, 4, 5], [-1, 2, 1], [4, -1, 3]]
+        const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
+
+        assert.deepStrictEqual(Matrix.multiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      })
+
+      it('should work with non square matrices', function () {
+        const matrix1 = [[2, 4, 5, 1], [-1, 2, 1, 0], [4, -1, 3, 1]]
+        const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1], [2, 4, 0]]
+
+        assert.deepStrictEqual(Matrix.multiplication(matrix1, matrix2), [[45, 20, 25], [5, 2, 7], [31, 17, 7]])
+      })
+
+      it('should throw an error if the matrices aren\'t compatible', function () {
+        const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+        const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1], [1, 2, 0]])
+
+        try {
+          Matrix.multiplication(matrix1, matrix2)
+          assert.fail('Should throw an error')
+        } catch (e) {
+          if (e instanceof Error) {
+            assert.deepStrictEqual(e.message, 'Matrices dimensions are incompatible! Cannot do the multiplication')
+          }
+        }
+      })
+    }
+  })
 })
 
 describe('test create identity matrix', () => {
