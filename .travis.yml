@@ -6,6 +6,9 @@ node_js:
 
 script: npm run test:src
 
+env:
+  - NODE_ENV=test
+
 jobs:
   include:
     - stage: other
