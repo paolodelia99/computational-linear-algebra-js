@@ -1,0 +1,7 @@
+{
+    "include":[
+        "node_modules/gpu.js/**"
+    ],
+    "sourceMap": false,
+    "instrument": false
+}
