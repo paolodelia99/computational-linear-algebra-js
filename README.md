@@ -2,7 +2,7 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra.js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js)
-[![Coverage Status](https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg?branch=master)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js?branch=master)
+<a href='https://coveralls.io/github/paolodelia99/computational-linear-algebra.js'><img src='https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg' alt='Coverage Status' /></a>
 
 Computational Linear algebra is an extensive Javascript library for linear algebra.
 
@@ -51,6 +51,18 @@ console.log(matrix1.sub(matrix2)); // [[0,0,0],[1,2,-1],[2,6,1]]
 console.log(matrix1.ijkMultiplication(matrix2)); // [[1,6,1],[1,10,19],[2,16,36]]
 //Get the inverse of a matrix
 console.log(matrix.getInverse()) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]]
+
+```
+
+Dealing with big matrices? You can use the multipication function that run a parallel algorithm on the GPU:
+
+```javascript
+const { Matrix } =  require('computational-linear-algebra-js')
+
+const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] );
+const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]] );
+
+console.log(Matrix.multiplication(matrix1, matrix2)); // [[1,6,1],[1,10,19],[2,16,36]] //todo with big matrices
 
 ```
 
@@ -126,8 +138,8 @@ Then, the tests can be executed:
     - [ ] determinant of the inverse
     - [ ] Hadamard product
     - [ ] Kronecker product
-    - [ ] Implement a more efficient multiplication
-        -[] Using c++ || gpu.js || using parallelization
+    - [x] Implement a more efficient multiplication
+        -[x] gpu.js 
     - [ ] Implement other decomposition
         - [ ] QR
         - [ ] Cholesky
