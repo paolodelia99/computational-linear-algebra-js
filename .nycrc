@@ -1,7 +1,8 @@
 {
     "include":[
         "src/**.js",
-        "src/**/**.js",
+        "src/**/*.js",
         "node_modules/gpu.js/**"
-    ]
+    ],
+    "excludeNodeModules": false
 }
