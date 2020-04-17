@@ -165,3 +165,66 @@ describe('Test euclidian distance', () => {
     }
   })
 })
+
+describe('Test the getAngle function', () => {
+  it('should give the angle between the two vectors in radians', function () {
+    const vector1 = new Vector([2, 3, 1])
+    const vector2 = new Vector([1, 1, 2])
+
+    assert.deepStrictEqual(Vector.getAngle(vector1, vector2, 'rad'), 0.7016741237876036)
+  })
+
+  it('should give the angle between the two vectors in degree', function () {
+    const vector1 = new Vector([2, 3, 1])
+    const vector2 = new Vector([1, 1, 2])
+
+    assert.deepStrictEqual(vector1.getAngle(vector2, 'deg'), { deg: 40, arcmin: 12, arcsec: 10 })
+  })
+
+  it('should throw an exception', function () {
+    const vector1 = new Vector([2, 3, 1])
+    const vector2 = new Vector([1, 1, 2])
+
+    try {
+      vector1.getAngle(vector2, 'sos')
+      assert.fail('should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'angleType invalid')
+    }
+  })
+})
+
+describe('test vector orthogonality and orthonormality', () => {
+  // Test static method
+  it('should give true because the vectors are orthogonal', function () {
+    const vector1 = new Vector([2, 0, 3, 0])
+    const vector2 = new Vector([0, 2, 0, 12])
+
+    assert.deepStrictEqual(Vector.areVectorsOrthogonal(vector1, vector2), true)
+  })
+
+  // Test instance method
+  it('should give false because the vectors aren\'t orthogonal', function () {
+    const vector1 = new Vector([2, 0, 3, 1])
+    const vector2 = new Vector([0, 2, 0, 12])
+
+    assert.deepStrictEqual(vector1.isVectorOrthogonal(vector2), false)
+  })
+
+  // Test vector orthonormality
+  // Test static method
+  it('should give true because the vectors are orthonormal', function () {
+    const vector1 = new Vector([0, 0, 1, 0])
+    const vector2 = new Vector([0, 1, 0, 0])
+
+    assert.deepStrictEqual(Vector.areVectorOrthonormal(vector1, vector2), true)
+  })
+
+  // Test instance method
+  it('should give false because the vectors aren\'t orthonormal', function () {
+    const vector1 = new Vector([1, 0, 1, 1])
+    const vector2 = new Vector([0, 1, 0, 1])
+
+    assert.deepStrictEqual(vector1.isVectorOrthonormal(vector2), false)
+  })
+})

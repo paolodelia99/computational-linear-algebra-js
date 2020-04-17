@@ -563,3 +563,12 @@ describe('Test gaussian solve method', () => {
     }
   })
 })
+
+describe('Test matrix orthogonality', () => {
+  // Test static method
+  it('should give true because the identity matrix is orthogonal', function () {
+    const matrix = new Matrix(Matrix.createIdentityMatrix(3))
+
+    assert.deepStrictEqual(Matrix.isMatrixOrthogonal(matrix), true)
+  })
+})

@@ -324,6 +324,27 @@ export class Matrix {
       Matrix.subtractMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
+   * Check if the give matrix is orthogonal
+   * @param {number[][] | Matrix} matrix
+   * @returns {boolean} true if is orthogonal otherwise false
+   */
+    static isMatrixOrthogonal = matrix => {
+      // Check matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      const inverse = Matrix.getInverse(matrix)
+      const transpose = Matrix.getTranspose(matrix)
+
+      return JSON.stringify(inverse) === JSON.stringify(transpose)
+    }
+
+    /**
+     * Return true if the matrix is orthogonal otherwise false
+     * @returns {boolean}
+     */
+    isMatrixOrthogonal = () => Matrix.isMatrixOrthogonal(this.matrix)
+
+    /**
      * Get a subMatrix of the given matrix
      * @param {*[][]} matrix
      * @param {number} rowStart

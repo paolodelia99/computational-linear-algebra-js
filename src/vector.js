@@ -55,10 +55,15 @@ export class Vector {
 
     /**
      * Static method that compute the norm of a vector
-     * @param {number[]} vector
+     * @param {number[] | Vector} vector
      * @returns {number} the norm of a vector
      */
-    static getNorm = (vector) => Math.sqrt(vector.map(x => x * x).reduce((a, b) => a + b, 0));
+    static getNorm = (vector) => {
+      // Check vector type
+      vector = Vector.checkVectorType(vector)
+
+      return Math.sqrt(vector.map(x => x * x).reduce((a, b) => a + b, 0))
+    }
 
     /**
      * Compute the norm of a vector
@@ -193,10 +198,86 @@ export class Vector {
     euclideanDistance = (vector) => Vector.euclideanDistance(this.vector, vector)
 
     /**
+   * Get the angle between two vectors
+   * @param {number[] | Vector} vector1
+   * @param {number[] | Vector} vector2
+   * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
+   * @returns {number} angle between the given two vectors
+   */
+    static getAngle = (vector1, vector2, angleType = 'deg') => {
+      if (angleType === 'rad' || angleType === 'deg') {
+        let res = Math.acos((Vector.dotProduct(vector1, vector2)) / (Vector.getNorm(vector1) * Vector.getNorm(vector2)))
+        let angleObj
+
+        if (angleType === 'deg') {
+          res = res * (180 / Math.PI)
+          angleObj = {
+            deg: null,
+            arcmin: null,
+            arcsec: null
+          }
+          angleObj.deg = Math.floor(res)
+          const arcmin = (res % 1) * 60
+          angleObj.arcmin = Math.floor(arcmin)
+          const arcsec = (arcmin % 1) * 60
+          angleObj.arcsec = Math.floor(arcsec)
+        }
+
+        return angleType === 'deg' ? angleObj : res
+      } else {
+        throw new Error('angleType invalid')
+      }
+    }
+
+    /**
+   * Get the angle between the vector and the  given vector
+   * @param {number[] | Vector} vector
+   * @param {string} angleType angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
+   * @returns {number} angle between the vector and the given vector
+   */
+    getAngle = (vector, angleType = 'deg') => Vector.getAngle(this.vector, vector, angleType)
+
+    /**
+   * Check if the given vectors are orthogonal
+   * @param {number[] | Vector} vector1
+   * @param {number[] | Vector} vector2
+   * @returns {boolean} true if they are orthogonal otherwise false
+   */
+    static areVectorsOrthogonal = (vector1, vector2) => {
+      // Check vectors type
+      vector1 = Vector.checkVectorType(vector1)
+      vector2 = Vector.checkVectorType(vector2)
+
+      return Vector.dotProduct(vector1, vector2) === 0
+    }
+
+  /**
+   * Check if the given vector is orthogonal ot the vector
+   * @param {number[] | Vector} vector
+   * @returns {boolean} true if they are orthogonal otherwise false
+   */
+  isVectorOrthogonal = vector => Vector.areVectorsOrthogonal(this.vector, vector)
+
+  /**
+   * Check if the given vectors are orthonormal
+   * @param {number[] | Vector} vector1
+   * @param {number[] | Vector} vector2
+   * @returns {boolean} true if they are orthonormal otherwise false
+   */
+    static areVectorOrthonormal = (vector1, vector2) => Vector.areVectorsOrthogonal(vector1, vector2) && Vector.getNorm(vector1) === 1 && Vector.getNorm(vector2) === 1
+
+  /**
+   * Check if the given vector is orthonormal ot the vector
+   * @param {number[] | Vector} vector
+   * @returns {boolean} true if they are orthonormal otherwise false
+   */
+  isVectorOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
+
+  /**
      * vector field getter
      * @returns {number[] }
      */
-    get vector () {
-      return this._vector
-    }
+  get vector () {
+    return this._vector
+  }
 }
