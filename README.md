@@ -2,11 +2,15 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra.js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js)
-<a href='https://coveralls.io/github/paolodelia99/computational-linear-algebra.js'><img src='https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg' alt='Coverage Status' /></a>
+[![Coverage Status](https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg?branch=master)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js?branch=master)
+[![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
+
 
 Computational Linear algebra is an extensive Javascript library for linear algebra.
 
 ## Features 
+
+- Efficent 
 - Runs on any JavaScript engine.
 - OOP oriented
 - type flexible
@@ -117,7 +121,12 @@ Install the project dependencies:
 
     npm install
     
-//todo: finisci
+Then, the project can be build by executing the build script via npm:
+
+    npm run build
+
+This will build the library linear.algebra.js and linear.algebra.min.js from the source files and
+put them in the folder dist.
 
 ## Test
 
@@ -128,6 +137,16 @@ To execute tests for the library, install the project dependencies once:
 Then, the tests can be executed:
 
     npm test
+    
+### Continuous Integration testing 
+
+Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and the test coverage is shown is [Coveralls](https://coveralls.io/) every time a commit is pushed to github.
+The test results can be checked on https://travis-ci.org/github/paolodelia99/computational-linear-algebra.js. Travis CI runs the tests for different versions of node.js.
+
+[![Travis CI](https://raw.github.com/paolodelia99/computational-linear-algebra/master/misc/Travis-CI-logo.png)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js) &nbsp;&nbsp;&nbsp;
+[![BrowserStack](https://raw.github.com/paolodelia99/computational-linear-algebra/master/misc/coveralls-logo.png)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js)
+
+Thanks Travis CI for the generous free hosting of this open source project!
 
 ## Todos
 
@@ -140,16 +159,19 @@ Then, the tests can be executed:
     - [ ] determinant of the inverse
     - [ ] Hadamard product
     - [ ] Kronecker product
+    - [x] Orthogonality and orthonormality
     - [x] Implement a more efficient multiplication
-        -[x] gpu.js 
-    - [ ] Implement other decomposition
+        - [x] gpu.js 
+    - [ ] Implement other decompositions
         - [ ] QR
         - [ ] Cholesky
         - [ ] Singular Value Decomposition
     - [ ] eigenvalues and eigenvectors
     
 - Vector 
-    - [ ] Euclidean distance between two vectors
+    - [x] Euclidean distance between two vectors
+    - [x] Orthogonality and orthonormality
+    - [x] Angle between two vectors
     - [ ] Check Linear Dependency
 
 - Linear Transformation
