@@ -20,6 +20,17 @@ describe('Test creation of an empty vector', () => {
   })
 })
 
+describe('Test creation of a random vector', () => {
+  it('should give a random vector of the given dimension', function () {
+    const vector = Vector.createRandomVector(4, -10, 10)
+
+    assert.deepStrictEqual(vector.length, 4)
+    for (let i = 0; i < vector.length; i++) {
+      assert.deepStrictEqual(typeof vector[i] === 'number', true)
+    }
+  })
+})
+
 describe('Test check vector type function', () => {
   it('should give the array no matter what', function () {
     const vector1 = new Vector([1, 2, 0])
@@ -105,7 +116,7 @@ describe('test the cross product between two vectors', () => {
 
   // Test Static method
   it('should throw an error if the one of the vector isn\'t a 3d vector', function () {
-    const vector1 = new Vector([12, 2, 3])
+    const vector1 = new Vector([12, 2, 3, 4])
     const vector2 = new Vector([2, 3, 4, 5])
 
     try {
@@ -127,6 +138,29 @@ describe('test the cross product between two vectors', () => {
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, 'crossProduct is defined only for 3d vectors')
+      }
+    }
+  })
+})
+
+describe('Test euclidian distance', () => {
+  it('should give the right result', function () {
+    const vector1 = new Vector([1, 1, 1])
+    const vector2 = new Vector([2, 0, 1])
+
+    assert.deepStrictEqual(Vector.euclideanDistance(vector1, vector2), Math.sqrt(2))
+  })
+
+  // Test instance method
+  it('should throw an error if the one of the vector isn\'t a 3d vector', function () {
+    const vector1 = new Vector([12, 2, 3])
+    const vector2 = new Vector([2, 3, 4, 5])
+
+    try {
+      vector1.euclideanDistance(vector2)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot compute the euclidean distance of two vectors with different dimensions')
       }
     }
   })

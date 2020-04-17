@@ -22,6 +22,7 @@ describe('test creation of a random matrix', () => {
   it('should give a random matrix', function () {
     const matrix = Matrix.createRandomMatrix(3, 3, 0, 10)
 
+    assert.deepStrictEqual(matrix.length === 3 && matrix[0].length === 3, true)
     assert.deepStrictEqual(Array.isArray(matrix) && Array.isArray(matrix[0]), true)
   })
 })
@@ -531,6 +532,7 @@ describe('Test gaussian elimination method', () => {
 
     try {
       Matrix.gaussianElimination(matrix)
+      assert.fail('Should throw an error')
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, 'Cannot perform the gaussian elimination of this matrix')
@@ -549,10 +551,11 @@ describe('Test gaussian solve method', () => {
 
   it('should throw an exception if the matrix row are different form the the vector dimension', function () {
     const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
-    const vector = new Vector([1, 2, 1])
+    const vector = new Vector([1, 2, 1, 3, 5])
 
     try {
       Matrix.gaussSolve(matrix, vector)
+      assert.fail('Should throw an error')
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, 'The matrix and the vector give are incompatible!')

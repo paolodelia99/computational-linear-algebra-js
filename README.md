@@ -134,6 +134,7 @@ Then, the tests can be executed:
 - Matrix
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
+    - [ ] check if the matrix is upper triangular, lower triangular, symmetric, positive definite, orthogonal  
     - [ ] rank of the matrix
     - [ ] determinant without LU
     - [ ] determinant of the inverse
@@ -148,6 +149,7 @@ Then, the tests can be executed:
     - [ ] eigenvalues and eigenvectors
     
 - Vector 
+    - [ ] Euclidean distance between two vectors
     - [ ] Check Linear Dependency
 
 - Linear Transformation

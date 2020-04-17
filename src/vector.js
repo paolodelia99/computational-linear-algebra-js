@@ -114,7 +114,7 @@ export class Vector {
       const x2 = Array.isArray(vector2) ? vector2 : vector2.vector
       // Cross product of two 3D vectors.
       if (x1.length !== 3 && x2.length !== 3) {
-        throw new Error('crossProduct is defined only for 3d vectors.')
+        throw new Error('crossProduct is defined only for 3d vectors')
       } else {
         return [
           x1[1] * x2[2] - x1[2] * x2[1],
@@ -159,6 +159,38 @@ export class Vector {
      * @returns {number[]} the sum of the two vectors
      */
     sum = (vector) => Vector.sum(this._vector, vector);
+
+    /**
+     * Compute the euclidean distance of the given vectors
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {number} the euclidean distance between the two vectors
+     */
+      static euclideanDistance = (vector1, vector2) => {
+        // Check vector vector type
+        vector1 = Vector.checkVectorType(vector1)
+        vector2 = Vector.checkVectorType(vector2)
+
+        if (vector1.length !== vector2.length) {
+          throw new Error('Cannot compute the euclidean distance of two vectors with different dimensions')
+        } else {
+          let distance = 0
+          const zipVector = zip(vector1, vector2)
+
+          for (let i = 0; i < zipVector.length; i++) {
+            distance += Math.pow(zipVector[i].reduce((a, b) => -a + b, 0), 2)
+          }
+
+          return Math.sqrt(distance)
+        }
+      }
+
+    /**
+     * Compute the euclidean distance between the vector and the give vector
+     * @param {number[] | Vector} vector
+     * @returns {number} the euclidean distance between the two vectors
+     */
+    euclideanDistance = (vector) => Vector.euclideanDistance(this.vector, vector)
 
     /**
      * vector field getter
