@@ -143,8 +143,8 @@ Then, the tests can be executed:
 Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and the test coverage is shown is [Coveralls](https://coveralls.io/) every time a commit is pushed to github.
 The test results can be checked on https://travis-ci.org/github/paolodelia99/computational-linear-algebra.js. Travis CI runs the tests for different versions of node.js.
 
-[![Travis CI](https://raw.github.com/paolodelia99/computational-linear-algebra/master/misc/Travis-CI-logo.png)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js) &nbsp;&nbsp;&nbsp;
-[![BrowserStack](https://raw.github.com/paolodelia99/computational-linear-algebra/master/misc/coveralls-logo.png)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js)
+[![Travis CI](./misc/Travis-CI-logo.png)](https://github.com/paolodelia99/computational-linear-algebra.js/blob/master/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
+[![BrowserStack](./misc/coveralls-logo-177x55.png)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js)
 
 Thanks Travis CI for the generous free hosting of this open source project!
 
