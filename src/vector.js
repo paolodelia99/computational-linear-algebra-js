@@ -10,17 +10,48 @@ export class Vector {
   }
 
     /**
-     *
+     * Static method the give a copy of the given vector
      * @param {number[]} vector1
-     * @returns {number[]}
+     * @returns {number[]} copy of the given vector
      */
     static getCopy = (vector1) => vector1.slice();
 
     /**
-     *
-     * @returns {*}
+     * Return a copy of the vector
+     * @returns {number[]} copy the vector
      */
     getCopy = () => Vector.getCopy(this.vector);
+
+  /**
+   * Create a empty vector of the given dimension
+   * @param {number} dim
+   * @returns {number[]} empty vector of the given dimension
+   */
+  static createEmptyVector = dim => Array(dim).fill(0)
+
+  /**
+   * Create a random vector of the given dimension, filling it with number of the given range
+   * @param  {number} dim vector dimension
+   * @param {number} min min number of the random range
+   * @param {number} max max number of the given range
+   * @returns {number[]} random vector of the given dimension
+   */
+  static createRandomVector = (dim, min, max) => {
+    const vector = Vector.createEmptyVector(dim)
+
+    for (let i = 0; i < dim; i++) {
+      vector[i] = parseInt(Math.random() * (max - min) + min)
+    }
+
+    return vector
+  }
+
+  /**
+   * Function that i use to return the array if i give a vector obj
+   * @param {number[] | Vector} vector
+   * @returns {number[]} the array representing the vector
+   */
+    static checkVectorType = (vector) => Array.isArray(vector) ? vector : vector.vector
 
     /**
      * Static method that compute the norm of a vector
@@ -36,10 +67,10 @@ export class Vector {
     getNorm = () => Vector.getNorm(this._vector);
 
     /**
-     *
-     * @param vector
-     * @param scalar
-     * @returns {*|Uint8Array|BigInt64Array|number[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+     * Static method compute the product between a vector and a scalar
+     * @param {number[]} vector
+     * @param {number} scalar
+     * @returns {number[]} the vector multiplied by the scalar
      */
     static scalarProduct = (vector, scalar) => vector.map(x => x * scalar);
 
@@ -58,15 +89,15 @@ export class Vector {
      */
     static dotProduct = (vector1, vector2) => {
       // Check vectors type
-      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
-      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
+      vector1 = Vector.checkVectorType(vector1)
+      vector2 = Vector.checkVectorType(vector2)
 
       return (zip(vector1, vector2).map(x => x.reduce((a, b) => a * b, 1))).reduce((a, b) => a + b, 0)
     }
 
     /**
      * Compute the product column vector for row vector
-     * @param {*[]} vector2
+     * @param {number[] | Vector} vector2
      * @returns {number} the product of the row vector and the col vector
      */
     dotProduct = (vector2) => Vector.dotProduct(this._vector, vector2);
@@ -124,7 +155,7 @@ export class Vector {
 
     /**
      * Sum the vector with the given vector (instance method)
-     * @param {*[]} vector
+     * @param {number[] | Vector} vector
      * @returns {number[]} the sum of the two vectors
      */
     sum = (vector) => Vector.sum(this._vector, vector);

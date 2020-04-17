@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     app: ['@babel/polyfill', './src/entry.js']
   },
+  performance: { hints: false }, // to hide the "asset size limit" warning
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'linear.algebra.js',

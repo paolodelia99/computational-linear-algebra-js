@@ -1,5 +1,6 @@
 import assert from 'assert'
 import { Matrix } from '../../src/matrix'
+import { Vector } from '../../src/vector'
 
 describe('test create square matrix', () => {
   it('should give an empty square matrix', () => {
@@ -479,6 +480,13 @@ describe('Test matrix multiplication', () => {
         assert.deepStrictEqual(Matrix.multiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
       })
 
+      it('the instance method should give the right result', function () {
+        const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+        const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1]])
+
+        assert.deepStrictEqual(matrix1.multiplication(matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      })
+
       it('should work with non square matrices', function () {
         const matrix1 = [[2, 4, 5, 1], [-1, 2, 1, 0], [4, -1, 3, 1]]
         const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1], [2, 4, 0]]
@@ -508,5 +516,47 @@ describe('test create identity matrix', () => {
     const idMatrix = Matrix.createIdentityMatrix(4)
 
     assert.deepStrictEqual(idMatrix, [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+  })
+})
+
+describe('Test gaussian elimination method', () => {
+  it('should reduce the matrix at the row echelon form', function () {
+    const matrix = new Matrix([1, 1, 0, 1], [1, 0, 0, 2], [0, 1, 1, 1])
+
+    assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[1, 1, 0, 1], [0, -1, 0, 1], [0, 0, 1, 2]])
+  })
+
+  it('should throw an exception if the matrix don\'t have the right dimension', function () {
+    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+
+    try {
+      Matrix.gaussianElimination(matrix)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'Cannot perform the gaussian elimination of this matrix')
+      }
+    }
+  })
+})
+
+describe('Test gaussian solve method', () => {
+  it('should solve the linear system using gaussian elimination', function () {
+    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+    const vector = new Vector([1, 2, 1])
+
+    assert.deepStrictEqual(Matrix.gaussSolve(matrix, vector), [2, -1, 2])
+  })
+
+  it('should throw an exception if the matrix row are different form the the vector dimension', function () {
+    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+    const vector = new Vector([1, 2, 1])
+
+    try {
+      Matrix.gaussSolve(matrix, vector)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'The matrix and the vector give are incompatible!')
+      }
+    }
   })
 })

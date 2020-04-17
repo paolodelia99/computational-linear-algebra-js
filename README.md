@@ -7,7 +7,7 @@
 Computational Linear algebra is an extensive Javascript library for linear algebra.
 
 ## Features 
-
+- Runs on any JavaScript engine.
 - OOP oriented
 - type flexible
 - open source
@@ -54,15 +54,15 @@ console.log(matrix.getInverse()) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.
 
 ```
 
-Dealing with big matrices? You can use the multipication function that run a parallel algorithm on the GPU:
+Dealing with big matrices? You can use the *multipication()* function that run a parallel algorithm on the GPU:
 
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
 
-const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] );
-const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]] );
+const matrix1 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
+const matrix2 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 
-console.log(Matrix.multiplication(matrix1, matrix2)); // [[1,6,1],[1,10,19],[2,16,36]] //todo with big matrices
+console.log( matrix1.multiplication(matrix2));
 
 ```
 
@@ -135,6 +135,7 @@ Then, the tests can be executed:
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
     - [ ] rank of the matrix
+    - [ ] determinant without LU
     - [ ] determinant of the inverse
     - [ ] Hadamard product
     - [ ] Kronecker product
@@ -171,6 +172,7 @@ Then, the tests can be executed:
     - [ ] build npm package
     - [ ] better documentation
     - [x] maximise the coverage
+    - [ ] Compatible with Typescript
     
 
 ## License

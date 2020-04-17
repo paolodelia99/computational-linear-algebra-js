@@ -1,4 +1,5 @@
 const { GPU } = require('gpu.js')
+const { Vector } = require('./vector')
 
 export class Matrix {
     lower // The lower decomposition of the matrix using LU decomp
@@ -36,18 +37,19 @@ export class Matrix {
     static createEmptySquareMatrix = (dim) => Array(dim).fill().map(() => Array(dim).fill(0));
 
     /**
-     *
-     * @param rows
-     * @param cols
-     * @param min
-     * @param max
-     * @returns {number[][]}
+     * Create a matrix of the given dimension, filling it with random numbers of the
+     * given range
+     * @param {number} rows rows of the matrix
+     * @param {number} cols cols of the matrix
+     * @param {number} min min number of the range
+     * @param {number} max max number of the range
+     * @returns {number[][]} random of the given dimension
      */
     static createRandomMatrix = (rows, cols, min, max) => {
       const matrix = Matrix.createEmptyMatrix(rows, cols)
 
       for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[i].length; j++) { matrix[i][j] = Math.random() * (max - min) + min }
+        for (let j = 0; j < matrix[i].length; j++) { matrix[i][j] = parseInt(Math.random() * (max - min) + min) }
       }
 
       return matrix
@@ -84,13 +86,13 @@ export class Matrix {
 
     /**
      * Clone the matrix
-     * @returns {(Buffer | SharedArrayBuffer | T[] | BigUint64Array | Uint8ClampedArray | Uint32Array | Blob | Int16Array | T[] | Float64Array | string | Uint16Array | ArrayBuffer | Int32Array | Float32Array | BigInt64Array | Uint8Array | Int8Array | T[])[]}
+     * @returns {number[][]}
      */
     static cloneMatrix = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
 
     /**
      * Get a copy of the matrix
-     * @returns {(Buffer|SharedArrayBuffer|T[]|BigUint64Array|Uint8ClampedArray|Uint32Array|Blob|Int16Array|Float64Array|string|Uint16Array|ArrayBuffer|Int32Array|Float32Array|BigInt64Array|Uint8Array|Int8Array)[]}
+     * @returns {number[][]}
      */
     getCopy = () => Matrix.cloneMatrix(this.matrix);
 
@@ -351,6 +353,99 @@ export class Matrix {
     getSubMatrix = (rowStart, rowEnd, colStart, colEnd) => Matrix.getSubMatrix(this._matrix, rowStart, rowEnd, colStart, colEnd);
 
     /**
+   * Static method that compute the gaussian elimination of the given matrix
+   * @param {number[][] | Matrix} matrix
+   * @returns {number[][]}
+   */
+    static gaussianElimination = (matrix) => {
+      // Check matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      if (matrix[0].length !== matrix.length + 1) {
+        throw new Error('Cannot perform the gaussian elimination of this matrix')
+      } else {
+        // Copy the matrix
+        const matrixCopy = Matrix.cloneMatrix(matrix)
+
+        let i, j, k
+        const n = matrixCopy.length
+
+        for (i = 0; i < n; i++) {
+          // Search for maximum in this column
+          let maxEl = Math.abs(matrixCopy[i][i])
+          let maxRow = i
+          for (k = i + 1; k < n; k++) {
+            if (Math.abs(matrixCopy[k][i]) > maxEl) {
+              maxEl = Math.abs(matrixCopy[k][i])
+              maxRow = k
+            }
+          }
+
+          // Swap maximum row with current row (column by column)
+          for (k = i; k < n + 1; k++) {
+            const tmp = matrixCopy[maxRow][k]
+            matrixCopy[maxRow][k] = matrixCopy[i][k]
+            matrixCopy[i][k] = tmp
+          }
+
+          // Make all rows below this one 0 in current column
+          for (k = i + 1; k < n; k++) {
+            const c = -matrixCopy[k][i] / matrixCopy[i][i]
+            for (j = i; j < n + 1; j++) {
+              if (i === j) {
+                matrixCopy[k][j] = 0
+              } else {
+                matrixCopy[k][j] += c * matrixCopy[i][j]
+              }
+            }
+          }
+        }
+
+        return matrixCopy
+      }
+    }
+
+    /**
+   * Static method that solve linear system with the gaussian elimination
+   * @param {number[][] | Matrix}matrix
+   * @param {number[] | Vector}vector
+   * @returns {number[][]} the solution of the linear system
+   */
+    static gaussSolve = (matrix, vector) => {
+      // Check matrix and vector type
+      matrix = Matrix.checkMatrixType(matrix)
+      vector = Vector.checkVectorType(vector)
+
+      if (matrix.length !== vector.length) {
+        throw new Error('The matrix and the vector give are incompatible!')
+      } else {
+        let i, k
+
+        // Make a copy of the matrix
+        let matrixCopy = Matrix.cloneMatrix(matrix)
+
+        // Unify the matrix and the vector
+        for (i = 0; i < matrix.length; i++) {
+          matrixCopy[i].push(vector[i])
+        }
+        const n = matrixCopy.length
+
+        matrixCopy = Matrix.gaussianElimination(matrixCopy)
+
+        // Solve equation Ax=b for an upper triangular matrix A
+        const resVector = Matrix.createEmptyMatrix(1, n)
+        for (i = n - 1; i > -1; i--) {
+          resVector[i] = matrixCopy[i][n] / matrixCopy[i][i]
+          for (k = i - 1; k > -1; k--) {
+            matrixCopy[k][n] -= matrixCopy[k][i] * resVector[i]
+          }
+        }
+
+        return resVector
+      }
+    }
+
+    /**
      * static method for the LU Decomposition of the given matrix
      * @param {number[][] | Matrix } matrix
      * @returns {{U: *[][], L: *[][]}} object containing the L and the U matrix
@@ -540,6 +635,13 @@ export class Matrix {
         return resMatrix
       }
     };
+
+  /**
+   * Efficient Multiplication run on the gpu with a parallel algorithm
+   * @param {number[][] | Matrix} matrix
+   * @returns {number[][]} the result of the multiplication
+   */
+  multiplication = (matrix) => Matrix.multiplication(this.matrix, matrix)
 
     /**
      * Strassen multiplication method that calls the strassen algorithm

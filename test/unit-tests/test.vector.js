@@ -12,6 +12,24 @@ describe('test vector creation', () => {
   })
 })
 
+describe('Test creation of an empty vector', () => {
+  it('should give an empty array', function () {
+    const vector = Vector.createEmptyVector(3)
+
+    assert.deepStrictEqual(vector, [0, 0, 0])
+  })
+})
+
+describe('Test check vector type function', () => {
+  it('should give the array no matter what', function () {
+    const vector1 = new Vector([1, 2, 0])
+    const vector2 = [1, 2, 0]
+
+    assert.deepStrictEqual(Vector.checkVectorType(vector1), [1, 2, 0])
+    assert.deepStrictEqual(Vector.checkVectorType(vector2), [1, 2, 0])
+  })
+})
+
 describe('test the get norm function', () => {
   it('should give the norm of the vector', () => {
     const vector1 = new Vector([1, 2, 1])
