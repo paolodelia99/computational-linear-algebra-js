@@ -472,7 +472,7 @@ describe('Test matrix multiplication', () => {
   })
 
   describe('Test parallel Multiplication', () => {
-    // fixme: gotta find a way to implement this in the coverage
+    // fixme: gotta find a way to implement this in the coverage, becase nyc doesn't include the dependencies
     if (process.env.NODE_ENV === 'test') {
       it('should give the right result', function () {
         const matrix1 = [[2, 4, 5], [-1, 2, 1], [4, -1, 3]]
