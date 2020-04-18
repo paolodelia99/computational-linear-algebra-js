@@ -23,6 +23,7 @@ export class LinearTransformation {
     static apply = (matrix, vector) => {
       // fixme: implement also for the matrix
 
+
       // Check matrix vector compatibility
       const refVector = Array.isArray(vector) ? vector : vector.getCopy()
       const refMatrix = Array.isArray(matrix) ? matrix : matrix.getCopy()
@@ -46,7 +47,6 @@ export class LinearTransformation {
      */
     apply = vector => LinearTransformation.apply(this._transformationMatrix, vector);
 
-    // todo: to test
     /**
      * Apply the inverse mapping of the given transformation
      * @param {number[][] | Matrix} transformation
