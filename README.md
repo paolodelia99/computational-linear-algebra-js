@@ -173,6 +173,8 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [x] Orthogonality and orthonormality
     - [x] Angle between two vectors
     - [ ] Check Linear Dependency
+    - [ ] Test post it orthonormality
+    - [ ] Projections
 
 - Linear Transformation
     - [ ] Injective, Surjective => Bijective
@@ -180,7 +182,8 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [ ] kernel
     - [ ] image
     - [ ] injectvity and surjectivity
-
+    - [ ] Projections
+    
 - Tensors
   
 - class Vector Spaces ?? (see if it does make sense)
@@ -197,6 +200,7 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [ ] better documentation
     - [x] maximise the coverage
     - [ ] Compatible with Typescript
+    - [ ] Test with Browser stack
     
 
 ## License
