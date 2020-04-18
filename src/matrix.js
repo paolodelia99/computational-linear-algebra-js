@@ -49,7 +49,11 @@ export class Matrix {
       const matrix = Matrix.createEmptyMatrix(rows, cols)
 
       for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[i].length; j++) { matrix[i][j] = parseInt(Math.random() * (max - min) + min) }
+        for (let j = 0; j < matrix[i].length; j++) {
+          let num = parseInt(Math.random() * (max - min) + min)
+          if (num === 0) { num = Math.abs(num) }
+          matrix[i][j] = num
+        }
       }
 
       return matrix
@@ -620,7 +624,7 @@ export class Matrix {
       Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
 
     /**
-   * Efficent Multiplication run on the gpu with a parallel algorithm
+   * Efficient Multiplication run on the gpu with a parallel algorithm
    * @param {number[][] | Matrix} matrix1
    * @param {number[][] | Matrix} matrix2
    * @returns {number[][]} the result of the multiplication

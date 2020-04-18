@@ -40,6 +40,25 @@ describe('Test the application of the linear Transformation', () => {
       }
     }
   })
+
+  it('should work with the matrices', function () {
+    const t = new LinearTransformation(Matrix.createRandomMatrix(4, 3, -2, 2))
+    const matrix = Matrix.createRandomMatrix(3, 4, -2, 2)
+
+    assert.deepEqual(t.apply(matrix), Matrix.ijkMultiplication(t._transformationMatrix, matrix))
+  })
+
+  it('should throw an error if the two matrices aren\'t incompatible for the multiplication', function () {
+    const t = new LinearTransformation(Matrix.createRandomMatrix(4, 3, -2, 2))
+    const matrix = Matrix.createRandomMatrix(4, 4, -2, 2)
+
+    try {
+      t.apply(matrix)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Cannot apply the linear transformation to the matrix')
+    }
+  })
 })
 
 describe('test apply inverse', () => {

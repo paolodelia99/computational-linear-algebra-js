@@ -40,7 +40,12 @@ export class Vector {
     const vector = Vector.createEmptyVector(dim)
 
     for (let i = 0; i < dim; i++) {
-      vector[i] = parseInt(Math.random() * (max - min) + min)
+      let num = parseInt(Math.random() * (max - min) + min)
+      // for deepAssertEqual() problem
+      if (num === 0) {
+        num = Math.abs(num)
+      }
+      vector[i] = num
     }
 
     return vector
