@@ -176,7 +176,7 @@ Thanks Travis CI for the generous free hosting of this open source project!
 
 - Linear Transformation
     - [ ] Injective, Surjective => Bijective
-    - [ ] Linear Transformation applyed to matrices
+    - [x] Linear Transformation applyed to matrices
     - [ ] kernel
     - [ ] image
     - [ ] injectvity and surjectivity
