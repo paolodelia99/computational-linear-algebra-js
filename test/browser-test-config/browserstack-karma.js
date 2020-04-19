@@ -4,6 +4,7 @@ module.exports = function (config) {
   const baseConfig = baseKarma(config)
 
   config.set(Object.assign(baseConfig, {
+
     browsers: [
       'bs_firefox_android',
       'bs_firefox_windows',

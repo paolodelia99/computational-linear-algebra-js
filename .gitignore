@@ -8,3 +8,5 @@ lib
 # nyc output
 .nyc_output/
 .nyc_output/processinfo
+
+.env
