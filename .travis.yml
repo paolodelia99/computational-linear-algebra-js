@@ -15,6 +15,9 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else npm run test:browser; fi'
+      node_js: lts/*
+      name: Browser Test
     - script: npm run coverage
       node_js: lts/*
       name: Coverage
