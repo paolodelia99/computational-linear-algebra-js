@@ -2,8 +2,8 @@ module.exports = function (config) {
   return {
 
     browserStack: {
-      username: process.env.BROWSER_STACK_USER_NAME,
-      accessKey: process.env.BROWSER_STACK_ACCESS_KEY
+      username: process.env.BROWSERSTACK_USERNAME,
+      accessKey: process.env.BROWSERSTACK_ACCESS_KEY
     },
 
     basePath: '../..',
