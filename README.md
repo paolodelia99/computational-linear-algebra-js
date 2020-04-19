@@ -159,6 +159,7 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [ ] determinant of the inverse
     - [ ] Hadamard product
     - [ ] Kronecker product
+    - [ ] Rotation matrix
     - [x] Orthogonality and orthonormality
     - [x] Implement a more efficient multiplication
         - [x] gpu.js 

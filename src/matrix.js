@@ -166,6 +166,15 @@ export class Matrix {
       Matrix.getTranspose(this._matrix);
 
     /**
+     * Transpose the matrix
+     * @returns {Matrix}
+     */
+    transpose = () => {
+      this._matrix = Matrix.getTranspose(this._matrix)
+      return this
+    }
+
+    /**
      * Static method for printing matrix
      * @param { number[][] }matrix
      */
@@ -176,7 +185,6 @@ export class Matrix {
      */
     printMatrix = () => Matrix.printMatrix(this._matrix);
 
-    // todo: to test
     /**
      * Static method that compute the inverse of the give matrix
      * @param {number[][] | Matrix} matrix
@@ -223,6 +231,15 @@ export class Matrix {
         return Matrix.getTranspose(inverse)
       }
     };
+
+    /**
+     * Inverse the matrix
+     * @returns {Matrix}
+     */
+    inverse = () => {
+      this._matrix = Matrix.getInverse(this._matrix)
+      return this
+    }
 
     /**
      * Compute the determinant of a matrix
@@ -290,10 +307,12 @@ export class Matrix {
     /**
      * Instance method the compute the sum of two matrices calling the static method
      * @param {number[][] | Matrix} matrix
-     * @returns {*[][]|undefined} the sum of the two matrices
+     * @returns {Matrix} the sum of the two matrices
      */
-    sum = matrix =>
-      Matrix.sumMatrices(this._matrix, matrix);
+    sum = matrix => {
+      this._matrix = Matrix.sumMatrices(this._matrix, matrix)
+      return this
+    }
 
     /**
      * Static method that compute the subtraction of two matrices
@@ -322,10 +341,12 @@ export class Matrix {
     /**
      * Subtract the given matrix to the matrix object
      * @param {number[][] | Matrix} matrix
-     * @returns {*[][]}
+     * @returns {Matrix}
      */
-    sub = matrix =>
-      Matrix.subtractMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
+    sub = matrix => {
+      this._matrix = Matrix.subtractMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
+      return this
+    }
 
     /**
    * Check if the give matrix is orthogonal
@@ -615,13 +636,15 @@ export class Matrix {
       }
     };
 
-    /**
-     * Instance method that return thr multiplication of matrix
-     * @param {number[][]| Matrix} matrix
-     * @returns {number[][]}
-     */
-    ijkMultiplication = (matrix) =>
-      Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix);
+  /**
+   * Instance method that return thr multiplication of matrix
+   * @param {number[][]| Matrix} matrix
+   * @return {Matrix}
+   */
+  ijkMultiplication = (matrix) => {
+    this._matrix = Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
+    return this
+  }
 
     /**
    * Efficient Multiplication run on the gpu with a parallel algorithm
@@ -664,9 +687,12 @@ export class Matrix {
   /**
    * Efficient Multiplication run on the gpu with a parallel algorithm
    * @param {number[][] | Matrix} matrix
-   * @returns {number[][]} the result of the multiplication
+   * @returns {Matrix} the result of the multiplication
    */
-  multiplication = (matrix) => Matrix.multiplication(this.matrix, matrix)
+  multiplication = (matrix) => {
+    this._matrix = Matrix.multiplication(this.matrix, matrix)
+    return this
+  }
 
     /**
      * Strassen multiplication method that calls the strassen algorithm
@@ -719,9 +745,12 @@ export class Matrix {
      * Strassen multiplication of the two given matrices
      * @param {number[][] | Matrix} matrix
      * @param {number} leafsize
-     * @returns {number[][]}
+     * @returns {Matrix}
      */
-    strassenMultiplication = (matrix, leafsize) => Matrix.strassenMultiplication(this.matrix, matrix, leafsize);
+    strassenMultiplication = (matrix, leafsize) => {
+      this._matrix = Matrix.strassenMultiplication(this.matrix, matrix, leafsize)
+      return this
+    }
 
     /**
      * Implementation of the Strassen algorithm

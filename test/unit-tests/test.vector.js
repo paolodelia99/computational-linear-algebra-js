@@ -54,10 +54,10 @@ describe('test the get norm function', () => {
 })
 
 describe('test scalar product', () => {
-  it('should give the scalar product', function () {
+  it('should multiply the vector by the given scalar', function () {
     const vector = new Vector([1, 2, 1])
 
-    assert.deepStrictEqual(vector.scalarProduct(5), [5, 10, 5])
+    assert.deepStrictEqual(vector.scalarProduct(5).vector, [5, 10, 5])
   })
 })
 
@@ -67,7 +67,7 @@ describe('test sum of vectors', () => {
     const vector2 = new Vector([-1, 2, -1])
 
     assert.deepStrictEqual(Vector.sum(vector1, vector2), [1, 5, 0])
-    assert.deepStrictEqual(vector1.sum(vector2), [1, 5, 0])
+    assert.deepStrictEqual(vector1.sum(vector2).vector, [1, 5, 0])
   })
 
   it('should throw an error if the vectors haven\'t the same dimension', function () {
@@ -76,6 +76,35 @@ describe('test sum of vectors', () => {
 
     try {
       Vector.sum(vector1, vector2)
+    } catch (e) {
+      if (e instanceof Error) {
+        assert.deepStrictEqual(e.message, 'The two vectors haven\'t the same Length')
+      }
+    }
+  })
+})
+
+describe('test subtraction of two vectors', () => {
+  it('should give the subtraction of two vectors', function () {
+    const vector1 = [2, 1, 1]
+    const vector2 = [1, 0, 1]
+
+    assert.deepStrictEqual(Vector.subtract(vector1, vector2), [1, 1, 0])
+  })
+
+  it('should substract the second vector', function () {
+    const vector1 = new Vector([2, 1, 1])
+    const vector2 = new Vector([1, 0, 1])
+
+    assert.deepStrictEqual(vector1.sub(vector2).vector, [1, 1, 0])
+  })
+
+  it('should throw an error if the vectors haven\'t the same dimension', function () {
+    const vector1 = new Vector([2, 3, 0, 4])
+    const vector2 = new Vector([-1, 2])
+
+    try {
+      Vector.subtract(vector1, vector2)
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, 'The two vectors haven\'t the same Length')

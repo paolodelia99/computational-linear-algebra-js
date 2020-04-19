@@ -117,9 +117,15 @@ describe('test matrix transposition', () => {
     const matrix1 = [[1, 2, -1], [1, 4, 2], [2, 6, 5]]
 
     // test static method
-    assert.deepStrictEqual(matrix.getTranspose().valueOf(), [[1, 1, 2], [2, 4, 6], [-1, 2, 5]])
+    assert.deepStrictEqual(matrix.getTranspose(), [[1, 1, 2], [2, 4, 6], [-1, 2, 5]])
     // test instance method
-    assert.deepStrictEqual(Matrix.getTranspose(matrix1).valueOf(), [[1, 1, 2], [2, 4, 6], [-1, 2, 5]])
+    assert.deepStrictEqual(Matrix.getTranspose(matrix1), [[1, 1, 2], [2, 4, 6], [-1, 2, 5]])
+  })
+
+  it('should give transpose the matrix object', function () {
+    const matrix = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
+
+    assert.deepStrictEqual(matrix.transpose().matrix, [[1, 1, 2], [2, 4, 6], [-1, 2, 5]])
   })
 })
 
@@ -135,7 +141,7 @@ describe('Test matrix sum', () => {
     const matrix1 = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
     const matrix2 = new Matrix([[1, 2, -1], [0, 2, 3], [0, 0, 4]])
 
-    assert.deepStrictEqual(matrix1.sum(matrix2), [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
+    assert.deepStrictEqual(matrix1.sum(matrix2).matrix, [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
   })
 
   it('should work for different types', function () {
@@ -143,9 +149,9 @@ describe('Test matrix sum', () => {
     const matrix2 = [[1, 2, -1], [0, 2, 3], [0, 0, 4]]
 
     // test static method
-    assert.deepStrictEqual(matrix1.sum(matrix2), [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
-    // test instance method
     assert.deepStrictEqual(Matrix.sumMatrices(matrix1, matrix2), [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
+    // test instance method
+    assert.deepStrictEqual(matrix1.sum(matrix2).matrix, [[2, 4, -2], [1, 6, 5], [2, 6, 9]])
   })
 
   it('should thorwn an exception if the matrices has two different dimensions', function () {
@@ -175,7 +181,7 @@ describe('Test matrix subtraction', () => {
     const matrix1 = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
     const matrix2 = new Matrix([[1, 2, -1], [0, 2, 3], [0, 0, 4]])
 
-    assert.deepStrictEqual(matrix1.sub(matrix2), [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
+    assert.deepStrictEqual(matrix1.sub(matrix2).matrix, [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
   })
 
   it('should work for different types', function () {
@@ -183,9 +189,9 @@ describe('Test matrix subtraction', () => {
     const matrix2 = [[1, 2, -1], [0, 2, 3], [0, 0, 4]]
 
     // test static method
-    assert.deepStrictEqual(matrix1.sub(matrix2), [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
-    // test instance method
     assert.deepStrictEqual(Matrix.subtractMatrices(matrix1, matrix2), [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
+    // test instance method
+    assert.deepStrictEqual(matrix1.sub(matrix2).matrix, [[0, 0, 0], [1, 2, -1], [2, 6, 1]])
   })
 
   it('should thorwn an exception if the matrices has two different dimensions', function () {
@@ -244,6 +250,12 @@ describe('test inverse of a matrix', () => {
     const inverse = matrix.getInverse()
 
     assert.deepStrictEqual(inverse, [[1, -1, 1], [0, 0.5, -0.375], [0, 0, 0.25]])
+  })
+
+  it('should inverse the matrix obj', function () {
+    const matrix = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
+
+    assert.deepStrictEqual(matrix.inverse().matrix, [[1, -2, 1], [-0.125, 0.875, -0.375], [-0.25, -0.25, 0.25]])
   })
 
   // Test static method
@@ -396,6 +408,7 @@ describe('test solving linear system', () => {
 
 describe('Test matrix multiplication', () => {
   describe('test ijk Multiplication', () => {
+    // Test static method
     it('the ijkMultiplication static method should give the right result', function () {
       const matrix1 = [[2, 4, 5], [-1, 2, 1], [4, -1, 3]]
       const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
@@ -403,19 +416,22 @@ describe('Test matrix multiplication', () => {
       assert.deepStrictEqual(Matrix.ijkMultiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
+    // Test instance method
     it('the ijkMultiplication instance method should give the right result', function () {
       const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
       const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1]])
 
-      assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should work with both inputs types', function () {
       const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
       const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
 
-      assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      // First Test the static method
       assert.deepStrictEqual(Matrix.ijkMultiplication(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      // Then the instance method
+      assert.deepStrictEqual(matrix1.ijkMultiplication(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should throw an exception if the dimension don\'t match', function () {
@@ -445,15 +461,17 @@ describe('Test matrix multiplication', () => {
       const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
       const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1]])
 
-      assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2, 2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2, 2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should work with the inputs types', function () {
       const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
       const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
 
-      assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2, 2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      // Static method
       assert.deepStrictEqual(Matrix.strassenMultiplication(matrix1, matrix2, 2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      // Instance method
+      assert.deepStrictEqual(matrix1.strassenMultiplication(matrix2, 2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should throw an exception if the two matrices aren\'t square', function () {
@@ -485,7 +503,7 @@ describe('Test matrix multiplication', () => {
         const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
         const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1]])
 
-        assert.deepStrictEqual(matrix1.multiplication(matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+        assert.deepStrictEqual(matrix1.multiplication(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
       })
 
       it('should work with non square matrices', function () {

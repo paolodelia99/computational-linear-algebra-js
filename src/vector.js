@@ -85,11 +85,14 @@ export class Vector {
     static scalarProduct = (vector, scalar) => vector.map(x => x * scalar);
 
     /**
-     * Compute the scalarProduct
+     * Multiply the vector by a scalar
      * @param {number} scalar
-     * @returns {number[]}: the scalar product of the vector
+     * @returns {Vector}
      */
-    scalarProduct = (scalar) => Vector.scalarProduct(this._vector, scalar);
+      scalarProduct = (scalar) => {
+        this._vector = Vector.scalarProduct(this._vector, scalar)
+        return this
+      }
 
     /**
      * Compute the product column vector for row vector (static method)
@@ -137,9 +140,12 @@ export class Vector {
     /**
      * Compute the cross product with the give 3D Vector
      * @param {number[] | Vector} vector
-     * @returns {number[]} the cross product between vector1 and vector2
+     * @returns {Vector}
      */
-    crossProduct = (vector) => Vector.crossProduct(this.vector, vector);
+    crossProduct = (vector) => {
+      this._vector = Vector.crossProduct(this._vector, vector);
+      return this
+    }
 
     /**
      * Compute the sum of the two vectors (static method)
@@ -166,9 +172,44 @@ export class Vector {
     /**
      * Sum the vector with the given vector (instance method)
      * @param {number[] | Vector} vector
-     * @returns {number[]} the sum of the two vectors
+     * @returns {Vector} the sum of the two vectors
      */
-    sum = (vector) => Vector.sum(this._vector, vector);
+    sum = (vector) => {
+      this._vector = Vector.sum(this._vector, vector)
+      return this
+    }
+
+    /**
+     * Compute the subtraction of the two vectors (static method)
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {number[]} vector1 - vector2
+     */
+    static subtract (vector1, vector2) {
+      // Check the input types
+      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
+      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
+
+      if (vector1.length !== vector2.length) {
+        throw new Error("The two vectors haven't the same Length")
+      } else {
+        const sumVector = []
+
+        for (let i = 0; i < vector1.length; i++) { sumVector.push(vector1[i] - vector2[i]) }
+
+        return sumVector
+      }
+    }
+
+    /**
+     * Subtract the give vector to the vector
+     * @param {number[] | Vector} vector
+     * @returns {Vector}
+     */
+    sub = (vector) => {
+      this._vector = Vector.subtract(this._vector, vector)
+      return this
+    }
 
     /**
      * Compute the euclidean distance of the given vectors
@@ -195,94 +236,94 @@ export class Vector {
         }
       }
 
-    /**
-     * Compute the euclidean distance between the vector and the give vector
-     * @param {number[] | Vector} vector
-     * @returns {number} the euclidean distance between the two vectors
+      /**
+       * Compute the euclidean distance between the vector and the give vector
+       * @param {number[] | Vector} vector
+       * @returns {number} the euclidean distance between the two vectors
+       */
+      euclideanDistance = (vector) => Vector.euclideanDistance(this.vector, vector)
+
+      /**
+     * Get the angle between two vectors
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
+     * @returns {number} angle between the given two vectors
      */
-    euclideanDistance = (vector) => Vector.euclideanDistance(this.vector, vector)
+      static getAngle = (vector1, vector2, angleType = 'deg') => {
+        if (angleType === 'rad' || angleType === 'deg') {
+          let res = Math.acos((Vector.dotProduct(vector1, vector2)) / (Vector.getNorm(vector1) * Vector.getNorm(vector2)))
+          let angleObj
 
-    /**
-   * Get the angle between two vectors
-   * @param {number[] | Vector} vector1
-   * @param {number[] | Vector} vector2
-   * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
-   * @returns {number} angle between the given two vectors
-   */
-    static getAngle = (vector1, vector2, angleType = 'deg') => {
-      if (angleType === 'rad' || angleType === 'deg') {
-        let res = Math.acos((Vector.dotProduct(vector1, vector2)) / (Vector.getNorm(vector1) * Vector.getNorm(vector2)))
-        let angleObj
-
-        if (angleType === 'deg') {
-          res = res * (180 / Math.PI)
-          angleObj = {
-            deg: null,
-            arcmin: null,
-            arcsec: null
+          if (angleType === 'deg') {
+            res = res * (180 / Math.PI)
+            angleObj = {
+              deg: null,
+              arcmin: null,
+              arcsec: null
+            }
+            angleObj.deg = Math.floor(res)
+            const arcmin = (res % 1) * 60
+            angleObj.arcmin = Math.floor(arcmin)
+            const arcsec = (arcmin % 1) * 60
+            angleObj.arcsec = Math.floor(arcsec)
           }
-          angleObj.deg = Math.floor(res)
-          const arcmin = (res % 1) * 60
-          angleObj.arcmin = Math.floor(arcmin)
-          const arcsec = (arcmin % 1) * 60
-          angleObj.arcsec = Math.floor(arcsec)
+
+          return angleType === 'deg' ? angleObj : res
+        } else {
+          throw new Error('angleType invalid')
         }
-
-        return angleType === 'deg' ? angleObj : res
-      } else {
-        throw new Error('angleType invalid')
       }
-    }
 
-    /**
-   * Get the angle between the vector and the  given vector
-   * @param {number[] | Vector} vector
-   * @param {string} angleType angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
-   * @returns {number} angle between the vector and the given vector
-   */
-    getAngle = (vector, angleType = 'deg') => Vector.getAngle(this.vector, vector, angleType)
-
-    /**
-   * Check if the given vectors are orthogonal
-   * @param {number[] | Vector} vector1
-   * @param {number[] | Vector} vector2
-   * @returns {boolean} true if they are orthogonal otherwise false
-   */
-    static areVectorsOrthogonal = (vector1, vector2) => {
-      // Check vectors type
-      vector1 = Vector.checkVectorType(vector1)
-      vector2 = Vector.checkVectorType(vector2)
-
-      return Vector.dotProduct(vector1, vector2) === 0
-    }
-
-  /**
-   * Check if the given vector is orthogonal ot the vector
-   * @param {number[] | Vector} vector
-   * @returns {boolean} true if they are orthogonal otherwise false
-   */
-  isVectorOrthogonal = vector => Vector.areVectorsOrthogonal(this.vector, vector)
-
-  /**
-   * Check if the given vectors are orthonormal
-   * @param {number[] | Vector} vector1
-   * @param {number[] | Vector} vector2
-   * @returns {boolean} true if they are orthonormal otherwise false
-   */
-    static areVectorOrthonormal = (vector1, vector2) => Vector.areVectorsOrthogonal(vector1, vector2) && Vector.getNorm(vector1) === 1 && Vector.getNorm(vector2) === 1
-
-  /**
-   * Check if the given vector is orthonormal ot the vector
-   * @param {number[] | Vector} vector
-   * @returns {boolean} true if they are orthonormal otherwise false
-   */
-  isVectorOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
-
-  /**
-     * vector field getter
-     * @returns {number[] }
+      /**
+     * Get the angle between the vector and the  given vector
+     * @param {number[] | Vector} vector
+     * @param {string} angleType angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
+     * @returns {number} angle between the vector and the given vector
      */
-  get vector () {
-    return this._vector
-  }
+      getAngle = (vector, angleType = 'deg') => Vector.getAngle(this.vector, vector, angleType)
+
+      /**
+     * Check if the given vectors are orthogonal
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {boolean} true if they are orthogonal otherwise false
+     */
+      static areVectorsOrthogonal = (vector1, vector2) => {
+        // Check vectors type
+        vector1 = Vector.checkVectorType(vector1)
+        vector2 = Vector.checkVectorType(vector2)
+
+        return Vector.dotProduct(vector1, vector2) === 0
+      }
+
+    /**
+     * Check if the given vector is orthogonal ot the vector
+     * @param {number[] | Vector} vector
+     * @returns {boolean} true if they are orthogonal otherwise false
+     */
+    isVectorOrthogonal = vector => Vector.areVectorsOrthogonal(this.vector, vector)
+
+    /**
+     * Check if the given vectors are orthonormal
+     * @param {number[] | Vector} vector1
+     * @param {number[] | Vector} vector2
+     * @returns {boolean} true if they are orthonormal otherwise false
+     */
+      static areVectorOrthonormal = (vector1, vector2) => Vector.areVectorsOrthogonal(vector1, vector2) && Vector.getNorm(vector1) === 1 && Vector.getNorm(vector2) === 1
+
+    /**
+     * Check if the given vector is orthonormal ot the vector
+     * @param {number[] | Vector} vector
+     * @returns {boolean} true if they are orthonormal otherwise false
+     */
+    isVectorOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
+
+    /**
+       * vector field getter
+       * @returns {number[] }
+       */
+    get vector () {
+      return this._vector
+    }
 }
