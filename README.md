@@ -74,9 +74,9 @@ const matrix3 = new Matrix( [[1, 1, 0], [2, -1, 0], [2, 3, 4]])
 console.log(matrix1.ijkMultiplication(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
 
 // You can also chaining methods 
-console.log(matrix1.sum(matrix2).sub(matrix3).matrix) // 
-console.log(matrix1.transpose().matrix) //
-console.log(matrix1.inverse().matrix) //
+console.log(matrix1.sum(matrix2).sub(matrix3).matrix)
+console.log(matrix1.transpose().matrix)
+console.log(matrix1.inverse().matrix)
 
 ```
 
@@ -120,8 +120,8 @@ const vector3 = new Vector([1,2,3])
 const vector4 = new Vector([-1, 0 ,3])
 const vector5 = new Vector([2, 4, -1])
 
-console.log(vector3.sum(vector4).sub(vector5)) //
-console.log(vector3.crossProduct(vector4)) //
+console.log(vector3.sum(vector4).sub(vector5)) 
+console.log(vector3.crossProduct(vector4))
 console.log(vector4.scalarProduct(2))
 
 ```
