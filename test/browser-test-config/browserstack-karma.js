@@ -5,6 +5,12 @@ module.exports = function (config) {
 
   config.set(Object.assign(baseConfig, {
 
+    browserStack: {
+      username: process.env.BROWSERSTACK_USERNAME,
+      accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
+      startTunnel: true
+    },
+
     browsers: [
       'bs_firefox_android',
       'bs_firefox_windows',
@@ -22,10 +28,6 @@ module.exports = function (config) {
       mocha: {
         reporter: 'html'
       }
-    },
-
-    browserStack: {
-      startTunnel: true
     },
 
     customLaunchers: {

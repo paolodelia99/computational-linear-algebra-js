@@ -4,6 +4,7 @@ module.exports = function (config) {
   const baseConfig = baseKarma(config)
 
   config.set(Object.assign(baseConfig, {
+
     browsers: ['FirefoxHeadless'],
 
     reporters: ['mocha'],

@@ -1,11 +1,6 @@
 module.exports = function (config) {
   return {
 
-    browserStack: {
-      username: process.env.BROWSERSTACK_USERNAME,
-      accessKey: process.env.BROWSERSTACK_ACCESS_KEY
-    },
-
     basePath: '../..',
 
     frameworks: ['mocha'],
