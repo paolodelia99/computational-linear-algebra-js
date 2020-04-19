@@ -39,22 +39,44 @@ Note: not yet available on npm, It will be soon
 
 ### Matrices
 
+All the methods can accept both Matrix object and a bidimensional array, so you don't have to worry about 
+of what kind of object you've passed to a method
+
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
 
 const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] );
-const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]] );
+const matrix2 = [[1,2,-1],[0,2,3],[0,0,4]]
 
+// Static Methods
 //Transpose a matrix
-console.log(matrix1.getTranspose());//[[1,1,2],[2,4,6],[-1,2,5]]
+console.log(Matrix.getTranspose(matrix1)) //[[1,1,2],[2,4,6],[-1,2,5]]
 //Sum two matrices
-console.log(matrix1.sum(matrix2));  //[[2,4,-2],[1,6,5],[2,6,9]]
+console.log(Matrix.sum(matrix1, matrix2)) //[[2,4,-2],[1,6,5],[2,6,9]]
 //Subtract two matrices
-console.log(matrix1.sub(matrix2)); // [[0,0,0],[1,2,-1],[2,6,1]]
+console.log(Matrix.sub(matrix1, matrix2)) // [[0,0,0],[1,2,-1],[2,6,1]]
 //Multiply two matrices
-console.log(matrix1.ijkMultiplication(matrix2)); // [[1,6,1],[1,10,19],[2,16,36]]
+console.log(Matrix.ijkMultiplication(matrix1, matrix2)) // [[1,6,1],[1,10,19],[2,16,36]]
 //Get the inverse of a matrix
-console.log(matrix.getInverse()) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]]
+console.log(Matrix.getInverse(matrix)) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]]
+
+```
+
+If you wanna keep the changes inside the matrix object you can use the instance methods
+
+```javascript
+const { Matrix } =  require('computational-linear-algebra-js')
+
+const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] )
+const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]])
+const matrix3 = new Matrix( [[1, 1, 0], [2, -1, 0], [2, 3, 4]])
+
+console.log(matrix1.ijkMultiplication(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
+
+// You can also chaining methods 
+console.log(matrix1.sum(matrix2).sub(matrix3).matrix) // 
+console.log(matrix1.transpose().matrix) //
+console.log(matrix1.inverse().matrix) //
 
 ```
 
@@ -66,7 +88,7 @@ const { Matrix } =  require('computational-linear-algebra-js')
 const matrix1 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 const matrix2 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 
-console.log( matrix1.multiplication(matrix2));
+console.log(matrix1.multiplication(matrix2));
 
 ```
 
@@ -78,18 +100,30 @@ const { Vector } =  require('computational-linear-algebra-js')
 const vector1 = new Vector([1,2,1]);
 const vector2 = new Vector(-1,0,1);
 
+// Static methods
 //Get the norm of a vector
 console.log(vector1.getNorm()); // 6
 //Multiply a vector by a scalar
-console.log(vector1.scalarProduct(5));//[5,10,5]
+console.log(Vector.scalarProduct(vector1,5));//[5,10,5]
 //Sum two vectors 
-console.log(vector1.sum(vector2));  //[1,5,0]
+console.log(Vector.sum(vector1, vector2));  //[1,5,0]
 //Subtract two vectors
-console.log(vector1.sub(vector2)); // [[0,0,0],[1,2,-1],[2,6,1]]
+console.log(Vector.sub(vector1, vector2)); // [[0,0,0],[1,2,-1],[2,6,1]]
 //Dot product between two vectors
-console.log(vector1.dotProduct(vector2)) //0
+console.log(Vector.dotProduct(vector1, vector2)) //0
 //Cross product between two vectors
-console.log(vector1.crossProduct(vector2))// [2, -2, 2]
+console.log(Vector.crossProduct(vector1, vector2))// [2, -2, 2]
+
+
+//Instance methods
+const vector3 = new Vector([1,2,3])
+const vector4 = new Vector([-1, 0 ,3])
+const vector5 = new Vector([2, 4, -1])
+
+console.log(vector3.sum(vector4).sub(vector5)) //
+console.log(vector3.crossProduct(vector4)) //
+console.log(vector4.scalarProduct(2))
+
 ```
 
 ### Linear Transformations
@@ -97,7 +131,7 @@ console.log(vector1.crossProduct(vector2))// [2, -2, 2]
 ```javascript
 const { LinearTransformation } =  require('computational-linear-algebra-js')
 
-// You can instantiate a linear tranformation using a bidimensional array
+// You can instantiate a linear transformation using a bidimensional array
 const t1 = new LinearTransformation([[1,0,1],[2,0,-1],[1,1,1]]);  
 // or you can also use the matrix object
 const t2 = new LinearTransformation(new Matrix([[1,0,1],[2,0,-1],[1,1,1]])); 
@@ -151,6 +185,19 @@ Thanks Travis CI for the generous free hosting of this open source project!
 ## Todos
 
 - Matrix
+    - [x] sum, subtraction
+    - [x] transpose
+    - [x] Orthogonality and orthonormality
+    - [x] multiplication
+        - [x] ijkMultiplication
+        - [x] Strassen algorithm
+        - [x] parallel multiplication using gpu.js 
+    - [ ] Matrix decompositions
+        - [x] LU
+        - [ ] QR
+        - [ ] Cholesky
+        - [ ] Singular Value Decomposition
+    - [ ] eigenvalues and eigenvectors
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
     - [ ] check if the matrix is upper triangular, lower triangular, symmetric, positive definite, orthogonal  
@@ -160,16 +207,13 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [ ] Hadamard product
     - [ ] Kronecker product
     - [ ] Rotation matrix
-    - [x] Orthogonality and orthonormality
-    - [x] Implement a more efficient multiplication
-        - [x] gpu.js 
-    - [ ] Implement other decompositions
-        - [ ] QR
-        - [ ] Cholesky
-        - [ ] Singular Value Decomposition
-    - [ ] eigenvalues and eigenvectors
     
 - Vector 
+    - [x] sum, subtraction
+    - [x] dot product
+    - [x] cross product
+    - [x] norm
+    - [x] scalar product
     - [x] Euclidean distance between two vectors
     - [x] Orthogonality and orthonormality
     - [x] Angle between two vectors
@@ -178,28 +222,22 @@ Thanks Travis CI for the generous free hosting of this open source project!
     - [ ] Projections
 
 - Linear Transformation
-    - [ ] Injective, Surjective => Bijective
-    - [x] Linear Transformation applyed to matrices
+    - [x] Linear Transformation applied to vectors
+    - [x] Linear Transformation applied to matrices
+    - [ ] Injective, Surjective and Bijective
     - [ ] kernel
     - [ ] image
-    - [ ] injectvity and surjectivity
     - [ ] Projections
     
 - Tensors
   
 - class Vector Spaces ?? (see if it does make sense)
-
-- Analytical Geometry ??
-    - [ ] inner products
-    - [ ] length and distances
-    - [ ] Angles and orthogonality
-    - [ ] rotations
     
 - Code Stuff
     - [x] compile js in prev version using babel
     - [ ] build npm package
     - [ ] better documentation
-    - [x] maximise the coverage
+    - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript
     - [ ] Test with Browser stack
     
