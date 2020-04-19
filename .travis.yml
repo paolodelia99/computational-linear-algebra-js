@@ -15,7 +15,7 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
-    - script: npm run test:browserstack
+    - script: npm run test:browser
       node_js: lts/*
       name: Browser Test
     - script: npm run coverage
