@@ -143,7 +143,7 @@ export class Vector {
      * @returns {Vector}
      */
     crossProduct = (vector) => {
-      this._vector = Vector.crossProduct(this._vector, vector);
+      this._vector = Vector.crossProduct(this._vector, vector)
       return this
     }
 

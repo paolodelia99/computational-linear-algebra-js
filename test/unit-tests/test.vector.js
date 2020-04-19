@@ -139,8 +139,8 @@ describe('test the cross product between two vectors', () => {
     const vector1 = new Vector([1, 2, 1])
     const vector2 = new Vector([3, 2, 6])
 
-    assert.deepStrictEqual(vector1.crossProduct(vector2), [10, -3, -4])
     assert.deepStrictEqual(Vector.crossProduct(vector1, vector2), [10, -3, -4])
+    assert.deepStrictEqual(vector1.crossProduct(vector2).vector, [10, -3, -4])
   })
 
   // Test Static method
