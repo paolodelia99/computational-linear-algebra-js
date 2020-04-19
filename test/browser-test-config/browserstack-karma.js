@@ -6,8 +6,6 @@ module.exports = function (config) {
   config.set(Object.assign(baseConfig, {
 
     browserStack: {
-      username: process.env.BROWSERSTACK_USERNAME,
-      accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
       startTunnel: true
     },
 
