@@ -84,7 +84,7 @@ const { Matrix } =  require('computational-linear-algebra-js')
 const matrix1 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 const matrix2 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 
-console.log(matrix1.multiplication(matrix2));
+Matrix.printMatrix(matrix1.multiplication(matrix2).matrix)
 
 ```
 
