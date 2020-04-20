@@ -1,12 +1,15 @@
 {
   "name": "computational-linear-algebra-js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A linear algebra library",
   "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
   "main": "./main/es5",
+  "module": "main/esm",
   "directories": {
     "test": "./test",
-    "src": "./src"
+    "src": "./src",
+    "es": "./es",
+    "lib": "./lib"
   },
   "jsdelivr": "dist/linear.algebra.min.js",
   "unpkg": "dist/linear.algebra.min.js",

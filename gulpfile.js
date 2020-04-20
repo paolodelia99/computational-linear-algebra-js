@@ -19,7 +19,8 @@ const FILE_MAP = 'linear.algebra.min.map'
 const clean = () => {
   return del([
     'dist/**/*',
-    'lib/**/*'
+    'lib/**/*',
+    'es/**/*'
   ])
 }
 

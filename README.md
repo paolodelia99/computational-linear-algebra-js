@@ -9,7 +9,7 @@ Computational Linear algebra is an comprehensive Javascript library for linear a
 
 ## Features 
 
-- Efficent 
+- Efficient 
 - Runs on any JavaScript engine.
 - OOP oriented
 - type flexible
@@ -33,10 +33,23 @@ Install computational-linear-algebra.js using npm
     
 Note: not yet available on npm, It will be soon
 
+### Node
+
+```javascript
+const { Matrix } =  require('computational-linear-algebra-js')
+```
+
+### Es6
+
+```javascript
+import { Matrix } from 'computational-linear-algebra-js'
+```
+
 ### Matrices
 
 All the methods can accept both Matrix object and a bidimensional array, so you don't have to worry about 
 of what kind of object you've passed to a method
+
 
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
@@ -58,7 +71,9 @@ console.log(Matrix.getInverse(matrix)) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.2
 
 ```
 
+
 If you wanna keep the changes inside the matrix object you can use the instance methods
+
 
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
@@ -76,7 +91,9 @@ console.log(matrix1.inverse().matrix)
 
 ```
 
+
 Dealing with big matrices? You can use the *multipication()* function that run a parallel algorithm on the GPU:
+
 
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
@@ -88,7 +105,9 @@ Matrix.printMatrix(matrix1.multiplication(matrix2).matrix)
 
 ```
 
+
 ### Vectors
+
 
 ```javascript
 const { Vector } =  require('computational-linear-algebra-js')
@@ -123,6 +142,7 @@ console.log(vector4.scalarProduct(2))
 ```
 
 ### Linear Transformations
+
 
 ```javascript
 const { LinearTransformation } =  require('computational-linear-algebra-js')
@@ -170,12 +190,12 @@ Then, the tests can be executed:
     
 ### Continuous Integration testing 
 
-Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and BrowserStack every time a commit is pushed to github. The test coverage is shown is [Coveralls](https://coveralls.io/).
+Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and [BrowserStack](https://www.browserstack.com/) every time a commit is pushed to github. The test coverage is shown is [Coveralls](https://coveralls.io/).
 The test results can be checked on https://travis-ci.org/github/paolodelia99/computational-linear-algebra.js. Travis CI runs the tests for different versions of node.js., and BrowserStack runs the tests are run on all major browsers.
 
 [![Travis CI](./misc/Travis-CI-logo.png)](https://github.com/paolodelia99/computational-linear-algebra.js/blob/master/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
-[![Coveralls](./misc/coveralls-logo-177x55.png)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js)
-[![BrowserStack](./misc/browserstack.png)]
+[![Coveralls](./misc/coveralls-logo-177x55.png)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js) &nbsp;&nbsp;&nbsp;
+![BrowserStack](./misc/browserstack.png)
 
 Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 

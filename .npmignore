@@ -1,0 +1,17 @@
+.idea
+
+# dependencies
+/node_modules
+
+/misc
+
+/test
+
+.babelrc
+.travis.yml
+.eslintrc
+.eslintignore
+gulpfile.js
+webpack.config.js
+
+.env
