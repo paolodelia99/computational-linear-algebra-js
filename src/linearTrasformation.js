@@ -37,7 +37,7 @@ export class LinearTransformation {
         if (trMatrix[0].length !== matrix.length) {
           throw new Error('Cannot apply the linear transformation to the matrix')
         } else {
-          return Matrix.multiplication(trMatrix, matrix)
+          return Matrix.multiply(trMatrix, matrix)
         }
       } else {
         // Check matrix vector compatibility

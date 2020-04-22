@@ -29,10 +29,8 @@ Computational-linear-algebra.js can be used in both node.js and in the browser.
 
 Install computational-linear-algebra.js using npm
 
-    npm install computational-linear-algebra
+    npm install computational-linear-algebra-js
     
-Note: not yet available on npm, It will be soon
-
 ### Node
 
 ```javascript
@@ -65,7 +63,7 @@ console.log(Matrix.sum(matrix1, matrix2)) //[[2,4,-2],[1,6,5],[2,6,9]]
 //Subtract two matrices
 console.log(Matrix.sub(matrix1, matrix2)) // [[0,0,0],[1,2,-1],[2,6,1]]
 //Multiply two matrices
-console.log(Matrix.ijkMultiplication(matrix1, matrix2)) // [[1,6,1],[1,10,19],[2,16,36]]
+console.log(Matrix.ijkMultiply(matrix1, matrix2)) // [[1,6,1],[1,10,19],[2,16,36]]
 //Get the inverse of a matrix
 console.log(Matrix.getInverse(matrix)) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]]
 
@@ -82,7 +80,7 @@ const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] )
 const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]])
 const matrix3 = new Matrix( [[1, 1, 0], [2, -1, 0], [2, 3, 4]])
 
-console.log(matrix1.ijkMultiplication(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
+console.log(matrix1.ijkMultiply(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
 
 // You can also chaining methods 
 console.log(matrix1.sum(matrix2).sub(matrix3).matrix)

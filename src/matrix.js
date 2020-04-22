@@ -90,13 +90,13 @@ export class Matrix {
 
     /**
      * Clone the matrix
-     * @returns {number[][]}
+     * @returns {number[][] | Matrix}
      */
     static cloneMatrix = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
 
     /**
      * Get a copy of the matrix
-     * @returns {number[][]}
+     * @returns {number[][]} the bi-dimensional array that represent the matrix
      */
     getCopy = () => Matrix.cloneMatrix(this.matrix);
 
@@ -160,7 +160,7 @@ export class Matrix {
 
     /**
      * Get the transpose of the matrix
-     * @returns {*[][]} the transpose matrix
+     * @returns {number[][]} the transpose matrix
      */
     getTranspose = () =>
       Matrix.getTranspose(this._matrix);
@@ -176,7 +176,7 @@ export class Matrix {
 
     /**
      * Static method for printing matrix
-     * @param { number[][] }matrix
+     * @param { number[][] | Matrix}matrix
      */
     static printMatrix = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
 
@@ -210,7 +210,7 @@ export class Matrix {
 
     /**
      * Compute the inverse of a matrix
-     * @returns {Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+     * @returns {number[][]}
      */
     getInverse = () => {
       if (!this.isSquare) {
@@ -236,7 +236,7 @@ export class Matrix {
      * Inverse the matrix
      * @returns {Matrix}
      */
-    inverse = () => {
+    inverts = () => {
       this._matrix = Matrix.getInverse(this._matrix)
       return this
     }
@@ -286,7 +286,7 @@ export class Matrix {
      * @param {number[][] | Matrix} matrix2
      * @returns {number[][]}
      */
-    static sumMatrices = (matrix1, matrix2) => {
+    static sum = (matrix1, matrix2) => {
       // Check matrices types
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
@@ -310,7 +310,7 @@ export class Matrix {
      * @returns {Matrix} the sum of the two matrices
      */
     sum = matrix => {
-      this._matrix = Matrix.sumMatrices(this._matrix, matrix)
+      this._matrix = Matrix.sum(this._matrix, matrix)
       return this
     }
 
@@ -318,9 +318,9 @@ export class Matrix {
      * Static method that compute the subtraction of two matrices
      * @param matrix1
      * @param matrix2
-     * @returns {*[][]} the substract matrix
+     * @returns {number[][]} the substract matrix
      */
-    static subtractMatrices = (matrix1, matrix2) => {
+    static sub = (matrix1, matrix2) => {
       // Check matrices types
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
@@ -344,7 +344,7 @@ export class Matrix {
      * @returns {Matrix}
      */
     sub = matrix => {
-      this._matrix = Matrix.subtractMatrices(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
+      this._matrix = Matrix.sub(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
       return this
     }
 
@@ -371,18 +371,21 @@ export class Matrix {
 
     /**
      * Get a subMatrix of the given matrix
-     * @param {*[][]} matrix
-     * @param {number} rowStart
-     * @param {number} rowEnd
-     * @param {number} colStart
-     * @param {number} colEnd
-     * @returns {*[][]}
+     * @param {number[][] | Matrix} matrix
+     * @param {number} startRow
+     * @param {number} endRow
+     * @param {number} startCol
+     * @param {number} endCol
+     * @returns {number[][] | number[]}
      */
-    static getSubMatrix = (matrix, rowStart, rowEnd, colStart, colEnd) => {
-      const subMatrix = Matrix.createEmptyMatrix((rowEnd - rowStart) + 1, (colEnd - colStart) + 1)
+    static getSubMatrix = (matrix, startRow, endRow, startCol, endCol) => {
+      // Check matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      const subMatrix = Matrix.createEmptyMatrix((endRow - startRow) + 1, (endCol - startCol) + 1)
 
       for (let i = 0; i < subMatrix.length; i++) {
-        for (let j = 0; j < subMatrix[i].length; j++) { subMatrix[i][j] = matrix[rowStart + i][colStart + j] }
+        for (let j = 0; j < subMatrix[i].length; j++) { subMatrix[i][j] = matrix[startRow + i][startCol + j] }
       }
 
       return subMatrix
@@ -494,7 +497,7 @@ export class Matrix {
     /**
      * static method for the LU Decomposition of the given matrix
      * @param {number[][] | Matrix } matrix
-     * @returns {{U: *[][], L: *[][]}} object containing the L and the U matrix
+     * @returns {{U: number[][], L: number[][]}} object containing the L and the U matrix
      */
     static luDecomposition = matrix => {
       // Check matrix type
@@ -525,7 +528,7 @@ export class Matrix {
     /**
      * Compute the LU decomposition of the given matrix
      * @param {number[][] | Matrix} matrix
-     * @returns {{U: *[][], L: *[][]}} Object that contain U matrix and L matrix
+     * @returns {{U: number[][], L: number[][]}} Object that contain U matrix and L matrix
      */
     static getLUDecomposition = (matrix) => {
       // throw an error is the matrix is not square
@@ -615,7 +618,7 @@ export class Matrix {
      * @param {number[][]| Matrix} matrix2
      * @returns {number[][]} the result of the product of the matrix1 and the matrix2
      */
-    static ijkMultiplication = (matrix1, matrix2) => {
+    static ijkMultiply = (matrix1, matrix2) => {
       // Check  the inputs types
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
@@ -641,8 +644,8 @@ export class Matrix {
    * @param {number[][]| Matrix} matrix
    * @return {Matrix}
    */
-  ijkMultiplication = (matrix) => {
-    this._matrix = Matrix.ijkMultiplication(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
+  ijkMultiply = (matrix) => {
+    this._matrix = Matrix.ijkMultiply(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
     return this
   }
 
@@ -652,7 +655,7 @@ export class Matrix {
    * @param {number[][] | Matrix} matrix2
    * @returns {number[][]} the result of the multiplication
    */
-    static multiplication = (matrix1, matrix2) => {
+    static multiply = (matrix1, matrix2) => {
       // Check matrices type
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
@@ -689,35 +692,35 @@ export class Matrix {
    * @param {number[][] | Matrix} matrix
    * @returns {Matrix} the result of the multiplication
    */
-  multiplication = (matrix) => {
-    this._matrix = Matrix.multiplication(this.matrix, matrix)
+  multiply = (matrix) => {
+    this._matrix = Matrix.multiply(this.matrix, matrix)
     return this
   }
 
     /**
      * Strassen multiplication method that calls the strassen algorithm
-     * @param {number[][] | Matrix } A
-     * @param {number[][] | Matrix } B
+     * @param {number[][] | Matrix } matrix1
+     * @param {number[][] | Matrix } matrix2
      * @param {number} leafSize
      * @returns {number[][]} the multiplication of the two matrices
      */
-    static strassenMultiplication = (A, B, leafSize = 8) => {
+    static strassenMultiply = (matrix1, matrix2, leafSize = 8) => {
       // Check  the inputs types
-      A = Matrix.checkMatrixType(A)
-      B = Matrix.checkMatrixType(B)
+      matrix1 = Matrix.checkMatrixType(matrix1)
+      matrix2 = Matrix.checkMatrixType(matrix2)
 
       // Check the input type
-      if (!(Array.isArray(A) && Array.isArray(B))) {
+      if (!(Array.isArray(matrix1) && Array.isArray(matrix2))) {
         throw new Error('Type Error')
       }
 
       // Check if matrices are square matrices
-      if (!(A.length === A[0].length && B.length === B[0].length && A.length === B[0].length)) {
+      if (!(matrix1.length === matrix1[0].length && matrix2.length === matrix2[0].length && matrix1.length === matrix2[0].length)) {
         throw new Error("The matrices aren't square matrices")
       }
 
       const nextPowerOfTow = n => Math.pow(2, Math.ceil(Math.log2(n)))
-      const n = A.length
+      const n = matrix1.length
       const m = nextPowerOfTow(n)
 
       const ACopy = Matrix.createEmptySquareMatrix(m)
@@ -726,8 +729,8 @@ export class Matrix {
       // Copy the the matrices
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) {
-          ACopy[i][j] = A[i][j]
-          BCopy[i][j] = B[i][j]
+          ACopy[i][j] = matrix1[i][j]
+          BCopy[i][j] = matrix2[i][j]
         }
       }
 
@@ -747,47 +750,47 @@ export class Matrix {
      * @param {number} leafsize
      * @returns {Matrix}
      */
-    strassenMultiplication = (matrix, leafsize) => {
-      this._matrix = Matrix.strassenMultiplication(this.matrix, matrix, leafsize)
+    strassenMultiply = (matrix, leafsize) => {
+      this._matrix = Matrix.strassenMultiply(this.matrix, matrix, leafsize)
       return this
     }
 
     /**
      * Implementation of the Strassen algorithm
-     * @param {number[][]} A
-     * @param {number[][]} B
+     * @param {number[][]} matrix1
+     * @param {number[][]} matrix2
      * @param {number} leafSize
      * @returns {number[][]}
      */
-    static strassenAlgorithm = function (A, B, leafSize = 8) {
-      const n = A.length
-      if (n <= leafSize) { return Matrix.ijkMultiplication(A, B) } else {
+    static strassenAlgorithm = function (matrix1, matrix2, leafSize = 8) {
+      const n = matrix1.length
+      if (n <= leafSize) { return Matrix.ijkMultiply(matrix1, matrix2) } else {
         const newSize = Math.floor(n / 2)
 
         // Create the A and B subMatrices
-        const A11 = Matrix.getSubMatrix(A, 0, newSize - 1, 0, newSize - 1)
-        const A12 = Matrix.getSubMatrix(A, 0, newSize - 1, newSize, n - 1)
-        const A21 = Matrix.getSubMatrix(A, newSize, n - 1, 0, Math.floor(newSize) - 1)
-        const A22 = Matrix.getSubMatrix(A, newSize, n - 1, newSize, n - 1)
+        const A11 = Matrix.getSubMatrix(matrix1, 0, newSize - 1, 0, newSize - 1)
+        const A12 = Matrix.getSubMatrix(matrix1, 0, newSize - 1, newSize, n - 1)
+        const A21 = Matrix.getSubMatrix(matrix1, newSize, n - 1, 0, Math.floor(newSize) - 1)
+        const A22 = Matrix.getSubMatrix(matrix1, newSize, n - 1, newSize, n - 1)
 
-        const B11 = Matrix.getSubMatrix(B, 0, newSize - 1, 0, newSize - 1)
-        const B12 = Matrix.getSubMatrix(B, 0, newSize - 1, newSize, n - 1)
-        const B21 = Matrix.getSubMatrix(B, newSize, n - 1, 0, newSize - 1)
-        const B22 = Matrix.getSubMatrix(B, newSize, n - 1, newSize, n - 1)
+        const B11 = Matrix.getSubMatrix(matrix2, 0, newSize - 1, 0, newSize - 1)
+        const B12 = Matrix.getSubMatrix(matrix2, 0, newSize - 1, newSize, n - 1)
+        const B21 = Matrix.getSubMatrix(matrix2, newSize, n - 1, 0, newSize - 1)
+        const B22 = Matrix.getSubMatrix(matrix2, newSize, n - 1, newSize, n - 1)
 
         // Seven matrices for the final result
-        const M1 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A11, A22), Matrix.sumMatrices(B11, B22), leafSize)
-        const M2 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A21, A22), B11, leafSize)
-        const M3 = Matrix.strassenAlgorithm(A11, Matrix.subtractMatrices(B12, B22), leafSize)
-        const M4 = Matrix.strassenAlgorithm(A22, Matrix.subtractMatrices(B21, B11), leafSize)
-        const M5 = Matrix.strassenAlgorithm(Matrix.sumMatrices(A11, A12), B22, leafSize)
-        const M6 = Matrix.strassenAlgorithm(Matrix.subtractMatrices(A21, A11), Matrix.sumMatrices(B11, B12), leafSize)
-        const M7 = Matrix.strassenAlgorithm(Matrix.subtractMatrices(A12, A22), Matrix.sumMatrices(B21, B22), leafSize)
+        const M1 = Matrix.strassenAlgorithm(Matrix.sum(A11, A22), Matrix.sum(B11, B22), leafSize)
+        const M2 = Matrix.strassenAlgorithm(Matrix.sum(A21, A22), B11, leafSize)
+        const M3 = Matrix.strassenAlgorithm(A11, Matrix.sub(B12, B22), leafSize)
+        const M4 = Matrix.strassenAlgorithm(A22, Matrix.sub(B21, B11), leafSize)
+        const M5 = Matrix.strassenAlgorithm(Matrix.sum(A11, A12), B22, leafSize)
+        const M6 = Matrix.strassenAlgorithm(Matrix.sub(A21, A11), Matrix.sum(B11, B12), leafSize)
+        const M7 = Matrix.strassenAlgorithm(Matrix.sub(A12, A22), Matrix.sum(B21, B22), leafSize)
 
-        const C11 = Matrix.sumMatrices(Matrix.subtractMatrices(Matrix.sumMatrices(M1, M4), M5), M7) // C11 = M1 + M4 - M5 + M7
-        const C12 = Matrix.sumMatrices(M3, M5) // C12 = M3 + M5
-        const C21 = Matrix.sumMatrices(M2, M4) // C21 = M2 + M4
-        const C22 = Matrix.sumMatrices(Matrix.sumMatrices(Matrix.subtractMatrices(M1, M2), M3), M6) // C22 = M1 - M2 + M3 + M6
+        const C11 = Matrix.sum(Matrix.sub(Matrix.sum(M1, M4), M5), M7) // C11 = M1 + M4 - M5 + M7
+        const C12 = Matrix.sum(M3, M5) // C12 = M3 + M5
+        const C21 = Matrix.sum(M2, M4) // C21 = M2 + M4
+        const C22 = Matrix.sum(Matrix.sum(Matrix.sub(M1, M2), M3), M6) // C22 = M1 - M2 + M3 + M6
 
         const C = Matrix.createEmptySquareMatrix(n)
 
