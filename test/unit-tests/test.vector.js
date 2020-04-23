@@ -13,11 +13,12 @@ describe('test vector creation', () => {
 })
 
 describe('Test vector printing', () => {
+  const printVector = vector => {
+    vector = Vector.checkVectorType(vector)
+    console.log(vector)
+  }
+
   it('should print the vector', function () {
-    const printVector = vector => {
-      vector = Vector.checkVectorType(vector)
-      console.log(vector)
-    }
     const vector = new Vector([1, 2, 1])
 
     // Test static method
