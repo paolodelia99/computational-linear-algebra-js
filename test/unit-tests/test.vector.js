@@ -12,14 +12,14 @@ describe('test vector creation', () => {
   })
 })
 
-describe('Test vector printing', () => {
-  it('should print the vector', function () {
-    const vector = [1, 2, 1]
-
-    // Test static method
-    console.assert(Vector.print(vector), '[1, 2, 1]')
-  })
-})
+// describe('Test vector printing', () => {
+//   it('should print the vector', function () {
+//     const vector = [1, 2, 1]
+//
+//     // Test static method
+//     console.assert(Vector.print(vector), '[1, 2, 1]')
+//   })
+// })
 
 describe('Test creation of an empty vector', () => {
   it('should give an empty array', function () {
