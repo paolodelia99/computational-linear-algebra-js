@@ -1,9 +1,10 @@
 # Computational Linear Algebra
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra.js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra.js)
+[![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra-js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra-js)
 [![Coverage Status](https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg?branch=master)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js?branch=master)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](./license)
+[![Docs](https://img.shields.io/badge/docs-in%20progress-orange)](https://paolodelia99.github.io/computational-linear-algebra-js/#/)
 
 Computational Linear algebra is an comprehensive Javascript library for linear algebra.
 
@@ -156,6 +157,7 @@ console.log(t1.apply(vector)) //[1,4,-1]
 
 ```
 
+For more info check out the [documentation](https://paolodelia99.github.io/computational-linear-algebra-js/#/).
 
 ## Build 
 
@@ -163,7 +165,7 @@ First clone the project from github:
     
     git clone git://https://github.com/paolodelia99/linear-algebra.js
     
-    cd computational-linear-algebra
+    cd computational-linear-algebra-js
 
 Install the project dependencies:
 
@@ -199,6 +201,8 @@ Thanks Travis CI and BrowserStack for the generous free hosting of this open sou
 
 ## Todos
 
+For those that wanna contribute to the project here's a todoList! Enjoy!
+
 - Matrix
     - [x] sum, subtraction
     - [x] transpose
@@ -207,6 +211,8 @@ Thanks Travis CI and BrowserStack for the generous free hosting of this open sou
         - [x] ijkMultiplication
         - [x] Strassen algorithm
         - [x] parallel multiplication using gpu.js 
+        - remove ijkMul in favour of the funcional way, more faster
+    - [ ] More general Gaussian elimination
     - [ ] Matrix decompositions
         - [x] LU
         - [ ] QR
@@ -253,7 +259,7 @@ Thanks Travis CI and BrowserStack for the generous free hosting of this open sou
     
 - Code Stuff
     - [x] compile js in prev version using babel
-    - [ ] build npm package
+    - [x] build npm package
     - [ ] better documentation
     - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript

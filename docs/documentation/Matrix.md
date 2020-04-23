@@ -13,11 +13,11 @@ Class Representing the matrix
 ## Constructor
 
 ```javascript
-Matrix(matrix : number[][])
+Matrix(matrix)
 ```
 
 #### Parameters
-matrix - the two dimensional array the represent the matrix
+matrix : **number[][]** - the two dimensional array the represent the matrix
 
 ## Attributes
 
@@ -57,213 +57,262 @@ Matrix.createEmptyMatrix(rows, cols)
 
 #### Parameters
 
-- rows **number** - the rows of the empty matrix
-- cols **number** - the columns of the empty matrix
+- rows : **number** - the rows of the empty matrix
+- cols : **number** - the columns of the empty matrix
 
 #### Returns
 
-**number[][]** the empty matrix of the give dimension
+**number[][]** the empty matrix of the given dimension
 
 ---
 
 ```javascript
-Matrix.createEmptySquareMatrix(dim: number) : number[][]
+Matrix.createEmptySquareMatrix(dim)
 ```
-Return an empty Square 2D array of the given dimension
+
 #### Parameters
 
-- dim - the dimension of the empty square matrix
+- dim : **number** - the dimension of the empty square matrix
+
+#### Returns
+
+**number[][]** the empty square matrix of the given dimension
 
 ---
 
 ```javascript
-Matrix.createRandomMatrix(rows: number, cols: number, min: number, max: number) : number[][]
+Matrix.createRandomMatrix(rows, cols, min, max)
 ```
 Return a 2D array of the given dimension filled with random integers in the given range
 #### Parameters
 
-- rows - the rows of the matrix
-- cols - the columns of the matrix
-- min - the minimun number of the random range 
-- max - the maximun number of the random range
+- rows : **number** - the rows of the matrix
+- cols : **number** - the columns of the matrix
+- min : **number** - the minimun number of the random range 
+- max : **number** - the maximun number of the random range
+
+#### Returns
+
+**number[][]** a 2D array of the given dimension filled with random integers in the given range
 
 ---
 
 ```javascript
-Matrix.createIdentityMatrix(dim : number) : number[][]
+Matrix.createIdentityMatrix(dim)
 ```
 Return the identity matrix of the  given dimension
 
 #### Parameters
 
-- dim - the dimension of the identity matrix
+- dim : **number** - the dimension of the identity matrix
+
+#### Returns
+
+**number[][]** a 2D array representing the identity matrix of the given dimension
+
 
 ---
 
 ```javascript
-Matrix.cloneMatrix(matrix : number[][] | Matrix) : number[][]
+Matrix.cloneMatrix(matrix)
 ```
-Return a two 2D array representing the given matrix
 
 #### Parameters
 
-- matrix - the 2D array of the matrix obj to clone
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to clone
+
+#### Returns
+
+**number[][]** a two 2D array representing the given matrix
 
 ---
 
 ```javascript
-Matrix.isMatrixSquare(matrix : number[][] | Matrix) : number[][]
+Matrix.isMatrixSquare(matrix)
 ```
-Return true if the given matrix is square otherwise false
 
 #### Parameters
 
-- matrix - the 2D array of the matrix obj to check 
+- matrix : **number[][] | Matrix**- the 2D array of the matrix obj to check 
+
+#### Returns
+
+**boolean** true if the given matrix is square otherwise false
 
 ---
 
 ```javascript
-Matrix.isMatrixOrthogonal(matrix : number[][] | Matrix) : number[][]
+Matrix.isMatrixOrthogonal(matrix)
 ```
-Return the true if the matrix is an orthogonal matrix otherwise return false
 
 #### Parameters
 
-- matrix - the 2D array of the matrix obj to check 
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to check 
+
+#### Returns
+
+**boolean** true if the matrix is an orthogonal matrix otherwise return false
 
 ---
 
 ```javascript
-Matrix.trace(matrix : number[][] | Matrix) : number
+Matrix.trace(matrix)
 ```
-Return the trace of the given matrix
 
 #### Parameters
 
-- matrix - the 2D array of the matrix obj
+- matrix : **number[][] | Matrix**- the 2D array of the matrix obj
+
+#### Returns
+
+**number** the trace of the given matrix
+
 
 ---
 
 ```javascript
-Matrix.getTranspose(matrix : number[][] | Matrix) : number[][]
+Matrix.getTranspose(matrix)
 ```
-Return the transpose of the given matrix
 
 #### Parameters
 
-- matrix - the 2D array of the matrix obj to transpose
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to transpose
+
+#### Returns
+
+**number[][]** the transpose of the given matrix
+
 
 ---
 
 ```javascript
-Matrix.printMatrix(matrix : number[][] | Matrix)
+Matrix.print(matrix)
 ```
 Print on the screen the given matrix
  
 #### Parameters
 
-- matrix - the 2D array of the matrix obj to print
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to print
 
 ---
 
 ```javascript
-Matrix.getCol(matrix : number[][] | Matrix, col: number) : number[]
+Matrix.getCol(matrix, col)
 ```
-return the requested column of the given matrix 
  
 #### Parameters
 
-- matrix - the 2D array of the matrix obj
-- col - the number of the column of the matrix (starting form 0)
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj
+- col : **number** - the number of the column of the matrix (starting form 0)
+
+#### Returns 
+
+**number []**  the requested column of the given matrix 
 
 ---
 
-
 ```javascript
-Matrix.getSubMatrix(matrix : number[][] | Matrix, startRow: number, endRow: number, startCol: number, endCol: number) : number[][] | number[]
+Matrix.getSubMatrix(matrix, startRow, endRow, startCol, endCol)
 ```
-Return a sum matrix of the given matrix, which has the matrix rows in the [startRow, endRow] range and the columns in the [startCol, endCol] range  
  
 #### Parameters
 
-- matrix - the 2D array of the matrix obj
-- startRow - 
-- endRow - 
-- startCol -
-- endCol -
+- matrix : **number[][] | Matrix** - the 2D array of the matrix obj
+- startRow : **number** - 
+- endRow : **number** - 
+- startCol : **number** -
+- endCol : **number** -
+
+#### Returns 
+
+**number [][] | number []** a sum matrix of the given matrix, which has the matrix rows in the [startRow, endRow] range and the columns in the [startCol, endCol] range  
 
 ---
 
 ```javascript
-Matrix.gaussianElimination(matrix: number[][] | Matrix) : number[][]
+Matrix.gaussianElimination(matrix)
 ```
 Reduce the given matrix in the row echelon form
 
 #### Parameters
 
-- matrix - the 2d array or the matrix obj to reduce at the row echelon form
+- matrix : **number[][] | Matrix** - the 2d array or the matrix obj to reduce at the row echelon form
+
+#### Returns
+
+**number [][]**  the given matrix reduced in the row echelon form
 
 ---
 
 ```javascript
-Matrix.gaussianElimination(matrix: number[][] | Matrix, vector: number[]) : number[]
+Matrix.gaussianElimination(matrix, vector)
 ```
-Solve the linear system [matrix|vector] using gaussian elimination
 
 #### Parameters
 
-- matrix - the 2d array or the matrix obj that represent the right part of the linear system
-- vector - the array the represent the right part of the linear system
+- matrix : **number[][] | Matrix** - the 2d array or the matrix obj that represent the right part of the linear system
+- vector : **number[]** - the array the represent the right part of the linear system
+
+#### Returns
+**number[]** the solution of the linear system [matrix|vector] using gaussian elimination
 
 ---
 
 ```javascript
-Matrix.getLUDecomposition(matrix: number[][] | Matrix) : {U : number[][], L: number[][]}
+Matrix.getLUDecomposition(matrix)
 ```
-Decompose the give matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
 
 #### Parameters
 
-- matrix - the 2d array or the matrix obj to decompose using the LU decomposition
+- matrix : **number[][] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
+
+#### Returns
+**{U : number[][], L: number[][]}**  decompose the give matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
 
 ---
 
 ```javascript
-Matrix.solveUsingLU(lower: number[][] | Matrix, upper: number[][] | Matrix, rightPart: number[] ): number[]
+Matrix.solveUsingLU(lower, upper, rightPart)
 ```
-Solve the linear system [matrix|vector] using the lu decomposition {/*fixme: more explicative line*/}
 
 #### Parameters
 
-- lower - the 2d array or the matrix obj to decompose using the LU decomposition
-- upper - 
-- rightPart -
+- lower : **number[][] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
+- upper : **number[][] | Matrix** - 
+- rightPart : **number[]** -
+
+#### Returns
+**number[]** solution of the linear system [matrix|vector] using the lu decomposition {/*fixme: more explicative line*/} 
 
 ---
 
 #### Matrix Operation - Sum
 
 ```javascript
-Matrix.sum(matrix1: number[][] | Matrix, matrix2: number[][] | Matrix): number[][]
-```
-Return the sum of the two matrices 
+Matrix.sum(matrix1, matrix2)
+``` 
 
 #### Parameters
 
-- matrix1 - the first 2d array or the matrix obj 
-- matrix2 - the second 2d array or the matrix obj
+- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj 
+- matrix2 : **number[][] | Matrix** - the second 2d array or the matrix obj
+
+#### Returns 
+**number [][]** the sum of the two matrices
 
 #### Matrix Operation - Substraction
 
 ```javascript
-Matrix.sub(matrix1: number[][] | Matrix, matrix2: number[][] | Matrix): number[][]
+Matrix.sub(matrix1, matrix2)
 ```
-Return the subtraction of the two matrices
 
 #### Parameters
 
-- matrix1 - the first 2d array or the matrix obj 
-- matrix2 - the second 2d array or the matrix obj
+- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj 
+- matrix2 : **number[][] | Matrix** - the second 2d array or the matrix obj
+
+#### Returns 
+**number [][]** the subtraction of the two matrices
 
 #### Matrix Operation - Multiplication
 

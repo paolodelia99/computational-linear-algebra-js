@@ -12,6 +12,21 @@ describe('test vector creation', () => {
   })
 })
 
+describe('Test vector printing', () => {
+  it('should print the vector', function () {
+    const printVector = vector => {
+      vector = Vector.checkVectorType(vector)
+      console.log(vector)
+    }
+    const vector = new Vector([1, 2, 1])
+
+    // Test static method
+    console.assert(Vector.print(vector), printVector(vector))
+    // Test instance method
+    console.assert(vector.print(), printVector(vector))
+  })
+})
+
 describe('Test creation of an empty vector', () => {
   it('should give an empty array', function () {
     const vector = Vector.createEmptyVector(3)
@@ -89,7 +104,7 @@ describe('test subtraction of two vectors', () => {
     const vector1 = [2, 1, 1]
     const vector2 = [1, 0, 1]
 
-    assert.deepStrictEqual(Vector.subtract(vector1, vector2), [1, 1, 0])
+    assert.deepStrictEqual(Vector.sub(vector1, vector2), [1, 1, 0])
   })
 
   it('should substract the second vector', function () {
@@ -104,7 +119,7 @@ describe('test subtraction of two vectors', () => {
     const vector2 = new Vector([-1, 2])
 
     try {
-      Vector.subtract(vector1, vector2)
+      Vector.sub(vector1, vector2)
     } catch (e) {
       if (e instanceof Error) {
         assert.deepStrictEqual(e.message, 'The two vectors haven\'t the same Length')

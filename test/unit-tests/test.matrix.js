@@ -1,6 +1,6 @@
-import assert from 'assert'
-import { Matrix } from '../../src/matrix'
-import { Vector } from '../../src/vector'
+const assert = require('assert')
+const { Matrix } = require('../../src/matrix')
+const { Vector } = require('../../src/vector')
 
 describe('test create square matrix', () => {
   it('should give an empty square matrix', () => {
@@ -41,9 +41,9 @@ describe('test printing matrix method', () => {
     const matrix1 = matrix.getCopy()
 
     // Test instance
-    console.assert(matrix.printMatrix(), print2dArray(matrix))
+    console.assert(matrix.print(), print2dArray(matrix))
     // Test static method
-    console.assert(Matrix.printMatrix(matrix1), print2dArray(matrix1))
+    console.assert(Matrix.print(matrix1), print2dArray(matrix1))
   })
 })
 
@@ -446,6 +446,29 @@ describe('Test matrix multiplication', () => {
           assert.deepStrictEqual(e.message, 'Cannot do the multiplication')
         }
       }
+    })
+
+    describe('Test matrix vector multiplication', () => {
+      it('should work also with vectors', function () {
+        const matrix = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+        const vector = new Vector([1, 1, 1])
+
+        assert.deepStrictEqual(Matrix.ijkMultiply(matrix, vector), [11, 2, 6])
+      })
+
+      it('should throw an error if the dimension does not match', function () {
+        const matrix = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
+        const vector = new Vector([1, 1, 1, 3])
+
+        try {
+          matrix.ijkMultiply(vector)
+          assert.fail('Should throw an error')
+        } catch (e) {
+          if (e instanceof Error) {
+            assert.deepStrictEqual(e.message, 'Cannot do the matrix vector multiplication')
+          }
+        }
+      })
     })
   })
 

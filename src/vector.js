@@ -2,12 +2,26 @@ import { zip } from './utils/functions'
 
 export class Vector {
   /**
-     * Constructor of the vector Object
-     * @param vector can be an array of a list of integers
-     */
+       * Constructor of the vector Object
+       * @param vector can be an array of a list of integers
+       */
   constructor (vector) {
     this._vector = Array.isArray(vector) ? vector : Array.from(arguments)
   }
+
+    /**
+     * Print the given vector
+     * @param {number[] | Vector} vector
+     */
+    static print = (vector) => {
+      vector = Vector.checkVectorType(vector)
+      console.log(vector)
+    }
+
+    /**
+     * Print the vector
+     */
+    print = () => Vector.print(this._vector)
 
     /**
      * Static method the give a copy of the given vector
@@ -185,7 +199,7 @@ export class Vector {
      * @param {number[] | Vector} vector2
      * @returns {number[]} vector1 - vector2
      */
-    static subtract (vector1, vector2) {
+    static sub (vector1, vector2) {
       // Check the input types
       vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
       vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
@@ -207,7 +221,7 @@ export class Vector {
      * @returns {Vector}
      */
     sub = (vector) => {
-      this._vector = Vector.subtract(this._vector, vector)
+      this._vector = Vector.sub(this._vector, vector)
       return this
     }
 

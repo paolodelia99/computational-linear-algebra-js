@@ -1,6 +1,6 @@
 /**
  * Returns a zip of the two given arrays
- * @param {*[][]} arr1
+ * @param {number[]} arr1
  * @param {number[]|Vector} arr2
  * @returns array[][] bidimensional array that is the zip between the two arrays
  */

@@ -1,3 +1,5 @@
+import { zip } from './utils/functions'
+
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
 
@@ -75,15 +77,17 @@ export class Matrix {
     /**
      * Method that return the two dimensional array that represent the matrix
      * no matter if it passed a matrix object or a two dimensional array
-     * @param {number[][] | Matrix} matrix
+     * @param {number[][] | Matrix | number[] | Vector} matrix
      * @returns {number[][]} the two dimensional array thar represent the matrix
      */
-    static checkMatrixType = matrix => Array.isArray(matrix) ? matrix : matrix.matrix;
+    static checkMatrixType = matrix => {
+      if (matrix instanceof Vector || (Array.isArray(matrix) && typeof matrix[0] === 'number')) { return Array.isArray(matrix) ? matrix : matrix.vector } else { return Array.isArray(matrix) ? matrix : matrix.matrix }
+    };
 
     /**
      * Method that return the two dimensional array that represent the matrix
      * no matter if it passed a matrix object or a two dimensional array
-     * @param {number[][] | Matrix} matrix
+     * @param {number[][] | Matrix | number[] | Vector} matrix
      * @returns {number[][]} the two dimensional array thar represent the matrix
      */
     checkMatrixType = matrix => Matrix.checkMatrixType(matrix);
@@ -178,12 +182,12 @@ export class Matrix {
      * Static method for printing matrix
      * @param { number[][] | Matrix}matrix
      */
-    static printMatrix = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
+    static print = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
 
     /**
      * Print the matrix
      */
-    printMatrix = () => Matrix.printMatrix(this._matrix);
+    print = () => Matrix.print(this._matrix);
 
     /**
      * Static method that compute the inverse of the give matrix
@@ -615,37 +619,59 @@ export class Matrix {
     /**
      * Compute the matrix multiplication using the naive method
      * @param {number[][]| Matrix} matrix1
-     * @param {number[][]| Matrix} matrix2
+     * @param {number[][]| Matrix | number[] | Vector} matrix2
      * @returns {number[][]} the result of the product of the matrix1 and the matrix2
      */
     static ijkMultiply = (matrix1, matrix2) => {
       // Check  the inputs types
       matrix1 = Matrix.checkMatrixType(matrix1)
-      matrix2 = Matrix.checkMatrixType(matrix2)
-      // check if the input matrix has the right dimension
-      if (matrix1[0].length !== matrix2.length) {
-        throw new Error('Cannot do the multiplication')
-      } else {
-        const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length)
+      if ((Array.isArray(matrix2) && !Array.isArray(matrix2[0])) || matrix2 instanceof Vector) {
+        matrix2 = Vector.checkVectorType(matrix2)
 
-        // Compute the calculation
-        for (let i = 0; i < matrix1.length; i++) {
-          for (let j = 0; j < matrix2[0].length; j++) {
-            for (let k = 0; k < matrix1[0].length; k++) { resMatrix[i][j] += (matrix1[i][k] * matrix2[k][j]) }
+        // Check matrix vector compatibility
+        const refVector = Array.isArray(matrix2) ? matrix2 : Vector.getCopy(matrix2)
+        const refMatrix = Array.isArray(matrix1) ? matrix1 : Matrix.cloneMatrix(matrix1)
+        if (refVector.length !== refMatrix[0].length) {
+          throw new Error('Cannot do the matrix vector multiplication')
+        } else {
+          const resVector = Array(refMatrix.length)
+
+          for (let i = 0; i < refMatrix.length; i++) {
+            resVector[i] = (zip(refMatrix[i], refVector).map(x => x.reduce((a, b) => a * b, 1))).reduce((a, b) => a + b, 0)
           }
-        }
 
-        return resMatrix
+          return resVector
+        }
+      } else {
+        matrix2 = Matrix.checkMatrixType(matrix2)
+        // check if the input matrix has the right dimension
+        if (matrix1[0].length !== matrix2.length) {
+          throw new Error('Cannot do the multiplication')
+        } else {
+          const height = matrix1.length
+          const width1 = matrix1[0].length
+          const width2 = matrix2[0].length
+          const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length)
+
+          // Compute the calculation
+          for (let i = 0; i < height; i++) {
+            for (let j = 0; j < width2; j++) {
+              for (let k = 0; k < width1; k++) { resMatrix[i][j] += (matrix1[i][k] * matrix2[k][j]) }
+            }
+          }
+
+          return resMatrix
+        }
       }
     };
 
   /**
    * Instance method that return thr multiplication of matrix
-   * @param {number[][]| Matrix} matrix
+   * @param {number[][]| Matrix | number[] | Vector} matrix
    * @return {Matrix}
    */
   ijkMultiply = (matrix) => {
-    this._matrix = Matrix.ijkMultiply(this._matrix, !Array.isArray(matrix) ? matrix.matrix : matrix)
+    this._matrix = Matrix.ijkMultiply(this._matrix, matrix)
     return this
   }
 

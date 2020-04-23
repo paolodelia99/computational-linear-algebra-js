@@ -22,15 +22,12 @@ export class LinearTransformation {
      * @returns {number[] | number[][] } the transformed matrix/vector
      */
     static apply = (trMatrix, matrix) => {
-      // Check weather the matrix passed is a matrix or a vector, and based on that arsing to matrix
+      // Check trMatrix type
+      trMatrix = Matrix.checkMatrixType(trMatrix)
+      // Check weather the matrix passed is a matrix or a vector, and based on that parsing to matrix
       // the corresponding array representation
       if ((Array.isArray(matrix) && Array.isArray(matrix[0])) || matrix instanceof Matrix) {
         matrix = Matrix.checkMatrixType(matrix)
-      } else {
-        matrix = Vector.checkVectorType(matrix)
-      }
-      // Check if the passed matrix is a matrix or a vector
-      if (matrix.every(Array.isArray)) {
         Matrix.checkMatrixType(trMatrix)
         Matrix.checkMatrixType(matrix)
 
@@ -40,15 +37,17 @@ export class LinearTransformation {
           return Matrix.multiply(trMatrix, matrix)
         }
       } else {
+        matrix = Vector.checkVectorType(matrix)
+
         // Check matrix vector compatibility
-        const refVector = Array.isArray(matrix) ? matrix : matrix.getCopy()
-        const refMatrix = Array.isArray(trMatrix) ? trMatrix : trMatrix.getCopy()
+        const refVector = Array.isArray(matrix) ? matrix : Vector.getCopy(matrix)
+        const refMatrix = Array.isArray(trMatrix) ? trMatrix : Matrix.cloneMatrix(trMatrix)
         if (refVector.length !== refMatrix[0].length) {
           throw new Error('Cannot apply the linear Transformation')
         } else {
           const resVector = Array(refMatrix.length)
 
-          for (let i = 0; i < trMatrix.length; i++) {
+          for (let i = 0; i < refMatrix.length; i++) {
             resVector[i] = (zip(refMatrix[i], refVector).map(x => x.reduce((a, b) => a * b, 1))).reduce((a, b) => a + b, 0)
           }
 
