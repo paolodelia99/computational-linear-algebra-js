@@ -17,12 +17,12 @@ Matrix(matrix)
 ```
 
 #### Parameters
-matrix : **number[][]** - the two dimensional array the represent the matrix
+matrix : **number[ ][ ]** - the two dimensional array the represent the matrix
 
 ## Attributes
 
 ```javascript
-.matrix : number[][]
+.matrix : number[ ][ ]
 ```
 the two dimensional
  array representing the matrix
@@ -62,7 +62,7 @@ Matrix.createEmptyMatrix(rows, cols)
 
 #### Returns
 
-**number[][]** the empty matrix of the given dimension
+**number[ ][ ]** the empty matrix of the given dimension
 
 ---
 
@@ -76,7 +76,7 @@ Matrix.createEmptySquareMatrix(dim)
 
 #### Returns
 
-**number[][]** the empty square matrix of the given dimension
+**number[ ][ ]** the empty square matrix of the given dimension
 
 ---
 
@@ -93,7 +93,7 @@ Return a 2D array of the given dimension filled with random integers in the give
 
 #### Returns
 
-**number[][]** a 2D array of the given dimension filled with random integers in the given range
+**number[ ][ ]** a 2D array of the given dimension filled with random integers in the given range
 
 ---
 
@@ -108,7 +108,7 @@ Return the identity matrix of the  given dimension
 
 #### Returns
 
-**number[][]** a 2D array representing the identity matrix of the given dimension
+**number[ ][ ]** a 2D array representing the identity matrix of the given dimension
 
 
 ---
@@ -119,11 +119,11 @@ Matrix.cloneMatrix(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to clone
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj to clone
 
 #### Returns
 
-**number[][]** a two 2D array representing the given matrix
+**number[ ][ ]** a two 2D array representing the given matrix
 
 ---
 
@@ -133,7 +133,7 @@ Matrix.isMatrixSquare(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix**- the 2D array of the matrix obj to check 
+- matrix : **number[ ][ ] | Matrix**- the 2D array of the matrix obj to check 
 
 #### Returns
 
@@ -147,7 +147,7 @@ Matrix.isMatrixOrthogonal(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to check 
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj to check 
 
 #### Returns
 
@@ -161,7 +161,7 @@ Matrix.trace(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix**- the 2D array of the matrix obj
+- matrix : **number[ ][ ] | Matrix**- the 2D array of the matrix obj
 
 #### Returns
 
@@ -176,11 +176,11 @@ Matrix.getTranspose(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to transpose
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj to transpose
 
 #### Returns
 
-**number[][]** the transpose of the given matrix
+**number[ ][ ]** the transpose of the given matrix
 
 
 ---
@@ -192,7 +192,7 @@ Print on the screen the given matrix
  
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj to print
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj to print
 
 ---
 
@@ -202,12 +202,12 @@ Matrix.getCol(matrix, col)
  
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj
 - col : **number** - the number of the column of the matrix (starting form 0)
 
 #### Returns 
 
-**number []**  the requested column of the given matrix 
+**number [ ]**  the requested column of the given matrix 
 
 ---
 
@@ -217,7 +217,7 @@ Matrix.getSubMatrix(matrix, startRow, endRow, startCol, endCol)
  
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2D array of the matrix obj
+- matrix : **number[ ][ ] | Matrix** - the 2D array of the matrix obj
 - startRow : **number** - 
 - endRow : **number** - 
 - startCol : **number** -
@@ -225,7 +225,7 @@ Matrix.getSubMatrix(matrix, startRow, endRow, startCol, endCol)
 
 #### Returns 
 
-**number [][] | number []** a sum matrix of the given matrix, which has the matrix rows in the [startRow, endRow] range and the columns in the [startCol, endCol] range  
+**number [ ][ ] | number [ ]** a sum matrix of the given matrix, which has the matrix rows in the [startRow, endRow] range and the columns in the [startCol, endCol] range  
 
 ---
 
@@ -236,11 +236,11 @@ Reduce the given matrix in the row echelon form
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2d array or the matrix obj to reduce at the row echelon form
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to reduce at the row echelon form
 
 #### Returns
 
-**number [][]**  the given matrix reduced in the row echelon form
+**number [ ][ ]**  the given matrix reduced in the row echelon form
 
 ---
 
@@ -250,11 +250,11 @@ Matrix.gaussianElimination(matrix, vector)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2d array or the matrix obj that represent the right part of the linear system
-- vector : **number[]** - the array the represent the right part of the linear system
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj that represent the right part of the linear system
+- vector : **number[ ]** - the array the represent the right part of the linear system
 
 #### Returns
-**number[]** the solution of the linear system [matrix|vector] using gaussian elimination
+**number[ ]** the solution of the linear system [matrix|vector] using gaussian elimination
 
 ---
 
@@ -264,10 +264,10 @@ Matrix.getLUDecomposition(matrix)
 
 #### Parameters
 
-- matrix : **number[][] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
 
 #### Returns
-**{U : number[][], L: number[][]}**  decompose the give matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
+**{U : number[ ][ ], L: number[ ][ ]}**  decompose the give matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
 
 ---
 
@@ -277,12 +277,12 @@ Matrix.solveUsingLU(lower, upper, rightPart)
 
 #### Parameters
 
-- lower : **number[][] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
-- upper : **number[][] | Matrix** - 
-- rightPart : **number[]** -
+- lower : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
+- upper : **number[ ][ ] | Matrix** - 
+- rightPart : **number[ ]** -
 
 #### Returns
-**number[]** solution of the linear system [matrix|vector] using the lu decomposition {/*fixme: more explicative line*/} 
+**number[ ]** solution of the linear system [matrix|vector] using the lu decomposition <!--fixme: more explicative line --> 
 
 ---
 
@@ -294,11 +294,11 @@ Matrix.sum(matrix1, matrix2)
 
 #### Parameters
 
-- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj 
-- matrix2 : **number[][] | Matrix** - the second 2d array or the matrix obj
+- matrix1 : **number[ ][ ] | Matrix** - the first 2d array or the matrix obj 
+- matrix2 : **number[ ][ ] | Matrix** - the second 2d array or the matrix obj
 
 #### Returns 
-**number [][]** the sum of the two matrices
+**number [ ][ ]** the sum of the two matrices
 
 #### Matrix Operation - Substraction
 
@@ -308,11 +308,11 @@ Matrix.sub(matrix1, matrix2)
 
 #### Parameters
 
-- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj 
-- matrix2 : **number[][] | Matrix** - the second 2d array or the matrix obj
+- matrix1 : **number[ ][ ] | Matrix** - the first 2d array or the matrix obj 
+- matrix2 : **number[ ][ ] | Matrix** - the second 2d array or the matrix obj
 
 #### Returns 
-**number [][]** the subtraction of the two matrices
+**number [ ][ ]** the subtraction of the two matrices
 
 #### Matrix Operation - Multiplication
 
@@ -320,16 +320,16 @@ Matrix.sub(matrix1, matrix2)
 Matrix.mul(matrix1, matrix2)
 ```
 
-Compute the matrix multiplication matrix1 x matrix2 using the naive method {/*fixme*/}
+Compute the matrix multiplication matrix1 x matrix2 using the naive method <!--fixme -->
 
 #### Parameters
 
-- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj of the multiplication
-- matrix2 **number[][] | Matrix** -  the second 2d array or the matrix obj of the multiplication
+- matrix1 : **number[ ][ ] | Matrix** - the first 2d array or the matrix obj of the multiplication
+- matrix2 **number[ ][ ] | Matrix** -  the second 2d array or the matrix obj of the multiplication
 
 #### Returns
 
-**number[][]** the multiplication of matrix1 x matrix2 
+**number[ ][ ]** the multiplication of matrix1 x matrix2 
 
 ---
 
@@ -341,12 +341,12 @@ Compute the matrix multiplication using the strasen algorithms
 
 #### Parameters
 
-- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj of the multiplication
-- matrix2 **number[][] | Matrix** - the second 2d array or the matrix obj of the multiplication
+- matrix1 : **number[ ][ ] | Matrix** - the first 2d array or the matrix obj of the multiplication
+- matrix2 **number[ ][ ] | Matrix** - the second 2d array or the matrix obj of the multiplication
 
 #### Returns
 
-**number[][]** the multiplication of matrix1 x matrix2 
+**number[ ][ ]** the multiplication of matrix1 x matrix2 
 
 ---
 
@@ -358,19 +358,18 @@ Efficient matrices multiplication using a parallel algorithm
 
 #### Parameters
 
-- matrix1 : **number[][] | Matrix** - the first 2d array or the matrix obj of the multiplication
-- matrix2 **number[][] | Matrix**  - the second 2d array or the matrix obj of the multiplication
+- matrix1 : **number[ ][ ] | Matrix** - the first 2d array or the matrix obj of the multiplication
+- matrix2 **number[ ][ ] | Matrix**  - the second 2d array or the matrix obj of the multiplication
 
 #### Returns
 
-**number[][]** the multiplication of matrix1 x matrix2 
+**number[ ][ ]** the multiplication of matrix1 x matrix2 
 
 ---
 
-<p><b>Note</b>: the methods ijkMultiply, strassenMultiplication and multiply they do the same thing, but multiply is much more efficient since run on the gpu using a parallel algorithm,
-                    while strassenMultiplication has time complexity of O(n<sup>2.8</sup>) and the ijkMultiply is the most inefficent since has a time complexity of O(n<sup>3</sup>).
-                    So it's up to you to decide what to use!</p>
-                    
+> **Note** : the methods ijkMultiply, strassenMultiplication and multiply they do the same thing, but multiply is much more efficient since run on the gpu using a parallel algorithm, while strassenMultiplication has time complexity of O(n<sup>2.8</sup>) and the ijkMultiply is the most inefficent since has a time complexity of O(n<sup>3</sup>). So it's up to you to decide what to use!
+   
+---                 
                     
 #### Instance Methods
 
@@ -380,7 +379,7 @@ Efficient matrices multiplication using a parallel algorithm
 
 #### Returns
 
-**number[][]** the copy of the matrix
+**number[ ][ ]** the copy of the matrix
 
 ---
 
@@ -414,7 +413,7 @@ Print the matrix on the screen
 ```
 
 #### Returns
-**number [][]**  the transpose of the matrix
+**number [ ][ ]**  the transpose of the matrix
 
 ---
 
@@ -441,7 +440,7 @@ console.log(matrix1.transpose().transpose().matrix) // [[1, 0, 3], [0, 2, 1]]
 ```
 
 #### Returns
-**number [][]**  the invert of the matrix
+**number [ ][ ]**  the invert of the matrix
 
 ---
 
@@ -450,3 +449,150 @@ console.log(matrix1.transpose().transpose().matrix) // [[1, 0, 3], [0, 2, 1]]
 ```
 
 inverts the matrix object. This method can be chained
+
+---
+
+```javascript
+.getDeterminant()
+```
+
+#### Returns
+**number**  the determinant of the matrix
+
+---
+
+```javascript
+.getCol(col)
+```
+return the requested column of the matrix
+
+#### Parameters
+
+- col : **number** the requested column
+
+#### Returns
+**number[ ]**  the determinant of the matrix
+
+---
+
+```javascript
+.sum(matrix)
+```
+Add the given matrix to the matrix
+
+> this method can be chained
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** 
+
+---
+
+```javascript
+.sub(matrix)
+```
+Subtract the given matrix to the matrix
+
+> this method can be chained
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** 
+
+---
+
+```javascript
+.isMatrixOrthogonal(matrix)
+```
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** 
+
+#### Returns 
+**boolean** true if is it orthogonal otherwise false
+
+---
+
+```javascript
+.getSubMatrix(rowStart, rowEnd, colStart, colEnd)
+```
+
+<!--fixme: add description --->
+
+#### Parameters
+
+- rowStart : **number** 
+- rowEnd : **number** 
+- colStart : **number** 
+- colEnd : **number** 
+
+#### Returns 
+**number [ ][ ] | number [ ]** the submatrix 
+
+---
+
+```javascript
+.luDecomposition()
+```
+The LU Decomposition function that decompose the matrix in L and U
+
+> After the function has finished, the L and U matrices are accessible to the via attributes **lower** and **upper**
+ 
+---
+
+```javascript
+.solveUsingLU(rightPart)
+```
+Solve the linear system using lu decomposition
+
+#### Parameters
+
+- rightPart : **number [ ]** the vector <!-- fixme more explicative -->
+
+> if you called the luDecompositon() function you can use the L and U matrices to solve the linear system A|b where b in this case is the rightPart vector
+
+---
+
+```javascript
+.mul(matrix)
+```
+multiply the matrix by the given matrix
+
+> this method can be chained
+
+#### Parameters
+
+- matrix : **number [ ][ ] | Matrix** 
+
+<!-- fixme: example needed-->
+
+> when the matrices are too big the multiply() function is called, multiply() performs the matrix multiplication 
+> on the GPU using a parallel algorithm 
+
+
+---
+ 
+ ```javascript
+.strassenMultiply(matrix)
+ ```
+multiply the matrix by the given matrix using the Strassen algorithm
+
+> this method can be chained
+ 
+#### Parameters
+ 
+ - matrix : **number [ ][ ] | Matrix** 
+  
+---
+ 
+ ```javascript
+.hammardProduct(matrix)
+ ```
+Performs the hammard product of the matrix by the given matrix
+
+> this method can be chained 
+
+#### Parameters
+ 
+ - matrix : **number [ ][ ] | Matrix** 

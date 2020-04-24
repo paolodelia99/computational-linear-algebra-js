@@ -290,9 +290,9 @@ export class Vector {
       }
 
       /**
-     * Get the angle between the vector and the  given vector
+     * Returns the angle between the vector and the given vector
      * @param {number[] | Vector} vector
-     * @param {string} angleType angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
+     * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
      * @returns {number} angle between the vector and the given vector
      */
       getAngle = (vector, angleType = 'deg') => Vector.getAngle(this.vector, vector, angleType)
