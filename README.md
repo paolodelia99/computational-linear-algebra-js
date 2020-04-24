@@ -230,11 +230,17 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] rank of the matrix
     - [ ] determinant without LU
     - [ ] determinant of the inverse
-    - [ ] Hadamard product
+    - [x] Hadamard product
     - [ ] Kronecker product
     - [ ] Rotation matrix
-    - [ ] Frobenius norm
+    - [ ] Matrix norm 
+        - [ ] Frobenius norm
+        - [ ] L1 norm
+        - [ ] L2 norm
+        - [ ] L-Infinity norm 
     - [ ] Pseudo-Inverse
+    - [x] Rotation
+    - [ ] redo inverse
     
 - Vector 
     - [x] sum, subtraction
@@ -256,7 +262,6 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] kernel
     - [ ] image
     - [ ] Projections
-    - [ ] Rotation
     
 - Tensors
   
@@ -267,6 +272,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] build npm package
     - [ ] better documentation
         - [ ] add squeeze function to the matrix class
+        - [ ] add rotations
     - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript
     - [x] Test with Browser stack

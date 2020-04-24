@@ -1,4 +1,4 @@
-import { zip, dotProduct } from './utils/functions'
+import { zip, dotProduct, zipWith, product } from './utils/functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -707,15 +707,15 @@ export class Matrix {
       }
     };
 
-  /**
-   * Instance method that return thr multiplication of matrix
-   * @param {number[][]| Matrix | number[] | Vector} matrix
-   * @return {Matrix}
-   */
-  mul = (matrix) => {
-    this._matrix = Matrix.mul(this._matrix, matrix)
-    return this
-  }
+    /**
+     * Instance method that return thr multiplication of matrix
+     * @param {number[][]| Matrix | number[] | Vector} matrix
+     * @return {Matrix}
+     */
+    mul = (matrix) => {
+      this._matrix = Matrix.mul(this._matrix, matrix)
+      return this
+    }
 
     /**
    * Efficient Multiplication run on the gpu with a parallel algorithm (only for big matrices, dimensions >= 1024 x 1024)
@@ -877,10 +877,44 @@ export class Matrix {
     };
 
     /**
+     *
+     * @param matrix1
+     * @param matrix2
+     * @returns {number[][]}
+     */
+      static hammardProduct = (matrix1, matrix2) => {
+        // Check matrices type
+        matrix1 = Matrix.checkMatrixType(matrix1)
+        matrix2 = Matrix.checkMatrixType(matrix2)
+
+        if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
+          throw new Error('Cannot compute hammard product with different matrices')
+        } else {
+          const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length)
+
+          for (let i = 0; i < matrix1.length; i++) {
+            resMatrix[i] = zipWith(product, matrix1[i], matrix2[i])
+          }
+
+          return resMatrix
+        }
+      }
+
+      /**
+     * The hammard product between tha matrix and the given matrix
+     * @param {number[][] | Matrix} matrix
+     * @returns {Matrix}
+     */
+      hammardProduct = matrix => {
+        this._matrix = Matrix.hammardProduct(this._matrix, matrix)
+        return this
+      }
+
+      /**
      * matrix attribute getter
      * @returns {number[][]}
      */
-    get matrix () {
-      return this._matrix
-    }
+      get matrix () {
+        return this._matrix
+      }
 }

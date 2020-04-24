@@ -671,3 +671,26 @@ describe('Test matrix orthogonality', () => {
     assert.deepStrictEqual(Matrix.isMatrixOrthogonal(matrix), true)
   })
 })
+
+describe('Test the hammard product', () => {
+  it('should give the hammard product of a 2x2 matrix', function () {
+    const matrix = new Matrix([1, 1], [2, 2])
+    const matrix2 = new Matrix([2, 2], [0, 3])
+
+    assert.deepStrictEqual(Matrix.hammardProduct(matrix, matrix2), [[2, 2], [0, 6]])
+  })
+
+  it('should give the hammard product of a 3x3 matrices', function () {
+    const matrix = new Matrix([1, 1, 0], [2, 2, 3], [1, -1, 2])
+    const matrix2 = new Matrix([2, 2, 1], [0, 3, 1], [0, 4, 2])
+
+    assert.deepStrictEqual(Matrix.hammardProduct(matrix, matrix2), [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
+  })
+
+  it('should work also the instance method', function () {
+    const matrix = new Matrix([1, 1, 0], [2, 2, 3], [1, -1, 2])
+    const matrix2 = new Matrix([2, 2, 1], [0, 3, 1], [0, 4, 2])
+
+    assert.deepStrictEqual(matrix.hammardProduct(matrix2).matrix, [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
+  })
+})
