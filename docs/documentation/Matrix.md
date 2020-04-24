@@ -317,7 +317,7 @@ Matrix.sub(matrix1, matrix2)
 #### Matrix Operation - Multiplication
 
 ```javascript
-Matrix.ijkMultiply(matrix1, matrix2)
+Matrix.mul(matrix1, matrix2)
 ```
 
 Compute the matrix multiplication matrix1 x matrix2 using the naive method {/*fixme*/}

@@ -64,7 +64,7 @@ console.log(Matrix.sum(matrix1, matrix2)) //[[2,4,-2],[1,6,5],[2,6,9]]
 //Subtract two matrices
 console.log(Matrix.sub(matrix1, matrix2)) // [[0,0,0],[1,2,-1],[2,6,1]]
 //Multiply two matrices
-console.log(Matrix.ijkMultiply(matrix1, matrix2)) // [[1,6,1],[1,10,19],[2,16,36]]
+console.log(Matrix.mul(matrix1, matrix2)) // [[1,6,1],[1,10,19],[2,16,36]]
 //Get the inverse of a matrix
 console.log(Matrix.getInverse(matrix)) //[[1,-2,1],[-0.125, 0.875, -0.375],[-0.25, -0.25, 0.25]]
 
@@ -81,7 +81,7 @@ const matrix1 = new Matrix( [[1,2,-1],[1,4,2],[2,6,5]] )
 const matrix2 = new Matrix( [[1,2,-1],[0,2,3],[0,0,4]])
 const matrix3 = new Matrix( [[1, 1, 0], [2, -1, 0], [2, 3, 4]])
 
-console.log(matrix1.ijkMultiply(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
+console.log(matrix1.mul(matrix2).matrix) // [[1,6,1],[1,10,19],[2,16,36]]
 
 // You can also chaining methods 
 console.log(matrix1.sum(matrix2).sub(matrix3).matrix)
@@ -100,7 +100,7 @@ const { Matrix } =  require('computational-linear-algebra-js')
 const matrix1 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 const matrix2 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
 
-Matrix.printMatrix(matrix1.multiplication(matrix2).matrix)
+Matrix.print(matrix1.multiplication(matrix2).matrix)
 
 ```
 
@@ -212,7 +212,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [x] Strassen algorithm
         - [x] parallel multiplication using gpu.js 
         - remove ijkMul in favour of the funcional way, more faster
-    - [ ] More general Gaussian elimination
+    - [x] More general Gaussian elimination
     - [ ] Matrix decompositions
         - [x] LU
         - [ ] QR
@@ -221,7 +221,12 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] eigenvalues and eigenvectors
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
-    - [ ] check if the matrix is upper triangular, lower triangular, symmetric, positive definite, orthogonal  
+    - [ ] matrix check
+        - [x] orthogonal
+        - [ ] positive definite
+        - [ ] upper triangular
+        - [ ] lower triangular
+        - [ ] symmetric
     - [ ] rank of the matrix
     - [ ] determinant without LU
     - [ ] determinant of the inverse
@@ -261,6 +266,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] compile js in prev version using babel
     - [x] build npm package
     - [ ] better documentation
+        - [ ] add squeeze function to the matrix class
     - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript
     - [x] Test with Browser stack

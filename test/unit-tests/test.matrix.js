@@ -47,6 +47,14 @@ describe('test printing matrix method', () => {
   })
 })
 
+describe('Test squeeze function', () => {
+  it('should give the array', function () {
+    const matrix = new Matrix([1, 1, 1], [2, 2, 2], [3, 3, 3])
+
+    assert.deepStrictEqual(Matrix.squeeze(matrix), [1, 1, 1, 2, 2, 2, 3, 3, 3])
+  })
+})
+
 describe('test isMatrixSquare method', () => {
   it('should give true', () => {
     const mat = Matrix.createEmptySquareMatrix(3)
@@ -84,6 +92,57 @@ describe('test checkMatrixType method', () => {
     assert.deepStrictEqual(Matrix.checkMatrixType(matrix1), [[1, -2, -1], [1, 4, 1], [2, 2, 5]])
     // Test the instance method
     assert.deepStrictEqual(matrix1.checkMatrixType(matrix2), [[1, -2, -1], [1, 4, 1], [2, 2, 5]])
+  })
+})
+
+describe('test rotation matrix function', () => {
+  const PI = Math.PI
+  const c = Math.cos(PI / 6)
+  const s = Math.sin(PI / 6)
+  it('should give the 2d rotation matrix of the given angle', function () {
+    const rotMatrix = Matrix.rotMatrix(2, 30)
+
+    assert.deepStrictEqual(rotMatrix, [[c, -s], [s, c]])
+  })
+
+  describe('Test 3d Matrix roation', () => {
+    it('should give the 3d rotation matrix on the x-axis', function () {
+      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 1)
+
+      assert.deepStrictEqual(rot3DX, [[1, 0, 0], [0, c, -s], [0, s, c]])
+    })
+
+    it('should give the 3d rotation matrix on the y-axis', function () {
+      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 2)
+
+      assert.deepStrictEqual(rot3DX, [[c, 0, s], [0, 1, 0], [-s, 0, c]])
+    })
+
+    it('should give the 3d rotation matrix on the y-axis', function () {
+      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 3)
+
+      assert.deepStrictEqual(rot3DX, [[c, -s, 0], [s, c, 0], [0, 0, 1]])
+    })
+  })
+
+  describe('Test for high dimensional rotation matrices', () => {
+    it('should give the rotation of a 4d matrix of the given i and j', function () {
+      const rot4D = Matrix.rotMatrix(4, 30, 'deg', 1, 2)
+
+      assert.deepStrictEqual(rot4D, [[c, -s, 0, 0], [s, c, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+    })
+
+    it('should give the rotation of a 4d matrix of the given i and j', function () {
+      const rot4D = Matrix.rotMatrix(4, 30, 'deg', 2, 4)
+
+      assert.deepStrictEqual(rot4D, [[1, 0, 0, 0], [0, c, 0, -s], [0, 0, 1, 0], [0, s, 0, c]])
+    })
+
+    it('should give the rotation of a 5d matrix of the given i and j', function () {
+      const rot4D = Matrix.rotMatrix(5, 30, 'deg', 2, 4)
+
+      assert.deepStrictEqual(rot4D, [[1, 0, 0, 0, 0], [0, c, 0, -s, 0], [0, 0, 1, 0, 0], [0, s, 0, c, 0], [0, 0, 0, 0, 1]])
+    })
   })
 })
 
@@ -413,7 +472,7 @@ describe('Test matrix multiplication', () => {
       const matrix1 = [[2, 4, 5], [-1, 2, 1], [4, -1, 3]]
       const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
 
-      assert.deepStrictEqual(Matrix.ijkMultiply(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(Matrix.mul(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     // Test instance method
@@ -421,7 +480,7 @@ describe('Test matrix multiplication', () => {
       const matrix1 = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
       const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1]])
 
-      assert.deepStrictEqual(matrix1.ijkMultiply(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(matrix1.mul(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should work with both inputs types', function () {
@@ -429,9 +488,9 @@ describe('Test matrix multiplication', () => {
       const matrix2 = [[6, 0, 2], [4, -1, 4], [3, 4, 1]]
 
       // First Test the static method
-      assert.deepStrictEqual(Matrix.ijkMultiply(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(Matrix.mul(matrix1, matrix2), [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
       // Then the instance method
-      assert.deepStrictEqual(matrix1.ijkMultiply(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
+      assert.deepStrictEqual(matrix1.mul(matrix2).matrix, [[43, 16, 25], [5, 2, 7], [29, 13, 7]])
     })
 
     it('should throw an exception if the dimension don\'t match', function () {
@@ -439,7 +498,7 @@ describe('Test matrix multiplication', () => {
       const matrix2 = new Matrix([[6, 0, 2], [4, -1, 4], [3, 4, 1], [1, 2, 0]])
 
       try {
-        matrix1.ijkMultiply(matrix2)
+        matrix1.mul(matrix2)
         assert.fail('Should throw an error')
       } catch (e) {
         if (e instanceof Error) {
@@ -453,7 +512,7 @@ describe('Test matrix multiplication', () => {
         const matrix = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
         const vector = new Vector([1, 1, 1])
 
-        assert.deepStrictEqual(Matrix.ijkMultiply(matrix, vector), [11, 2, 6])
+        assert.deepStrictEqual(Matrix.mul(matrix, vector), [11, 2, 6])
       })
 
       it('should throw an error if the dimension does not match', function () {
@@ -461,7 +520,7 @@ describe('Test matrix multiplication', () => {
         const vector = new Vector([1, 1, 1, 3])
 
         try {
-          matrix.ijkMultiply(vector)
+          matrix.mul(vector)
           assert.fail('Should throw an error')
         } catch (e) {
           if (e instanceof Error) {
@@ -568,17 +627,16 @@ describe('Test gaussian elimination method', () => {
     assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[1, 1, 0, 1], [0, -1, 0, 1], [0, 0, 1, 2]])
   })
 
-  it('should throw an exception if the matrix don\'t have the right dimension', function () {
-    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+  it('should work with square matrices', function () {
+    const matrix = new Matrix([1, -1, 2], [3, 0, -2], [-1, 2, 0])
 
-    try {
-      Matrix.gaussianElimination(matrix)
-      assert.fail('Should throw an error')
-    } catch (e) {
-      if (e instanceof Error) {
-        assert.deepStrictEqual(e.message, 'Cannot perform the gaussian elimination of this matrix')
-      }
-    }
+    assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[3, 0, -2], [0, 2, -2 / 3], [0, 0, 2.333333333333333]])
+  })
+
+  it('should work with m x n matrices where m > n', function () {
+    const matrix = new Matrix([1, 0], [3, 1], [0, 1])
+
+    assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[3, 1], [0, 1], [0, 0]])
   })
 })
 

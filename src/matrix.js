@@ -1,4 +1,4 @@
-import { zip } from './utils/functions'
+import { zip, dotProduct } from './utils/functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -75,6 +75,39 @@ export class Matrix {
     };
 
     /**
+     *
+     * @param {number} dim the dimension of the rotMatrix
+     * @param {number} angle the rotation angle
+     * @param {string} angleType the type of angle passed which can be rad or deg
+     * @param {number} i // fixme da scrivere qualcosa
+     * @param {number} j // fixme da scrivere qualcosa
+     * @returns { number[][] } the n dimensional rotation matrix of the given dimension and angle
+     */
+      static rotMatrix = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
+        angle = angleType === 'deg' ? (angle * Math.PI) / 180 : angle
+        const c = Math.cos(angle)
+        const s = Math.sin(angle)
+        if (dim === 2) {
+          return [[c, -s], [s, c]]
+        } else if (dim === 3) {
+          if (i === 1) {
+            return [[1, 0, 0], [0, c, -s], [0, s, c]]
+          } else if (i === 2) {
+            return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
+          } else {
+            return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+          }
+        } else {
+          const idMatrix = Matrix.createIdentityMatrix(dim)
+          idMatrix[i - 1][i - 1] = c
+          idMatrix[i - 1][j - 1] = -s
+          idMatrix[j - 1][i - 1] = s
+          idMatrix[j - 1][j - 1] = c
+          return idMatrix
+        }
+      }
+
+    /**
      * Method that return the two dimensional array that represent the matrix
      * no matter if it passed a matrix object or a two dimensional array
      * @param {number[][] | Matrix | number[] | Vector} matrix
@@ -103,6 +136,24 @@ export class Matrix {
      * @returns {number[][]} the bi-dimensional array that represent the matrix
      */
     getCopy = () => Matrix.cloneMatrix(this.matrix);
+
+    /**
+     *  Squeeze the matrix into an array
+     * @param {number[][] | Matrix} matrix
+     * @returns {number[]} the array representing the matrix
+     */
+      static squeeze = matrix => {
+        // Check matrix type
+        matrix = Matrix.checkMatrixType(matrix)
+
+        let arr = []
+
+        for (let i = 0; i < matrix.length; i++) {
+          arr = arr.concat(matrix[i])
+        }
+
+        return arr
+      }
 
     /**
      * static method that checks if a matrix is square
@@ -369,7 +420,7 @@ export class Matrix {
 
     /**
      * Return true if the matrix is orthogonal otherwise false
-     * @returns {boolean}
+     * @returns {boolean} true if is it orthogonal otherwise false
      */
     isMatrixOrthogonal = () => Matrix.isMatrixOrthogonal(this.matrix)
 
@@ -408,54 +459,51 @@ export class Matrix {
     /**
    * Static method that compute the gaussian elimination of the given matrix
    * @param {number[][] | Matrix} matrix
-   * @returns {number[][]}
+   * @returns {number[][]} the matrix reduced in the row echelon form
    */
     static gaussianElimination = (matrix) => {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
 
-      if (matrix[0].length !== matrix.length + 1) {
-        throw new Error('Cannot perform the gaussian elimination of this matrix')
-      } else {
-        // Copy the matrix
-        const matrixCopy = Matrix.cloneMatrix(matrix)
+      // Copy the matrix
+      const matrixCopy = Matrix.cloneMatrix(matrix)
 
-        let i, j, k
-        const n = matrixCopy.length
+      let i, j, k
+      const n = matrixCopy.length
+      const offset = matrixCopy[0].length - matrixCopy.length
 
-        for (i = 0; i < n; i++) {
-          // Search for maximum in this column
-          let maxEl = Math.abs(matrixCopy[i][i])
-          let maxRow = i
-          for (k = i + 1; k < n; k++) {
-            if (Math.abs(matrixCopy[k][i]) > maxEl) {
-              maxEl = Math.abs(matrixCopy[k][i])
-              maxRow = k
-            }
-          }
-
-          // Swap maximum row with current row (column by column)
-          for (k = i; k < n + 1; k++) {
-            const tmp = matrixCopy[maxRow][k]
-            matrixCopy[maxRow][k] = matrixCopy[i][k]
-            matrixCopy[i][k] = tmp
-          }
-
-          // Make all rows below this one 0 in current column
-          for (k = i + 1; k < n; k++) {
-            const c = -matrixCopy[k][i] / matrixCopy[i][i]
-            for (j = i; j < n + 1; j++) {
-              if (i === j) {
-                matrixCopy[k][j] = 0
-              } else {
-                matrixCopy[k][j] += c * matrixCopy[i][j]
-              }
-            }
+      for (i = 0; i < n; i++) {
+        // Search for maximum in this column
+        let maxEl = Math.abs(matrixCopy[i][i])
+        let maxRow = i
+        for (k = i + 1; k < n; k++) {
+          if (Math.abs(matrixCopy[k][i]) > maxEl) {
+            maxEl = Math.abs(matrixCopy[k][i])
+            maxRow = k
           }
         }
 
-        return matrixCopy
+        // Swap maximum row with current row (column by column)
+        for (k = i; k < n + offset; k++) {
+          const tmp = matrixCopy[maxRow][k]
+          matrixCopy[maxRow][k] = matrixCopy[i][k]
+          matrixCopy[i][k] = tmp
+        }
+
+        // Make all rows below this one 0 in current column
+        for (k = i + 1; k < n; k++) {
+          const c = -matrixCopy[k][i] / matrixCopy[i][i]
+          for (j = i; j < n + offset; j++) {
+            if (i === j) {
+              matrixCopy[k][j] = 0
+            } else {
+              matrixCopy[k][j] += c * matrixCopy[i][j]
+            }
+          }
+        }
       }
+
+      return matrixCopy
     }
 
     /**
@@ -622,7 +670,7 @@ export class Matrix {
      * @param {number[][]| Matrix | number[] | Vector} matrix2
      * @returns {number[][]} the result of the product of the matrix1 and the matrix2
      */
-    static ijkMultiply = (matrix1, matrix2) => {
+    static mul = (matrix1, matrix2) => {
       // Check  the inputs types
       matrix1 = Matrix.checkMatrixType(matrix1)
       if ((Array.isArray(matrix2) && !Array.isArray(matrix2[0])) || matrix2 instanceof Vector) {
@@ -648,19 +696,13 @@ export class Matrix {
         if (matrix1[0].length !== matrix2.length) {
           throw new Error('Cannot do the multiplication')
         } else {
-          const height = matrix1.length
-          const width1 = matrix1[0].length
-          const width2 = matrix2[0].length
-          const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix2[0].length)
-
-          // Compute the calculation
-          for (let i = 0; i < height; i++) {
-            for (let j = 0; j < width2; j++) {
-              for (let k = 0; k < width1; k++) { resMatrix[i][j] += (matrix1[i][k] * matrix2[k][j]) }
-            }
+          // if the matrix is too big run the pararlell algorithm on the gpu
+          if (matrix1.length >= 1024 || matrix2.length >= 1024) { // fixme: find better condition
+            return Matrix.multiply(matrix1, matrix2)
+          } else {
+            const m2Cols = Matrix.getTranspose(matrix2)
+            return matrix1.map(aRow => m2Cols.map(bCol => dotProduct(aRow, bCol)))
           }
-
-          return resMatrix
         }
       }
     };
@@ -670,13 +712,13 @@ export class Matrix {
    * @param {number[][]| Matrix | number[] | Vector} matrix
    * @return {Matrix}
    */
-  ijkMultiply = (matrix) => {
-    this._matrix = Matrix.ijkMultiply(this._matrix, matrix)
+  mul = (matrix) => {
+    this._matrix = Matrix.mul(this._matrix, matrix)
     return this
   }
 
     /**
-   * Efficient Multiplication run on the gpu with a parallel algorithm
+   * Efficient Multiplication run on the gpu with a parallel algorithm (only for big matrices, dimensions >= 1024 x 1024)
    * @param {number[][] | Matrix} matrix1
    * @param {number[][] | Matrix} matrix2
    * @returns {number[][]} the result of the multiplication
@@ -713,15 +755,15 @@ export class Matrix {
       }
     };
 
-  /**
-   * Efficient Multiplication run on the gpu with a parallel algorithm
-   * @param {number[][] | Matrix} matrix
-   * @returns {Matrix} the result of the multiplication
-   */
-  multiply = (matrix) => {
-    this._matrix = Matrix.multiply(this.matrix, matrix)
-    return this
-  }
+    /**
+     * Efficient Multiplication run on the gpu with a parallel algorithm
+     * @param {number[][] | Matrix} matrix
+     * @returns {Matrix} the result of the multiplication
+     */
+    multiply = (matrix) => {
+      this._matrix = Matrix.multiply(this.matrix, matrix)
+      return this
+    }
 
     /**
      * Strassen multiplication method that calls the strassen algorithm
@@ -790,7 +832,7 @@ export class Matrix {
      */
     static strassenAlgorithm = function (matrix1, matrix2, leafSize = 8) {
       const n = matrix1.length
-      if (n <= leafSize) { return Matrix.ijkMultiply(matrix1, matrix2) } else {
+      if (n <= leafSize) { return Matrix.mul(matrix1, matrix2) } else {
         const newSize = Math.floor(n / 2)
 
         // Create the A and B subMatrices

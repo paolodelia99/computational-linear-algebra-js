@@ -47,7 +47,7 @@ describe('Test the application of the linear Transformation', () => {
       const t = new LinearTransformation(Matrix.createRandomMatrix(4, 3, -2, 2))
       const matrix = Matrix.createRandomMatrix(3, 4, -2, 2)
 
-      assert.deepEqual(t.apply(matrix), Matrix.ijkMultiply(t._transformationMatrix, matrix))
+      assert.deepEqual(t.apply(matrix), Matrix.mul(t._transformationMatrix, matrix))
     })
 
     it('should throw an error if the two matrices aren\'t incompatible for the multiplication', function () {
