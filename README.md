@@ -97,8 +97,8 @@ Dealing with big matrices? You can use the *multipication()* function that run a
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
 
-const matrix1 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
-const matrix2 = new Matrix( Matrix.createRandomMatrix(512, 512, 1, 100) );
+const matrix1 = new Matrix( Matrix.randMat(512, 512, 1, 100) );
+const matrix2 = new Matrix( Matrix.randMat(512, 512, 1, 100) );
 
 Matrix.print(matrix1.multiplication(matrix2).matrix)
 

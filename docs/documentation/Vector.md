@@ -33,7 +33,7 @@ the array representing the vector
 #### Vector Creation
 
 ```javascript
-Vector.createEmptyVector(dim)
+Vector.zerosVect(dim)
 ```
 
 #### Parameters
@@ -73,7 +73,7 @@ Print the given vector
 ---
 
 ```javascript
-Vector.getCopy(vector)
+Vector.clone(vector)
 ```
 
 #### Parameters
@@ -182,7 +182,7 @@ Vector.sub(vector1, vector2)
 ---
 
 ```javascript
-Vector.euclideanDistance(vector1, vector2)
+Vector.distance(vector1, vector2)
 ```
 
 #### Parameters
@@ -197,7 +197,7 @@ Vector.euclideanDistance(vector1, vector2)
 ---
 
 ```javascript
-Vector.getAngle(vector1, vector2, angleType='deg')
+Vector.angle(vector1, vector2, angleType='deg')
 ```
 
 #### Parameters
@@ -379,8 +379,8 @@ console.log(vector1.sum(vector2).sub(vector3).vector) // [-1, 3, 5]
 const vector1 = new Vector([2, 3, 1])
 const vector2 = new Vector([1, 1, 2])
 
-console.log(vector1.getAngle(vector2, 'rad')) //0.7016741237876036
-console.log(vector1.getAngle(vector2, 'deg')) //{ deg: 40, arcmin: 12, arcsec: 10 }
+console.log(vector1.angle(vector2, 'rad')) //0.7016741237876036
+console.log(vector1.angle(vector2, 'deg')) //{ deg: 40, arcmin: 12, arcsec: 10 }
 ```
 
 ---

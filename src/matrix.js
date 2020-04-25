@@ -14,7 +14,7 @@ export class Matrix {
      */
     constructor (matrix) {
       this._matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : Array.from(arguments)
-      this.isSquare = this.isMatrixSquare()
+      this.isSquare = this.isSquare()
       this.rows = matrix.length
       this.cols = this.isSquare ? this.rows : matrix[0].length
       if (this.rows === this.cols) {
@@ -29,14 +29,14 @@ export class Matrix {
      * @param {number} col
      * @returns {number[][]} return a empty matrix of the give dimension
      */
-    static createEmptyMatrix = (row, col) => Array(row).fill().map(() => Array(col).fill(0));
+    static zerosMat = (row, col) => Array(row).fill().map(() => Array(col).fill(0));
 
     /**
      * Create an empty square matrix of the given dimension
      * @param {number} dim  : dimension of the matrix
      * @returns {number[][]} empty square matrix of the given dimension
      */
-    static createEmptySquareMatrix = (dim) => Array(dim).fill().map(() => Array(dim).fill(0));
+    static zerosSqMat = (dim) => Array(dim).fill().map(() => Array(dim).fill(0));
 
     /**
      * Create a matrix of the given dimension, filling it with random numbers of the
@@ -47,8 +47,8 @@ export class Matrix {
      * @param {number} max max number of the range
      * @returns {number[][]} random of the given dimension
      */
-    static createRandomMatrix = (rows, cols, min, max) => {
-      const matrix = Matrix.createEmptyMatrix(rows, cols)
+    static randMat = (rows, cols, min, max) => {
+      const matrix = Matrix.zerosMat(rows, cols)
 
       for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
@@ -66,8 +66,8 @@ export class Matrix {
      * @param {number} dim
      * @returns {number[][]} Return the identity matrix of the given dimension
      */
-    static createIdentityMatrix = (dim) => {
-      const idMatrix = Matrix.createEmptySquareMatrix(dim)
+    static identityMat = (dim) => {
+      const idMatrix = Matrix.zerosSqMat(dim)
 
       for (let i = 0; i < dim; i++) { idMatrix[i][i] = 1 }
 
@@ -98,7 +98,7 @@ export class Matrix {
             return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
           }
         } else {
-          const idMatrix = Matrix.createIdentityMatrix(dim)
+          const idMatrix = Matrix.identityMat(dim)
           idMatrix[i - 1][i - 1] = c
           idMatrix[i - 1][j - 1] = -s
           idMatrix[j - 1][i - 1] = s
@@ -129,13 +129,13 @@ export class Matrix {
      * Clone the matrix
      * @returns {number[][] | Matrix}
      */
-    static cloneMatrix = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
+    static clone = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
 
     /**
      * Get a copy of the matrix
      * @returns {number[][]} the bi-dimensional array that represent the matrix
      */
-    getCopy = () => Matrix.cloneMatrix(this.matrix);
+    copy = () => Matrix.clone(this.matrix);
 
     /**
      *  Squeeze the matrix into an array
@@ -160,7 +160,7 @@ export class Matrix {
      * @param {number[][] | Matrix} matrix
      * @returns {boolean} true if is square otherwise false
      */
-    static isMatrixSquare = (matrix) => {
+    static isMatSquare = (matrix) => {
       // Check the matrix type
       matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
@@ -181,7 +181,7 @@ export class Matrix {
      * Check if a matrix is square
      * @returns {boolean} true if is square otherwise false
      */
-    isMatrixSquare = () => Matrix.isMatrixSquare(this._matrix);
+    isSquare = () => Matrix.isMatSquare(this._matrix);
 
     /**
      * If the passed matrix is square it return the trace of the given matrix
@@ -240,6 +240,7 @@ export class Matrix {
      */
     print = () => Matrix.print(this._matrix);
 
+    // fixme: redo
     /**
      * Static method that compute the inverse of the give matrix
      * @param {number[][] | Matrix} matrix
@@ -247,12 +248,12 @@ export class Matrix {
      */
     static getInverse = matrix => {
       // todo: check if the determinant is different than zero
-      if (!Matrix.isMatrixSquare(matrix)) {
+      if (!Matrix.isMatSquare(matrix)) {
         throw new Error("You can't get the inverse of a non square matrix")
       } else {
         matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
-        const identityMatrix = Matrix.createIdentityMatrix(matrix.length)
+        const identityMatrix = Matrix.identityMat(matrix.length)
         const inverse = []
         const { L, U } = Matrix.luDecomposition(matrix)
 
@@ -275,7 +276,7 @@ export class Matrix {
       if (this.determinant === 0) {
         throw new Error('The determinant is 0! The inverse does not exist!')
       } else {
-        const identityMatrix = Matrix.createIdentityMatrix(this.rows)
+        const identityMatrix = Matrix.identityMat(this.rows)
         const inverse = []
 
         for (let j = 0; j < this.rows; j++) {
@@ -335,6 +336,12 @@ export class Matrix {
      */
     getCol = col => Matrix.getCol(this.matrix, col);
 
+    // fixme: to test
+    static getRow = i => this._matrix[i]
+
+    // fixme: to test
+    getRow = i => Matrix.getRow(i)
+
     /**
      * Static method that compute sum sum of the given matrices
      * @param {number[][] | Matrix} matrix1
@@ -349,7 +356,7 @@ export class Matrix {
       if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
         throw new Error('Cannot sum two matrices with different dimension')
       } else {
-        const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length)
+        const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
 
         for (let i = 0; i < matrix1.length; i++) {
           for (let j = 0; j < matrix2.length; j++) { resMatrix[i][j] = matrix1[i][j] + matrix2[i][j] }
@@ -371,9 +378,9 @@ export class Matrix {
 
     /**
      * Static method that compute the subtraction of two matrices
-     * @param matrix1
-     * @param matrix2
-     * @returns {number[][]} the substract matrix
+     * @param {number[][] | Matrix} matrix1
+     * @param {number[][] | Matrix} matrix2
+     * @returns {number[][]} the subtract matrix
      */
     static sub = (matrix1, matrix2) => {
       // Check matrices types
@@ -383,7 +390,7 @@ export class Matrix {
       if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
         throw new Error('Cannot subtract two matrices with different dimension')
       } else {
-        const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length)
+        const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
 
         for (let i = 0; i < matrix1.length; i++) {
           for (let j = 0; j < matrix2.length; j++) { resMatrix[i][j] = matrix1[i][j] - matrix2[i][j] }
@@ -408,7 +415,7 @@ export class Matrix {
    * @param {number[][] | Matrix} matrix
    * @returns {boolean} true if is orthogonal otherwise false
    */
-    static isMatrixOrthogonal = matrix => {
+    static isOrthogonal = matrix => {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
 
@@ -422,7 +429,7 @@ export class Matrix {
      * Return true if the matrix is orthogonal otherwise false
      * @returns {boolean} true if is it orthogonal otherwise false
      */
-    isMatrixOrthogonal = () => Matrix.isMatrixOrthogonal(this.matrix)
+    isOrthogonal = () => Matrix.isOrthogonal(this.matrix)
 
     /**
      * Get a subMatrix of the given matrix
@@ -437,7 +444,7 @@ export class Matrix {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
 
-      const subMatrix = Matrix.createEmptyMatrix((endRow - startRow) + 1, (endCol - startCol) + 1)
+      const subMatrix = Matrix.zerosMat((endRow - startRow) + 1, (endCol - startCol) + 1)
 
       for (let i = 0; i < subMatrix.length; i++) {
         for (let j = 0; j < subMatrix[i].length; j++) { subMatrix[i][j] = matrix[startRow + i][startCol + j] }
@@ -466,7 +473,7 @@ export class Matrix {
       matrix = Matrix.checkMatrixType(matrix)
 
       // Copy the matrix
-      const matrixCopy = Matrix.cloneMatrix(matrix)
+      const matrixCopy = Matrix.clone(matrix)
 
       let i, j, k
       const n = matrixCopy.length
@@ -523,7 +530,7 @@ export class Matrix {
         let i, k
 
         // Make a copy of the matrix
-        let matrixCopy = Matrix.cloneMatrix(matrix)
+        let matrixCopy = Matrix.clone(matrix)
 
         // Unify the matrix and the vector
         for (i = 0; i < matrix.length; i++) {
@@ -534,7 +541,7 @@ export class Matrix {
         matrixCopy = Matrix.gaussianElimination(matrixCopy)
 
         // Solve equation Ax=b for an upper triangular matrix A
-        const resVector = Matrix.createEmptyMatrix(1, n)
+        const resVector = Matrix.zerosMat(1, n)
         for (i = n - 1; i > -1; i--) {
           resVector[i] = matrixCopy[i][n] / matrixCopy[i][i]
           for (k = i - 1; k > -1; k--) {
@@ -555,7 +562,7 @@ export class Matrix {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
       // throw an error is the matrix is not square
-      if (!Matrix.isMatrixSquare(matrix)) {
+      if (!Matrix.isMatSquare(matrix)) {
         throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         return Matrix.getLUDecomposition(matrix)
@@ -584,12 +591,12 @@ export class Matrix {
      */
     static getLUDecomposition = (matrix) => {
       // throw an error is the matrix is not square
-      if (!Matrix.isMatrixSquare(matrix)) {
+      if (!Matrix.isMatSquare(matrix)) {
         throw new Error('Cannot decompose with LU two non square matrices')
       } else {
-        const mat = Matrix.cloneMatrix(matrix)
+        const mat = Matrix.clone(matrix)
         const n = matrix.length
-        const lower = Matrix.createEmptySquareMatrix(n); const upper = Matrix.createEmptySquareMatrix(n)
+        const lower = Matrix.zerosSqMat(n); const upper = Matrix.zerosSqMat(n)
 
         for (let k = 0; k < n; k++) {
           lower[k][k] = 1
@@ -621,7 +628,7 @@ export class Matrix {
      */
     static solveUsingLU = (lower, upper, rightPart) => {
       // throw an error is the matrix is not square
-      if (!Matrix.isMatrixSquare(lower) && !Matrix.isMatrixSquare(upper)) {
+      if (!Matrix.isMatSquare(lower) && !Matrix.isMatSquare(upper)) {
         throw new Error('Cannot solve the linear system')
       } else {
         const n = rightPart.length
@@ -673,13 +680,17 @@ export class Matrix {
     static mul = (matrix1, matrix2) => {
       // Check  the inputs types
       matrix1 = Matrix.checkMatrixType(matrix1)
+      // Check if matrix is a vector
       if ((Array.isArray(matrix2) && !Array.isArray(matrix2[0])) || matrix2 instanceof Vector) {
+        let vectorType = 'col'
+        // if the vector is and instance of vector check weather is a row vector or a col vector
+        if (matrix2 instanceof Vector) { vectorType = matrix2.type }
         matrix2 = Vector.checkVectorType(matrix2)
 
         // Check matrix vector compatibility
-        const refVector = Array.isArray(matrix2) ? matrix2 : Vector.getCopy(matrix2)
-        const refMatrix = Array.isArray(matrix1) ? matrix1 : Matrix.cloneMatrix(matrix1)
-        if (refVector.length !== refMatrix[0].length) {
+        const refVector = Array.isArray(matrix2) ? matrix2 : Vector.clone(matrix2)
+        const refMatrix = Array.isArray(matrix1) ? matrix1 : Matrix.clone(matrix1)
+        if (refVector.length !== refMatrix[0].length || vectorType !== 'col') {
           throw new Error('Cannot do the matrix vector multiplication')
         } else {
           const resVector = Array(refMatrix.length)
@@ -791,8 +802,8 @@ export class Matrix {
       const n = matrix1.length
       const m = nextPowerOfTow(n)
 
-      const ACopy = Matrix.createEmptySquareMatrix(m)
-      const BCopy = Matrix.createEmptySquareMatrix(m)
+      const ACopy = Matrix.zerosSqMat(m)
+      const BCopy = Matrix.zerosSqMat(m)
 
       // Copy the the matrices
       for (let i = 0; i < n; i++) {
@@ -803,7 +814,7 @@ export class Matrix {
       }
 
       const CCopy = Matrix.strassenAlgorithm(ACopy, BCopy, leafSize)
-      const C = Matrix.createEmptySquareMatrix(n)
+      const C = Matrix.zerosSqMat(n)
 
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) { C[i][j] = CCopy[i][j] }
@@ -860,7 +871,7 @@ export class Matrix {
         const C21 = Matrix.sum(M2, M4) // C21 = M2 + M4
         const C22 = Matrix.sum(Matrix.sum(Matrix.sub(M1, M2), M3), M6) // C22 = M1 - M2 + M3 + M6
 
-        const C = Matrix.createEmptySquareMatrix(n)
+        const C = Matrix.zerosSqMat(n)
 
         // Calculate C
         for (let i = 0; i < newSize; i++) {
@@ -890,7 +901,7 @@ export class Matrix {
         if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
           throw new Error('Cannot compute hammard product with different matrices')
         } else {
-          const resMatrix = Matrix.createEmptyMatrix(matrix1.length, matrix1[0].length)
+          const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
 
           for (let i = 0; i < matrix1.length; i++) {
             resMatrix[i] = zipWith(product, matrix1[i], matrix2[i])

@@ -1,71 +1,99 @@
-import { zip } from './utils/functions'
+import { product, sum, zip, zipWith } from './utils/functions'
+import { Matrix } from './matrix'
 
 export class Vector {
   /**
        * Constructor of the vector Object
-       * @param vector can be an array of a list of integers
+       * @param {number[]}vector can be an array of a list of integers
+       * @param {string} vType the type of vector that you wanna initialize
        */
-  constructor (vector) {
+  constructor (vector, vType = 'row') {
     this._vector = Array.isArray(vector) ? vector : Array.from(arguments)
+    this.type = vType === 'col' ? 'col' : 'row'
   }
 
     /**
-     * Print the given vector
-     * @param {number[] | Vector} vector
-     */
+    * Print the given vector
+    * @param {number[] | Vector} vector
+    */
     static print = (vector) => {
       vector = Vector.checkVectorType(vector)
       console.log(vector)
     }
 
     /**
+     *  return a new col vector
+     * @param {number[]} vector
+     * @returns {Vector} the new col vector
+     */
+    static colVect (vector) { return new Vector(Array.isArray(vector) ? vector : Array.from(arguments), 'col') }
+
+    /**
+     * return a new row vector
+     * @param {number[]} vector
+     * @returns {Vector} the new row vector
+     */
+    static rowVect (vector) { return new Vector(Array.isArray(vector) ? vector : Array.from(arguments), 'row') }
+
+    /**
+     * Check if the given parameter is vector or not
+     * @param {number[] | Vector } vector
+     * @returns {boolean} true if vector is an array or a Vector obj otherwise false
+     */
+      static isVector = vector => (Array.isArray(vector) && typeof vector[0] === 'number') || vector instanceof Vector
+
+    /**
      * Print the vector
      */
     print = () => Vector.print(this._vector)
+
+    changeType = () => {
+      if (this.type === 'col') { this.type = 'row' } else { this.type = 'col' }
+    }
 
     /**
      * Static method the give a copy of the given vector
      * @param {number[]} vector1
      * @returns {number[]} copy of the given vector
      */
-    static getCopy = (vector1) => vector1.slice();
+    static clone = (vector1) => vector1.slice();
 
     /**
      * Return a copy of the vector
      * @returns {number[]} copy the vector
      */
-    getCopy = () => Vector.getCopy(this.vector);
+    copy = () => Vector.clone(this.vector);
 
-  /**
-   * Create a empty vector of the given dimension
-   * @param {number} dim
-   * @returns {number[]} empty vector of the given dimension
-   */
-  static createEmptyVector = dim => Array(dim).fill(0)
+    /**
+     * Create a empty vector of the given dimension
+     * @param {number} dim
+     * @returns {number[]} empty vector of the given dimension
+     */
+    static zerosVect = dim => Array(dim).fill(0)
 
-  /**
-   * Create a random vector of the given dimension, filling it with number of the given range
-   * @param  {number} dim vector dimension
-   * @param {number} min min number of the random range
-   * @param {number} max max number of the given range
-   * @returns {number[]} random vector of the given dimension
-   */
-  static createRandomVector = (dim, min, max) => {
-    const vector = Vector.createEmptyVector(dim)
+    /**
+     * Create a random vector of the given dimension, filling it with number of the given range
+     * @param  {number} dim vector dimension
+     * @param {number} min min number of the random range
+     * @param {number} max max number of the given range
+     * @returns {number[]} random vector of the given dimension
+     */
+    static createRandomVector = (dim, min, max) => {
+      const vector = Vector.zerosVect(dim)
 
-    for (let i = 0; i < dim; i++) {
-      let num = parseInt(Math.random() * (max - min) + min)
-      // for deepAssertEqual() problem
-      if (num === 0) {
-        num = Math.abs(num)
+      for (let i = 0; i < dim; i++) {
+        let num = parseInt(Math.random() * (max - min) + min)
+        // for deepAssertEqual() problem
+        if (num === 0) {
+          num = Math.abs(num)
+        }
+        vector[i] = num
       }
-      vector[i] = num
+
+      return vector
     }
 
-    return vector
-  }
-
-  /**
+    /**
    * Function that i use to return the array if i give a vector obj
    * @param {number[] | Vector} vector
    * @returns {number[]} the array representing the vector
@@ -115,6 +143,7 @@ export class Vector {
      * @returns {number} the product of the row vector and the col vector
      */
     static dotProduct = (vector1, vector2) => {
+      // fixme: redo with new types of vectors
       // Check vectors type
       vector1 = Vector.checkVectorType(vector1)
       vector2 = Vector.checkVectorType(vector2)
@@ -226,12 +255,75 @@ export class Vector {
     }
 
     /**
+     * Vector matrix product
+     * @param vector
+     * @param matrix
+     * @returns {Vector|number[][]}
+     */
+      static mul = (vector, matrix) => {
+        if (vector.type === 'row') {
+          // Check vector type
+          vector = Vector.checkVectorType(vector)
+          // Check matrix type
+          matrix = Matrix.checkMatrixType(matrix)
+
+          if (vector.length !== matrix.length) {
+            throw new Error('Cannot perform the vector matrix multiplication, because of incompatible dimension')
+          } else {
+            const resVector = Vector.rowVect(Vector.zerosVect(vector.length))
+
+            for (let i = 0; i < vector.length; i++) {
+              resVector.vector[i] = sum(zipWith(product, vector, Matrix.getCol(matrix, i)))
+            }
+
+            return resVector
+          }
+        } else {
+          // Check vector type
+          vector = Vector.checkVectorType(vector)
+          // the second argument must be vector so we gotta to check is the matrix arg is a vector
+          if (!Vector.isVector(matrix)) {
+            throw new Error('cannot multiply a col vector with a col vector or a matrix that is incompatible')
+          }
+          // Check if the vector is not a col vector
+          if (matrix instanceof Vector && matrix.type === 'col') {
+            throw new Error('Cannot multiply a col vector with a col vector')
+          }
+          // Check vector type
+          matrix = Vector.checkVectorType(matrix)
+
+          if (vector.length !== matrix.length) {
+            throw new Error('Dimension are incompatible')
+          } else {
+            const matrix = Matrix.zerosSqMat(vector.length)
+
+            for (let i = 0; i < vector.length; i++) {
+              matrix[i] = matrix.map(x => x * vector[i])
+            }
+
+            return matrix
+          }
+        }
+      }
+
+    mul = matrix => {
+      const resVector = Vector.mul(this, matrix)
+      // if the resVector is Vector fixme
+      if (resVector instanceof Vector) {
+        this._vector = resVector.vector
+        return this
+      } else {
+        throw new Error('Cannot store a matrix in the vector object') // fixme: more explicative
+      }
+    }
+
+    /**
      * Compute the euclidean distance of the given vectors
      * @param {number[] | Vector} vector1
      * @param {number[] | Vector} vector2
      * @returns {number} the euclidean distance between the two vectors
      */
-      static euclideanDistance = (vector1, vector2) => {
+      static distance = (vector1, vector2) => {
         // Check vector vector type
         vector1 = Vector.checkVectorType(vector1)
         vector2 = Vector.checkVectorType(vector2)
@@ -255,7 +347,7 @@ export class Vector {
        * @param {number[] | Vector} vector
        * @returns {number} the euclidean distance between the two vectors
        */
-      euclideanDistance = (vector) => Vector.euclideanDistance(this.vector, vector)
+      distance = (vector) => Vector.distance(this.vector, vector)
 
       /**
      * Get the angle between two vectors
@@ -264,7 +356,7 @@ export class Vector {
      * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
      * @returns {number} angle between the given two vectors
      */
-      static getAngle = (vector1, vector2, angleType = 'deg') => {
+      static angle = (vector1, vector2, angleType = 'deg') => {
         if (angleType === 'rad' || angleType === 'deg') {
           let res = Math.acos((Vector.dotProduct(vector1, vector2)) / (Vector.getNorm(vector1) * Vector.getNorm(vector2)))
           let angleObj
@@ -295,7 +387,7 @@ export class Vector {
      * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
      * @returns {number} angle between the vector and the given vector
      */
-      getAngle = (vector, angleType = 'deg') => Vector.getAngle(this.vector, vector, angleType)
+      angle = (vector, angleType = 'deg') => Vector.angle(this.vector, vector, angleType)
 
       /**
      * Check if the given vectors are orthogonal
@@ -316,7 +408,7 @@ export class Vector {
      * @param {number[] | Vector} vector
      * @returns {boolean} true if they are orthogonal otherwise false
      */
-    isVectorOrthogonal = vector => Vector.areVectorsOrthogonal(this.vector, vector)
+    isOrthogonal = vector => Vector.areVectorsOrthogonal(this.vector, vector)
 
     /**
      * Check if the given vectors are orthonormal
@@ -331,7 +423,7 @@ export class Vector {
      * @param {number[] | Vector} vector
      * @returns {boolean} true if they are orthonormal otherwise false
      */
-    isVectorOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
+    isOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
 
     /**
        * vector field getter

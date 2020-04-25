@@ -40,8 +40,8 @@ export class LinearTransformation {
         matrix = Vector.checkVectorType(matrix)
 
         // Check matrix vector compatibility
-        const refVector = Array.isArray(matrix) ? matrix : Vector.getCopy(matrix)
-        const refMatrix = Array.isArray(trMatrix) ? trMatrix : Matrix.cloneMatrix(trMatrix)
+        const refVector = Array.isArray(matrix) ? matrix : Vector.clone(matrix)
+        const refMatrix = Array.isArray(trMatrix) ? trMatrix : Matrix.clone(trMatrix)
         if (refVector.length !== refMatrix[0].length) {
           throw new Error('Cannot apply the linear Transformation')
         } else {

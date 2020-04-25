@@ -44,15 +44,15 @@ describe('Test the application of the linear Transformation', () => {
   // fixme: gotta find a way to implement this in the coverage, becase nyc doesn't include the dependencies
   if (process.env.NODE_ENV === 'test') {
     it('should work with the matrices', function () {
-      const t = new LinearTransformation(Matrix.createRandomMatrix(4, 3, -2, 2))
-      const matrix = Matrix.createRandomMatrix(3, 4, -2, 2)
+      const t = new LinearTransformation(Matrix.randMat(4, 3, -2, 2))
+      const matrix = Matrix.randMat(3, 4, -2, 2)
 
       assert.deepEqual(t.apply(matrix), Matrix.mul(t._transformationMatrix, matrix))
     })
 
     it('should throw an error if the two matrices aren\'t incompatible for the multiplication', function () {
-      const t = new LinearTransformation(Matrix.createRandomMatrix(4, 3, -2, 2))
-      const matrix = Matrix.createRandomMatrix(4, 4, -2, 2)
+      const t = new LinearTransformation(Matrix.randMat(4, 3, -2, 2))
+      const matrix = Matrix.randMat(4, 4, -2, 2)
 
       try {
         t.apply(matrix)

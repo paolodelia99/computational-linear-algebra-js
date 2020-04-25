@@ -52,7 +52,7 @@ the number of cols of the matrix
 #### Matrix Creation
 
 ```javascript
-Matrix.createEmptyMatrix(rows, cols)
+Matrix.zerosMat(rows, cols)
 ```
 
 #### Parameters
@@ -67,7 +67,7 @@ Matrix.createEmptyMatrix(rows, cols)
 ---
 
 ```javascript
-Matrix.createEmptySquareMatrix(dim)
+Matrix.zerosSqMat(dim)
 ```
 
 #### Parameters
@@ -81,7 +81,7 @@ Matrix.createEmptySquareMatrix(dim)
 ---
 
 ```javascript
-Matrix.createRandomMatrix(rows, cols, min, max)
+Matrix.randMat(rows, cols, min, max)
 ```
 Return a 2D array of the given dimension filled with random integers in the given range
 #### Parameters
@@ -98,7 +98,7 @@ Return a 2D array of the given dimension filled with random integers in the give
 ---
 
 ```javascript
-Matrix.createIdentityMatrix(dim)
+Matrix.identityMat(dim)
 ```
 Return the identity matrix of the  given dimension
 
@@ -114,7 +114,7 @@ Return the identity matrix of the  given dimension
 ---
 
 ```javascript
-Matrix.cloneMatrix(matrix)
+Matrix.clone(matrix)
 ```
 
 #### Parameters
@@ -128,7 +128,7 @@ Matrix.cloneMatrix(matrix)
 ---
 
 ```javascript
-Matrix.isMatrixSquare(matrix)
+Matrix.isMatSquare(matrix)
 ```
 
 #### Parameters
@@ -142,7 +142,7 @@ Matrix.isMatrixSquare(matrix)
 ---
 
 ```javascript
-Matrix.isMatrixOrthogonal(matrix)
+Matrix.isOrthogonal(matrix)
 ```
 
 #### Parameters

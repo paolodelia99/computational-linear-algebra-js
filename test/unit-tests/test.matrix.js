@@ -4,7 +4,7 @@ const { Vector } = require('../../src/vector')
 
 describe('test create square matrix', () => {
   it('should give an empty square matrix', () => {
-    const matrix = Matrix.createEmptySquareMatrix(3)
+    const matrix = Matrix.zerosSqMat(3)
 
     assert.deepStrictEqual(matrix.valueOf(), [[0, 0, 0], [0, 0, 0], [0, 0, 0]])
   })
@@ -12,7 +12,7 @@ describe('test create square matrix', () => {
 
 describe('test create matrix', () => {
   it('should give an empty matrix of the given dimension', () => {
-    const matrix = Matrix.createEmptyMatrix(3, 2)
+    const matrix = Matrix.zerosMat(3, 2)
 
     assert.deepStrictEqual(matrix.valueOf(), [[0, 0], [0, 0], [0, 0]])
   })
@@ -20,7 +20,7 @@ describe('test create matrix', () => {
 
 describe('test creation of a random matrix', () => {
   it('should give a random matrix', function () {
-    const matrix = Matrix.createRandomMatrix(3, 3, 0, 10)
+    const matrix = Matrix.randMat(3, 3, 0, 10)
 
     assert.deepStrictEqual(matrix.length === 3 && matrix[0].length === 3, true)
     assert.deepStrictEqual(Array.isArray(matrix) && Array.isArray(matrix[0]), true)
@@ -38,7 +38,7 @@ describe('test printing matrix method', () => {
 
   it('should print the matrix', function () {
     const matrix = new Matrix([[1, -2, -1], [1, 4, 1], [2, 2, 5]])
-    const matrix1 = matrix.getCopy()
+    const matrix1 = matrix.copy()
 
     // Test instance
     console.assert(matrix.print(), print2dArray(matrix))
@@ -57,26 +57,26 @@ describe('Test squeeze function', () => {
 
 describe('test isMatrixSquare method', () => {
   it('should give true', () => {
-    const mat = Matrix.createEmptySquareMatrix(3)
+    const mat = Matrix.zerosSqMat(3)
     const matrix = new Matrix(mat)
 
-    assert.deepStrictEqual(matrix.isMatrixSquare(), true)
+    assert.deepStrictEqual(matrix.isSquare, true)
   })
 
   it('should give false', function () {
     const matrix = new Matrix([[0, 0], [1, 2, 4], [9, 4, 5, 1]])
-    const matrix2 = Matrix.createEmptyMatrix(3, 2)
+    const matrix2 = Matrix.zerosMat(3, 2)
 
-    assert.deepStrictEqual(Matrix.isMatrixSquare(matrix), false)
-    assert.deepStrictEqual(Matrix.isMatrixSquare(matrix2), false)
+    assert.deepStrictEqual(Matrix.isMatSquare(matrix), false)
+    assert.deepStrictEqual(Matrix.isMatSquare(matrix2), false)
   })
 })
 
 describe('test copy and clone matrix', () => {
   it('should be equal the the created matrix', function () {
     const matrix = new Matrix([[1, -2, -1], [1, 4, 1], [2, 2, 5]])
-    const mat = matrix.getCopy() // instance method
-    const mat1 = Matrix.cloneMatrix(matrix) // passing the matrix obj
+    const mat = matrix.copy() // instance method
+    const mat1 = Matrix.clone(matrix) // passing the matrix obj
 
     assert.deepStrictEqual(matrix.matrix, mat)
     assert.deepStrictEqual(matrix.matrix, mat1)
@@ -149,7 +149,7 @@ describe('test rotation matrix function', () => {
 describe('test getCol Method', () => {
   it('should give the col of a matrix', () => {
     const matrix = [[1, 2, -1], [1, 4, 2], [2, 6, 5]]
-    const matrix2 = new Matrix(Matrix.createEmptyMatrix(4, 5))
+    const matrix2 = new Matrix(Matrix.zerosMat(4, 5))
 
     // test static method
     assert.deepStrictEqual(Matrix.getCol(matrix, 0), [1, 1, 2])
@@ -295,7 +295,7 @@ describe('Test get partition Matrix', () => {
 describe('test inverse of a matrix', () => {
   it('should give the inverse of the sample matrix', function () {
     const matrix = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])
-    const matrix1 = matrix.getCopy()
+    const matrix1 = matrix.copy()
     const inverse = matrix.getInverse()
 
     // Test instance method
@@ -510,7 +510,7 @@ describe('Test matrix multiplication', () => {
     describe('Test matrix vector multiplication', () => {
       it('should work also with vectors', function () {
         const matrix = new Matrix([[2, 4, 5], [-1, 2, 1], [4, -1, 3]])
-        const vector = new Vector([1, 1, 1])
+        const vector = new Vector([1, 1, 1], 'col')
 
         assert.deepStrictEqual(Matrix.mul(matrix, vector), [11, 2, 6])
       })
@@ -614,7 +614,7 @@ describe('Test matrix multiplication', () => {
 
 describe('test create identity matrix', () => {
   it('should give the right identity matrix', () => {
-    const idMatrix = Matrix.createIdentityMatrix(4)
+    const idMatrix = Matrix.identityMat(4)
 
     assert.deepStrictEqual(idMatrix, [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
   })
@@ -666,9 +666,9 @@ describe('Test gaussian solve method', () => {
 describe('Test matrix orthogonality', () => {
   // Test static method
   it('should give true because the identity matrix is orthogonal', function () {
-    const matrix = new Matrix(Matrix.createIdentityMatrix(3))
+    const matrix = new Matrix(Matrix.identityMat(3))
 
-    assert.deepStrictEqual(Matrix.isMatrixOrthogonal(matrix), true)
+    assert.deepStrictEqual(Matrix.isOrthogonal(matrix), true)
   })
 })
 
