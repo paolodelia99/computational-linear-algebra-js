@@ -254,6 +254,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Check Linear Dependency
     - [ ] Test post it orthonormality
     - [ ] Projections
+    - [ ] difference row vector and col vector
 
 - Linear Transformation
     - [x] Linear Transformation applied to vectors
