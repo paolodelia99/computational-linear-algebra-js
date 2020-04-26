@@ -347,7 +347,7 @@ export class Matrix {
         return matrix[i]
       }
 
-    /**
+      /**
      * Return the requested column of the matrix
      * @param {number} i the ith col of the matrix
      * @returns {number[]} an array representing the i-th col of the matrix

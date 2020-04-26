@@ -241,6 +241,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Pseudo-Inverse
     - [x] Rotation
     - [ ] redo inverse
+    - [ ] Add resize function 
     
 - Vector 
     - [x] sum, subtraction
