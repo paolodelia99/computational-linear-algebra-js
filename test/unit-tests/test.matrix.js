@@ -158,6 +158,16 @@ describe('test getCol Method', () => {
   })
 })
 
+describe('Test get row function', () => {
+  it('should give the requested column of the matrix', function () {
+    const matrix = [[1, 2, -1], [1, 4, 2], [2, 6, 5]]
+    const m2 = new Matrix(matrix)
+
+    assert.deepStrictEqual(Matrix.getRow(matrix, 0), [1, 2, -1])
+    assert.deepStrictEqual(m2.getRow(1), [1, 4, 2])
+  })
+})
+
 describe('Test the matrix trace', () => {
   it('should give the trace of the given matrix', function () {
     const matrix = new Matrix([[1, 2, -1], [1, 4, 2], [2, 6, 5]])

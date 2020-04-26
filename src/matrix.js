@@ -336,11 +336,23 @@ export class Matrix {
      */
     getCol = col => Matrix.getCol(this.matrix, col);
 
-    // fixme: to test
-    static getRow = i => this._matrix[i]
+    /**
+     * Return the requested column of the given matrix
+     * @param {number[][] | Matrix} matrix
+     * @param {number} i the i-th col of the matrix
+     * @returns {number[]} an array representing the i-th col of the matrix
+     */
+      static getRow = (matrix, i) => {
+        matrix = Matrix.checkMatrixType(matrix)
+        return matrix[i]
+      }
 
-    // fixme: to test
-    getRow = i => Matrix.getRow(i)
+    /**
+     * Return the requested column of the matrix
+     * @param {number} i the ith col of the matrix
+     * @returns {number[]} an array representing the i-th col of the matrix
+     */
+      getRow = i => Matrix.getRow(this._matrix, i)
 
     /**
      * Static method that compute sum sum of the given matrices

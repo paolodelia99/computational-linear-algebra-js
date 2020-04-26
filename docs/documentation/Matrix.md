@@ -212,6 +212,21 @@ Matrix.getCol(matrix, col)
 ---
 
 ```javascript
+Matrix.getRow(matrix, row)
+```
+ 
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** - the 2D array or the matrix obj
+- row : **number** - the number of the row of the matrix (starting form 0)
+
+#### Returns 
+
+**number [ ]**  the requested row of the given matrix 
+
+---
+
+```javascript
 Matrix.getSubMatrix(matrix, startRow, endRow, startCol, endCol)
 ```
  
@@ -473,7 +488,24 @@ return the requested column of the matrix
 #### Returns
 **number[ ]**  the determinant of the matrix
 
+
 ---
+
+
+```javascript
+.getRow(row)
+```
+ 
+#### Parameters
+
+- row : **number** - the number of the row of the matrix (starting form 0)
+
+#### Returns 
+
+**number [ ]**  the requested row of the matrix 
+
+---
+
 
 ```javascript
 .sum(matrix)

@@ -198,8 +198,8 @@ export class Vector {
      */
     static sum (vector1, vector2) {
       // Check the input types
-      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
-      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
+      vector1 = Vector.checkVectorType(vector1)
+      vector2 = Vector.checkVectorType(vector2)
 
       if (vector1.length !== vector2.length) {
         throw new Error("The two vectors haven't the same Length")
@@ -230,8 +230,8 @@ export class Vector {
      */
     static sub (vector1, vector2) {
       // Check the input types
-      vector1 = Array.isArray(vector1) ? vector1 : vector1.vector
-      vector2 = Array.isArray(vector2) ? vector2 : vector2.vector
+      vector1 = Vector.checkVectorType(vector1)
+      vector2 = Vector.checkVectorType(vector2)
 
       if (vector1.length !== vector2.length) {
         throw new Error("The two vectors haven't the same Length")
