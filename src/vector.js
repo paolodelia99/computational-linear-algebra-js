@@ -3,10 +3,10 @@ import { Matrix } from './matrix'
 
 export class Vector {
   /**
-       * Constructor of the vector Object
-       * @param {number[]}vector can be an array of a list of integers
-       * @param {string} vType the type of vector that you wanna initialize
-       */
+     * Constructor of the vector Object
+     * @param {number[]}vector can be an array of a list of integers
+     * @param {string} vType the type of vector that you wanna initialize (row vector or col vector)
+     */
   constructor (vector, vType = 'row') {
     this._vector = Array.isArray(vector) ? vector : Array.from(arguments)
     this.type = vType === 'col' ? 'col' : 'row'
@@ -255,9 +255,9 @@ export class Vector {
     }
 
     /**
-     * Vector matrix product
-     * @param vector
-     * @param matrix
+     * Vector matrix product or vector vector product
+     * @param {number[] | Vector} vector
+     * @param {number[] | Vector | number[][] | Matrix} matrix
      * @returns {Vector|number[][]}
      */
       static mul = (vector, matrix) => {
@@ -354,7 +354,7 @@ export class Vector {
      * @param {number[] | Vector} vector1
      * @param {number[] | Vector} vector2
      * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
-     * @returns {number} angle between the given two vectors
+     * @returns {number | {deg: number, arcmin: number, arcsec: number}} angle between the given two vectors
      */
       static angle = (vector1, vector2, angleType = 'deg') => {
         if (angleType === 'rad' || angleType === 'deg') {
@@ -385,7 +385,7 @@ export class Vector {
      * Returns the angle between the vector and the given vector
      * @param {number[] | Vector} vector
      * @param {string} angleType the type of angle to return: radians = "rad", degree ="deg", by default is "deg"
-     * @returns {number} angle between the vector and the given vector
+     * @returns {number | {deg: number, arcmin: number, arcsec: number}} angle between the vector and the given vector
      */
       angle = (vector, angleType = 'deg') => Vector.angle(this.vector, vector, angleType)
 
@@ -424,6 +424,12 @@ export class Vector {
      * @returns {boolean} true if they are orthonormal otherwise false
      */
     isOrthonormal = vector => Vector.areVectorOrthonormal(this.vector, vector)
+
+    /**
+   * The textual representation of the vector
+   * @returns {number[]}
+   */
+    toString = () => this.vector
 
     /**
        * vector field getter

@@ -371,3 +371,11 @@ describe('test Vector matrix multiplication', () => {
     }
   })
 })
+
+describe('Test to string', () => {
+  it('should give the textual representation of the vector', function () {
+    const v = new Vector([1, 2, 3])
+
+    assert.deepStrictEqual(v.toString(), [1, 2, 3])
+  })
+})
