@@ -330,14 +330,14 @@ describe('test vector orthogonality and orthonormality', () => {
 describe('test Vector matrix multiplication', () => {
   it('should work with right vector and matrix', function () {
     const v = new Vector([0.85, 0.10, 0.05, 0], 'row')
-    const stoMat = new Matrix([0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00])
+    const stoMat = new Matrix([[0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00]])
 
     assert.deepStrictEqual(Vector.mul(v, stoMat).vector, [0.765, 0.15250000000000002, 0.0645, 0.017])
   })
 
   it('should not work with col vector', function () {
     const v = new Vector([0.85, 0.10, 0.05, 0], 'col')
-    const stoMat = new Matrix([0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00])
+    const stoMat = new Matrix([[0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00]])
 
     try {
       Vector.mul(v, stoMat)
@@ -349,7 +349,7 @@ describe('test Vector matrix multiplication', () => {
 
   it('should not work with row vector with incompatible dimension', function () {
     const v = new Vector([0.85, 0.10, 0.05, 0, 0], 'row')
-    const stoMat = new Matrix([0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00])
+    const stoMat = new Matrix([[0.90, 0.07, 0.02, 0.01], [0, 0.93, 0.05, 0.01], [0, 0, 0.85, 0.15], [0, 0, 0, 1.00]])
 
     try {
       Vector.mul(v, stoMat)

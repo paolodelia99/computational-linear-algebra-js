@@ -49,7 +49,7 @@ describe('test printing matrix method', () => {
 
 describe('Test squeeze function', () => {
   it('should give the array', function () {
-    const matrix = new Matrix([1, 1, 1], [2, 2, 2], [3, 3, 3])
+    const matrix = new Matrix([[1, 1, 1], [2, 2, 2], [3, 3, 3]])
 
     assert.deepStrictEqual(Matrix.squeeze(matrix), [1, 1, 1, 2, 2, 2, 3, 3, 3])
   })
@@ -632,19 +632,19 @@ describe('test create identity matrix', () => {
 
 describe('Test gaussian elimination method', () => {
   it('should reduce the matrix at the row echelon form', function () {
-    const matrix = new Matrix([1, 1, 0, 1], [1, 0, 0, 2], [0, 1, 1, 1])
+    const matrix = new Matrix([[1, 1, 0, 1], [1, 0, 0, 2], [0, 1, 1, 1]])
 
     assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[1, 1, 0, 1], [0, -1, 0, 1], [0, 0, 1, 2]])
   })
 
   it('should work with square matrices', function () {
-    const matrix = new Matrix([1, -1, 2], [3, 0, -2], [-1, 2, 0])
+    const matrix = new Matrix([[1, -1, 2], [3, 0, -2], [-1, 2, 0]])
 
     assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[3, 0, -2], [0, 2, -2 / 3], [0, 0, 2.333333333333333]])
   })
 
   it('should work with m x n matrices where m > n', function () {
-    const matrix = new Matrix([1, 0], [3, 1], [0, 1])
+    const matrix = new Matrix([[1, 0], [3, 1], [0, 1]])
 
     assert.deepStrictEqual(Matrix.gaussianElimination(matrix), [[3, 1], [0, 1], [0, 0]])
   })
@@ -652,14 +652,14 @@ describe('Test gaussian elimination method', () => {
 
 describe('Test gaussian solve method', () => {
   it('should solve the linear system using gaussian elimination', function () {
-    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+    const matrix = new Matrix([[1, 1, 0], [1, 0, 0], [0, 1, 1]])
     const vector = new Vector([1, 2, 1])
 
     assert.deepStrictEqual(Matrix.gaussSolve(matrix, vector), [2, -1, 2])
   })
 
   it('should throw an exception if the matrix row are different form the the vector dimension', function () {
-    const matrix = new Matrix([1, 1, 0], [1, 0, 0], [0, 1, 1])
+    const matrix = new Matrix([[1, 1, 0], [1, 0, 0], [0, 1, 1]])
     const vector = new Vector([1, 2, 1, 3, 5])
 
     try {
@@ -684,22 +684,22 @@ describe('Test matrix orthogonality', () => {
 
 describe('Test the hammard product', () => {
   it('should give the hammard product of a 2x2 matrix', function () {
-    const matrix = new Matrix([1, 1], [2, 2])
-    const matrix2 = new Matrix([2, 2], [0, 3])
+    const matrix = new Matrix([[1, 1], [2, 2]])
+    const matrix2 = new Matrix([[2, 2], [0, 3]])
 
     assert.deepStrictEqual(Matrix.hammardProduct(matrix, matrix2), [[2, 2], [0, 6]])
   })
 
   it('should give the hammard product of a 3x3 matrices', function () {
-    const matrix = new Matrix([1, 1, 0], [2, 2, 3], [1, -1, 2])
-    const matrix2 = new Matrix([2, 2, 1], [0, 3, 1], [0, 4, 2])
+    const matrix = new Matrix([[1, 1, 0], [2, 2, 3], [1, -1, 2]])
+    const matrix2 = new Matrix([[2, 2, 1], [0, 3, 1], [0, 4, 2]])
 
     assert.deepStrictEqual(Matrix.hammardProduct(matrix, matrix2), [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
   })
 
   it('should work also the instance method', function () {
-    const matrix = new Matrix([1, 1, 0], [2, 2, 3], [1, -1, 2])
-    const matrix2 = new Matrix([2, 2, 1], [0, 3, 1], [0, 4, 2])
+    const matrix = new Matrix([[1, 1, 0], [2, 2, 3], [1, -1, 2]])
+    const matrix2 = new Matrix([[2, 2, 1], [0, 3, 1], [0, 4, 2]])
 
     assert.deepStrictEqual(matrix.hammardProduct(matrix2).matrix, [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
   })

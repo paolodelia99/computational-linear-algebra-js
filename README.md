@@ -91,14 +91,14 @@ console.log(matrix1.inverse().matrix)
 ```
 
 
-Dealing with big matrices? You can use the *multipication()* function that run a parallel algorithm on the GPU:
+Dealing with big matrices? You can use the *multiply()* function that run a parallel algorithm on the GPU:
 
 
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
 
-const matrix1 = new Matrix( Matrix.randMat(512, 512, 1, 100) );
-const matrix2 = new Matrix( Matrix.randMat(512, 512, 1, 100) );
+const matrix1 = new Matrix( Matrix.randMat(1024, 1024, 1, 1000) );
+const matrix2 = new Matrix( Matrix.randMat(1024, 1024, 1, 1000) );
 
 Matrix.print(matrix1.multiplication(matrix2).matrix)
 
@@ -200,6 +200,8 @@ The test results can be checked on https://travis-ci.org/github/paolodelia99/com
 Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 
 ## Todos
+
+Do you like math and are you looking forward to contribute to an open source project?? Contributors are welcome! But before starting check out the [Contributing.md](./CONTRIBUTING.MD) 
 
 For those that wanna contribute to the project here's a todoList! Enjoy!
 

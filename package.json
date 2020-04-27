@@ -20,6 +20,7 @@
     "test:browserstack": "karma start test/browser-test-config/browserstack-karma.js",
     "lint": "eslint . --config=.eslintrc --env=mocha",
     "coverage": "nyc _mocha test/unit-tests --recursive --require @babel/register && nyc report --reporter=text-lcov | coveralls",
+    "coverage:html": "nyc --reporter=lcov --reporter=text-summary mocha test/unit-tests --recursive --require @babel/register && echo \\\"\\nDetailed coverage report is available at ./coverage/lcov-report/index.html\\",
     "compile": "gulp compile",
     "build": "gulp",
     "build-and-test": "npm run build && npm run test:all && npm run lint",

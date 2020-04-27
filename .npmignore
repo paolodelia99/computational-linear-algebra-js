@@ -13,5 +13,8 @@
 .eslintignore
 gulpfile.js
 webpack.config.js
+.nyc_output/
+.nyc_output/processinfo
+/coverage
 
 .env

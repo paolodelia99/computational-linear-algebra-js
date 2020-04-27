@@ -13,7 +13,7 @@ export class Matrix {
      *                arrays
      */
     constructor (matrix) {
-      this._matrix = Array.isArray(matrix) && Array.isArray(matrix[0]) ? matrix : Array.from(arguments)
+      this._matrix = matrix
       this.isSquare = this.isSquare()
       this.rows = matrix.length
       this.cols = this.isSquare ? this.rows : matrix[0].length

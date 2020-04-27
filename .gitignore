@@ -8,5 +8,7 @@ lib
 # nyc output
 .nyc_output/
 .nyc_output/processinfo
+# coverage
+/coverage
 
 .env
