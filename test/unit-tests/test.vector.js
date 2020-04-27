@@ -74,10 +74,12 @@ describe('Test is vector function', () => {
 
 describe('Test vector printing', () => {
   it('should print the vector', function () {
-    const vector = [1, 2, 1]
+    const vector = new Vector([1, 2, 1])
 
     // Test static method
-    console.assert(Vector.print(vector), console.log(vector))
+    console.assert(Vector.print(vector), console.log(vector.vector))
+    // Test instance method
+    console.assert(vector.print(), console.log(vector.vector))
   })
 })
 

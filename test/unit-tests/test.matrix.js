@@ -770,6 +770,6 @@ describe('Test to String', () => {
   it('should give a textual representation of the matrix', function () {
     const matrix = new Matrix([[1, 1, 0], [2, 2, 3], [1, -1, 2]])
 
-    console.assert(matrix.toString(), console.log(matrix))
+    console.assert(matrix.toString(), console.log(matrix.matrix))
   })
 })
