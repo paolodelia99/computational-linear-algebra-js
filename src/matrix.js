@@ -29,14 +29,29 @@ export class Matrix {
      * @param {number} col
      * @returns {number[][]} return a empty matrix of the give dimension
      */
-    static zerosMat = (row, col) => Array(row).fill().map(() => Array(col).fill(0));
+    static zeros2dArr = (row, col) => Array(row).fill().map(() => Array(col).fill(0));
+
+    /**
+     *
+     * @param {number} row the number of rows
+     * @param {number} col the number of cols
+     * @returns {Matrix} Matrix obj of the given dimension fill with zeros
+     */
+      static zeros = (row, col) => new Matrix(Matrix.zeros2dArr(row, col))
 
     /**
      * Create an empty square matrix of the given dimension
      * @param {number} dim  : dimension of the matrix
      * @returns {number[][]} empty square matrix of the given dimension
      */
-    static zerosSqMat = (dim) => Array(dim).fill().map(() => Array(dim).fill(0));
+    static zeros2dSq = (dim) => Array(dim).fill().map(() => Array(dim).fill(0));
+
+    /**
+     *
+     * @param {number} dim the dimension of the square matrix
+     * @returns {Matrix} a square Matrix obj of the given dimension fill with zeros
+     */
+      static zeroSq = dim => new Matrix(Matrix.zeros2dSq(dim))
 
     /**
      * Create a matrix of the given dimension, filling it with random numbers of the
@@ -47,8 +62,8 @@ export class Matrix {
      * @param {number} max max number of the range
      * @returns {number[][]} random of the given dimension
      */
-    static randMat = (rows, cols, min, max) => {
-      const matrix = Matrix.zerosMat(rows, cols)
+    static randInt2d = (rows, cols, min, max) => {
+      const matrix = Matrix.zeros2dArr(rows, cols)
 
       for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
@@ -62,12 +77,22 @@ export class Matrix {
     };
 
     /**
+     *
+     * @param {number} rows the rows of the matrix
+     * @param {number} cols the cols of the matrix
+     * @param {number} min the minimum integer of the range
+     * @param {number} max the maximum integer of the range
+     * @returns {Matrix} matrix obj of the given dimension fill with numbers of the given range
+     */
+      static randInt = (rows, cols, min, max) => new Matrix(Matrix.randInt2d(rows, cols, min, max))
+
+    /**
      * Return the identity matrix of the given dimension
      * @param {number} dim
      * @returns {number[][]} Return the identity matrix of the given dimension
      */
-    static identityMat = (dim) => {
-      const idMatrix = Matrix.zerosSqMat(dim)
+    static identity2d = (dim) => {
+      const idMatrix = Matrix.zeros2dSq(dim)
 
       for (let i = 0; i < dim; i++) { idMatrix[i][i] = 1 }
 
@@ -76,14 +101,21 @@ export class Matrix {
 
     /**
      *
-     * @param {number} dim the dimension of the rotMatrix
+     * @param {number} dim
+     * @returns {Matrix} the matrix obj representing the identity matrix
+     */
+      static identity = dim => new Matrix(Matrix.identity2d(dim))
+
+      /**
+     *
+     * @param {number} dim the dimension of the 2d array that represent the rotMatrix
      * @param {number} angle the rotation angle
      * @param {string} angleType the type of angle passed which can be rad or deg
      * @param {number} i // fixme da scrivere qualcosa
      * @param {number} j // fixme da scrivere qualcosa
      * @returns { number[][] } the n dimensional rotation matrix of the given dimension and angle
      */
-      static rotMatrix = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
+      static rot2d = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
         angle = angleType === 'deg' ? (angle * Math.PI) / 180 : angle
         const c = Math.cos(angle)
         const s = Math.sin(angle)
@@ -98,7 +130,7 @@ export class Matrix {
             return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
           }
         } else {
-          const idMatrix = Matrix.identityMat(dim)
+          const idMatrix = Matrix.identity2d(dim)
           idMatrix[i - 1][i - 1] = c
           idMatrix[i - 1][j - 1] = -s
           idMatrix[j - 1][i - 1] = s
@@ -106,6 +138,17 @@ export class Matrix {
           return idMatrix
         }
       }
+
+      /**
+     *
+     * @param {number} dim
+     * @param {number} angle
+     * @param {string} angleType
+     * @param {number} i
+     * @param {number} j
+     * @returns {Matrix} the matrix object representing the given rotation
+     */
+      static rot = (dim, angle, angleType = 'deg', i = 1, j = 2) => new Matrix(Matrix.rot2d(dim, angle, angleType, i, j))
 
     /**
      * Method that return the two dimensional array that represent the matrix
@@ -160,7 +203,7 @@ export class Matrix {
      * @param {number[][] | Matrix} matrix
      * @returns {boolean} true if is square otherwise false
      */
-    static isMatSquare = (matrix) => {
+    static isSquare = (matrix) => {
       // Check the matrix type
       matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
@@ -181,7 +224,7 @@ export class Matrix {
      * Check if a matrix is square
      * @returns {boolean} true if is square otherwise false
      */
-    isSquare = () => Matrix.isMatSquare(this._matrix);
+    isSquare = () => Matrix.isSquare(this._matrix);
 
     /**
      * If the passed matrix is square it return the trace of the given matrix
@@ -203,7 +246,7 @@ export class Matrix {
      * Return the matrix trace, if the matrix is square
      * @returns {number} the trace of the matrix
      */
-    getTrace = () => Matrix.trace(this.matrix);
+    trace = () => Matrix.trace(this.matrix);
 
     /**
      * Static function the return the transpose of the given matrix
@@ -248,12 +291,12 @@ export class Matrix {
      */
     static getInverse = matrix => {
       // todo: check if the determinant is different than zero
-      if (!Matrix.isMatSquare(matrix)) {
+      if (!Matrix.isSquare(matrix)) {
         throw new Error("You can't get the inverse of a non square matrix")
       } else {
         matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
-        const identityMatrix = Matrix.identityMat(matrix.length)
+        const identityMatrix = Matrix.identity2d(matrix.length)
         const inverse = []
         const { L, U } = Matrix.luDecomposition(matrix)
 
@@ -276,7 +319,7 @@ export class Matrix {
       if (this.determinant === 0) {
         throw new Error('The determinant is 0! The inverse does not exist!')
       } else {
-        const identityMatrix = Matrix.identityMat(this.rows)
+        const identityMatrix = Matrix.identity2d(this.rows)
         const inverse = []
 
         for (let j = 0; j < this.rows; j++) {
@@ -368,7 +411,7 @@ export class Matrix {
       if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
         throw new Error('Cannot sum two matrices with different dimension')
       } else {
-        const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
+        const resMatrix = Matrix.zeros2dArr(matrix1.length, matrix1[0].length)
 
         for (let i = 0; i < matrix1.length; i++) {
           for (let j = 0; j < matrix2.length; j++) { resMatrix[i][j] = matrix1[i][j] + matrix2[i][j] }
@@ -402,7 +445,7 @@ export class Matrix {
       if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
         throw new Error('Cannot subtract two matrices with different dimension')
       } else {
-        const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
+        const resMatrix = Matrix.zeros2dArr(matrix1.length, matrix1[0].length)
 
         for (let i = 0; i < matrix1.length; i++) {
           for (let j = 0; j < matrix2.length; j++) { resMatrix[i][j] = matrix1[i][j] - matrix2[i][j] }
@@ -456,7 +499,7 @@ export class Matrix {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
 
-      const subMatrix = Matrix.zerosMat((endRow - startRow) + 1, (endCol - startCol) + 1)
+      const subMatrix = Matrix.zeros2dArr((endRow - startRow) + 1, (endCol - startCol) + 1)
 
       for (let i = 0; i < subMatrix.length; i++) {
         for (let j = 0; j < subMatrix[i].length; j++) { subMatrix[i][j] = matrix[startRow + i][startCol + j] }
@@ -553,7 +596,7 @@ export class Matrix {
         matrixCopy = Matrix.gaussianElimination(matrixCopy)
 
         // Solve equation Ax=b for an upper triangular matrix A
-        const resVector = Matrix.zerosMat(1, n)
+        const resVector = Matrix.zeros2dArr(1, n)
         for (i = n - 1; i > -1; i--) {
           resVector[i] = matrixCopy[i][n] / matrixCopy[i][i]
           for (k = i - 1; k > -1; k--) {
@@ -574,7 +617,7 @@ export class Matrix {
       // Check matrix type
       matrix = Matrix.checkMatrixType(matrix)
       // throw an error is the matrix is not square
-      if (!Matrix.isMatSquare(matrix)) {
+      if (!Matrix.isSquare(matrix)) {
         throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         return Matrix.getLUDecomposition(matrix)
@@ -603,12 +646,12 @@ export class Matrix {
      */
     static getLUDecomposition = (matrix) => {
       // throw an error is the matrix is not square
-      if (!Matrix.isMatSquare(matrix)) {
+      if (!Matrix.isSquare(matrix)) {
         throw new Error('Cannot decompose with LU two non square matrices')
       } else {
         const mat = Matrix.clone(matrix)
         const n = matrix.length
-        const lower = Matrix.zerosSqMat(n); const upper = Matrix.zerosSqMat(n)
+        const lower = Matrix.zeros2dSq(n); const upper = Matrix.zeros2dSq(n)
 
         for (let k = 0; k < n; k++) {
           lower[k][k] = 1
@@ -640,7 +683,7 @@ export class Matrix {
      */
     static solveUsingLU = (lower, upper, rightPart) => {
       // throw an error is the matrix is not square
-      if (!Matrix.isMatSquare(lower) && !Matrix.isMatSquare(upper)) {
+      if (!Matrix.isSquare(lower) && !Matrix.isSquare(upper)) {
         throw new Error('Cannot solve the linear system')
       } else {
         const n = rightPart.length
@@ -814,8 +857,8 @@ export class Matrix {
       const n = matrix1.length
       const m = nextPowerOfTow(n)
 
-      const ACopy = Matrix.zerosSqMat(m)
-      const BCopy = Matrix.zerosSqMat(m)
+      const ACopy = Matrix.zeros2dSq(m)
+      const BCopy = Matrix.zeros2dSq(m)
 
       // Copy the the matrices
       for (let i = 0; i < n; i++) {
@@ -826,7 +869,7 @@ export class Matrix {
       }
 
       const CCopy = Matrix.strassenAlgorithm(ACopy, BCopy, leafSize)
-      const C = Matrix.zerosSqMat(n)
+      const C = Matrix.zeros2dSq(n)
 
       for (let i = 0; i < n; i++) {
         for (let j = 0; j < n; j++) { C[i][j] = CCopy[i][j] }
@@ -883,7 +926,7 @@ export class Matrix {
         const C21 = Matrix.sum(M2, M4) // C21 = M2 + M4
         const C22 = Matrix.sum(Matrix.sum(Matrix.sub(M1, M2), M3), M6) // C22 = M1 - M2 + M3 + M6
 
-        const C = Matrix.zerosSqMat(n)
+        const C = Matrix.zeros2dSq(n)
 
         // Calculate C
         for (let i = 0; i < newSize; i++) {
@@ -913,7 +956,7 @@ export class Matrix {
         if (matrix1.length !== matrix2.length || matrix1[0].length !== matrix2[0].length) {
           throw new Error('Cannot compute hammard product with different matrices')
         } else {
-          const resMatrix = Matrix.zerosMat(matrix1.length, matrix1[0].length)
+          const resMatrix = Matrix.zeros2dArr(matrix1.length, matrix1[0].length)
 
           for (let i = 0; i < matrix1.length; i++) {
             resMatrix[i] = zipWith(product, matrix1[i], matrix2[i])
@@ -932,6 +975,12 @@ export class Matrix {
         this._matrix = Matrix.hammardProduct(this._matrix, matrix)
         return this
       }
+
+      /**
+       *
+       * @returns {number[][]} give the textual representation of the matrix
+       */
+      toString = () => this._matrix
 
       /**
      * matrix attribute getter

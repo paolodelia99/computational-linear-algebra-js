@@ -97,8 +97,8 @@ Dealing with big matrices? You can use the *multiply()* function that run a para
 ```javascript
 const { Matrix } =  require('computational-linear-algebra-js')
 
-const matrix1 = new Matrix( Matrix.randMat(1024, 1024, 1, 1000) );
-const matrix2 = new Matrix( Matrix.randMat(1024, 1024, 1, 1000) );
+const matrix1 = new Matrix( Matrix.randInt2d(1024, 1024, 1, 1000) );
+const matrix2 = new Matrix( Matrix.randInt2d(1024, 1024, 1, 1000) );
 
 Matrix.print(matrix1.multiplication(matrix2).matrix)
 
@@ -276,7 +276,8 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] build npm package
     - [ ] better documentation
         - [ ] add squeeze function to the matrix class
-        - [ ] add rotations
+        - [x] add rotations
+        - [ ] add new types of vector and matrix creation
     - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript
     - [x] Test with Browser stack

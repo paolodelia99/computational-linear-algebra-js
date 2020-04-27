@@ -2,28 +2,89 @@ const assert = require('assert')
 const { Matrix } = require('../../src/matrix')
 const { Vector } = require('../../src/vector')
 
-describe('test create square matrix', () => {
-  it('should give an empty square matrix', () => {
-    const matrix = Matrix.zerosSqMat(3)
+describe('test matrix an 2d array creation', () => {
+  describe('Test 2d array creation', () => {
+    describe('test create square matrix', () => {
+      it('should give an empty square matrix', () => {
+        const matrix = Matrix.zeros2dSq(3)
 
-    assert.deepStrictEqual(matrix.valueOf(), [[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+        assert.deepStrictEqual(matrix.valueOf(), [[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+      })
+    })
+
+    describe('test create matrix', () => {
+      it('should give an empty matrix of the given dimension', () => {
+        const matrix = Matrix.zeros2dArr(3, 2)
+
+        assert.deepStrictEqual(matrix.valueOf(), [[0, 0], [0, 0], [0, 0]])
+      })
+    })
+
+    describe('test creation of a random matrix', () => {
+      it('should give a random matrix', function () {
+        const matrix = Matrix.randInt2d(3, 3, 0, 10)
+
+        assert.deepStrictEqual(matrix.length === 3 && matrix[0].length === 3, true)
+        assert.deepStrictEqual(Array.isArray(matrix) && Array.isArray(matrix[0]), true)
+      })
+    })
   })
-})
 
-describe('test create matrix', () => {
-  it('should give an empty matrix of the given dimension', () => {
-    const matrix = Matrix.zerosMat(3, 2)
+  describe('Test matrix creation', () => {
+    describe('test zeros matrix', () => {
+      it('should give a matrix of zeros of the given dimensions', function () {
+        const m = Matrix.zeros(3, 4)
 
-    assert.deepStrictEqual(matrix.valueOf(), [[0, 0], [0, 0], [0, 0]])
-  })
-})
+        assert.deepStrictEqual(m instanceof Matrix, true)
+        assert.deepStrictEqual(m.matrix, [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
+        assert.deepStrictEqual(m.rows, 3)
+        assert.deepStrictEqual(m.cols, 4)
+      })
 
-describe('test creation of a random matrix', () => {
-  it('should give a random matrix', function () {
-    const matrix = Matrix.randMat(3, 3, 0, 10)
+      it('should give a square zero matrix obj', function () {
+        const m = Matrix.zeroSq(3)
 
-    assert.deepStrictEqual(matrix.length === 3 && matrix[0].length === 3, true)
-    assert.deepStrictEqual(Array.isArray(matrix) && Array.isArray(matrix[0]), true)
+        assert.deepStrictEqual(m instanceof Matrix, true)
+        assert.deepStrictEqual(m.matrix, [[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+        assert.deepStrictEqual(m.rows, 3)
+        assert.deepStrictEqual(m.cols, 3)
+      })
+    })
+
+    describe('Test random matrix creation', () => {
+      it('should give the matrix obj filled with random numbers', function () {
+        const m = Matrix.randInt(3, 3, -3, 3)
+
+        assert.deepStrictEqual(m instanceof Matrix, true)
+        assert.deepStrictEqual(m.rows, 3)
+        assert.deepStrictEqual(m.cols, 3)
+      })
+    })
+
+    describe('Test rot matrix creation', () => {
+      it('should give the matrix obj representing the rotation', function () {
+        const m = Matrix.rot(2, 60, 'deg')
+        const PI = Math.PI
+        const c = Math.cos(PI / 3)
+        const s = Math.sin(PI / 3)
+
+        assert.deepStrictEqual(m instanceof Matrix, true)
+        assert.deepStrictEqual(m.rows, 2)
+        assert.deepStrictEqual(m.cols, 2)
+        assert.deepStrictEqual(m.matrix, [[c, -s], [s, c]])
+      })
+    })
+
+    describe('Test identity matrix obj creation', () => {
+      it('should give the identity matrix obj', function () {
+        const m = Matrix.identity(3)
+
+        assert.deepStrictEqual(m instanceof Matrix, true)
+        assert.deepStrictEqual(m.rows, 3)
+        assert.deepStrictEqual(m.cols, 3)
+        assert.deepStrictEqual(m.matrix, [[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+      })
+    })
   })
 })
 
@@ -57,7 +118,7 @@ describe('Test squeeze function', () => {
 
 describe('test isMatrixSquare method', () => {
   it('should give true', () => {
-    const mat = Matrix.zerosSqMat(3)
+    const mat = Matrix.zeros2dSq(3)
     const matrix = new Matrix(mat)
 
     assert.deepStrictEqual(matrix.isSquare, true)
@@ -65,10 +126,10 @@ describe('test isMatrixSquare method', () => {
 
   it('should give false', function () {
     const matrix = new Matrix([[0, 0], [1, 2, 4], [9, 4, 5, 1]])
-    const matrix2 = Matrix.zerosMat(3, 2)
+    const matrix2 = Matrix.zeros2dArr(3, 2)
 
-    assert.deepStrictEqual(Matrix.isMatSquare(matrix), false)
-    assert.deepStrictEqual(Matrix.isMatSquare(matrix2), false)
+    assert.deepStrictEqual(Matrix.isSquare(matrix), false)
+    assert.deepStrictEqual(Matrix.isSquare(matrix2), false)
   })
 })
 
@@ -100,26 +161,26 @@ describe('test rotation matrix function', () => {
   const c = Math.cos(PI / 6)
   const s = Math.sin(PI / 6)
   it('should give the 2d rotation matrix of the given angle', function () {
-    const rotMatrix = Matrix.rotMatrix(2, 30)
+    const rotMatrix = Matrix.rot2d(2, 30)
 
     assert.deepStrictEqual(rotMatrix, [[c, -s], [s, c]])
   })
 
   describe('Test 3d Matrix roation', () => {
     it('should give the 3d rotation matrix on the x-axis', function () {
-      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 1)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1)
 
       assert.deepStrictEqual(rot3DX, [[1, 0, 0], [0, c, -s], [0, s, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 2)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 2)
 
       assert.deepStrictEqual(rot3DX, [[c, 0, s], [0, 1, 0], [-s, 0, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rotMatrix(3, 30, 'deg', 3)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 3)
 
       assert.deepStrictEqual(rot3DX, [[c, -s, 0], [s, c, 0], [0, 0, 1]])
     })
@@ -127,19 +188,19 @@ describe('test rotation matrix function', () => {
 
   describe('Test for high dimensional rotation matrices', () => {
     it('should give the rotation of a 4d matrix of the given i and j', function () {
-      const rot4D = Matrix.rotMatrix(4, 30, 'deg', 1, 2)
+      const rot4D = Matrix.rot2d(4, 30, 'deg', 1, 2)
 
       assert.deepStrictEqual(rot4D, [[c, -s, 0, 0], [s, c, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
     })
 
     it('should give the rotation of a 4d matrix of the given i and j', function () {
-      const rot4D = Matrix.rotMatrix(4, 30, 'deg', 2, 4)
+      const rot4D = Matrix.rot2d(4, 30, 'deg', 2, 4)
 
       assert.deepStrictEqual(rot4D, [[1, 0, 0, 0], [0, c, 0, -s], [0, 0, 1, 0], [0, s, 0, c]])
     })
 
     it('should give the rotation of a 5d matrix of the given i and j', function () {
-      const rot4D = Matrix.rotMatrix(5, 30, 'deg', 2, 4)
+      const rot4D = Matrix.rot2d(5, 30, 'deg', 2, 4)
 
       assert.deepStrictEqual(rot4D, [[1, 0, 0, 0, 0], [0, c, 0, -s, 0], [0, 0, 1, 0, 0], [0, s, 0, c, 0], [0, 0, 0, 0, 1]])
     })
@@ -149,7 +210,7 @@ describe('test rotation matrix function', () => {
 describe('test getCol Method', () => {
   it('should give the col of a matrix', () => {
     const matrix = [[1, 2, -1], [1, 4, 2], [2, 6, 5]]
-    const matrix2 = new Matrix(Matrix.zerosMat(4, 5))
+    const matrix2 = new Matrix(Matrix.zeros2dArr(4, 5))
 
     // test static method
     assert.deepStrictEqual(Matrix.getCol(matrix, 0), [1, 1, 2])
@@ -176,7 +237,7 @@ describe('Test the matrix trace', () => {
     // Test the static method
     assert.deepStrictEqual(Matrix.trace(matrix1), 10)
     // Test instance method
-    assert.deepStrictEqual(matrix.getTrace(), 10)
+    assert.deepStrictEqual(matrix.trace(), 10)
   })
 })
 
@@ -624,7 +685,7 @@ describe('Test matrix multiplication', () => {
 
 describe('test create identity matrix', () => {
   it('should give the right identity matrix', () => {
-    const idMatrix = Matrix.identityMat(4)
+    const idMatrix = Matrix.identity2d(4)
 
     assert.deepStrictEqual(idMatrix, [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
   })
@@ -676,7 +737,7 @@ describe('Test gaussian solve method', () => {
 describe('Test matrix orthogonality', () => {
   // Test static method
   it('should give true because the identity matrix is orthogonal', function () {
-    const matrix = new Matrix(Matrix.identityMat(3))
+    const matrix = new Matrix(Matrix.identity2d(3))
 
     assert.deepStrictEqual(Matrix.isOrthogonal(matrix), true)
   })
@@ -702,5 +763,13 @@ describe('Test the hammard product', () => {
     const matrix2 = new Matrix([[2, 2, 1], [0, 3, 1], [0, 4, 2]])
 
     assert.deepStrictEqual(matrix.hammardProduct(matrix2).matrix, [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
+  })
+})
+
+describe('Test to String', () => {
+  it('should give a textual representation of the matrix', function () {
+    const matrix = new Matrix([[1, 1, 0], [2, 2, 3], [1, -1, 2]])
+
+    console.assert(matrix.toString(), console.log(matrix))
   })
 })

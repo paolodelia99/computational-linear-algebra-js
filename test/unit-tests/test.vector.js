@@ -72,31 +72,52 @@ describe('Test is vector function', () => {
   })
 })
 
-// describe('Test vector printing', () => {
-//   it('should print the vector', function () {
-//     const vector = [1, 2, 1]
-//
-//     // Test static method
-//     console.assert(Vector.print(vector), '[1, 2, 1]')
-//   })
-// })
+describe('Test vector printing', () => {
+  it('should print the vector', function () {
+    const vector = [1, 2, 1]
 
-describe('Test creation of an empty vector', () => {
-  it('should give an empty array', function () {
-    const vector = Vector.zerosVect(3)
-
-    assert.deepStrictEqual(vector, [0, 0, 0])
+    // Test static method
+    console.assert(Vector.print(vector), console.log(vector))
   })
 })
 
-describe('Test creation of a random vector', () => {
-  it('should give a random vector of the given dimension', function () {
-    const vector = Vector.createRandomVector(4, -10, 10)
+describe('Test array and vector creation', () => {
+  describe('Test creation of an empty array', () => {
+    it('should give an empty array', function () {
+      const vector = Vector.zerosArr(3)
 
-    assert.deepStrictEqual(vector.length, 4)
-    for (let i = 0; i < vector.length; i++) {
-      assert.deepStrictEqual(typeof vector[i] === 'number', true)
-    }
+      assert.deepStrictEqual(vector, [0, 0, 0])
+    })
+  })
+
+  describe('Test creation of a array filled with random integers', () => {
+    it('should give a random vector of the given dimension', function () {
+      const vector = Vector.randIntArr(4, -10, 10)
+
+      assert.deepStrictEqual(vector.length, 4)
+      for (let i = 0; i < vector.length; i++) {
+        assert.deepStrictEqual(typeof vector[i] === 'number', true)
+      }
+    })
+  })
+
+  describe('Test zeros vector creation', () => {
+    it('should give the vector obj filled with zeros', function () {
+      const v = Vector.zeros(3)
+
+      assert.deepStrictEqual(v instanceof Vector, true)
+      assert.deepStrictEqual(v.vector, [0, 0, 0])
+      assert.deepStrictEqual(v.dim, 3)
+    })
+  })
+
+  describe('Test rand vector creation', () => {
+    it('should give the vector obj filled with random integers', function () {
+      const v = Vector.randInt(3, 0, 5)
+
+      assert.deepStrictEqual(v instanceof Vector, true)
+      assert.deepStrictEqual(v.dim, 3)
+    })
   })
 })
 

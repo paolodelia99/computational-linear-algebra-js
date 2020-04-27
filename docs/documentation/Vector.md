@@ -33,7 +33,7 @@ the array representing the vector
 #### Vector Creation
 
 ```javascript
-Vector.zerosVect(dim)
+Vector.zerosArr(dim)
 ```
 
 #### Parameters
@@ -47,7 +47,7 @@ Vector.zerosVect(dim)
 ---
 
 ```javascript
-Vector.createRandomVector(dim, min, max)
+Vector.randIntArr(dim, min, max)
 ```
 
 #### Parameters

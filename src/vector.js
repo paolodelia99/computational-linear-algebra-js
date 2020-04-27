@@ -1,6 +1,9 @@
 import { product, sum, zip, zipWith } from './utils/functions'
 import { Matrix } from './matrix'
 
+/**
+ * Class representing the vector
+ */
 export class Vector {
   /**
      * Constructor of the vector Object
@@ -10,6 +13,7 @@ export class Vector {
   constructor (vector, vType = 'row') {
     this._vector = Array.isArray(vector) ? vector : Array.from(arguments)
     this.type = vType === 'col' ? 'col' : 'row'
+    this.dim = this._vector.length
   }
 
     /**
@@ -65,11 +69,14 @@ export class Vector {
     copy = () => Vector.clone(this.vector);
 
     /**
-     * Create a empty vector of the given dimension
+     * Create a empty array of the given dimension
      * @param {number} dim
-     * @returns {number[]} empty vector of the given dimension
+     * @returns {number[]} empty array of the given dimension
      */
-    static zerosVect = dim => Array(dim).fill(0)
+    static zerosArr = dim => Array(dim).fill(0)
+
+    // todo : to test
+    static zeros = dim => new Vector(Vector.zerosArr(dim))
 
     /**
      * Create a random vector of the given dimension, filling it with number of the given range
@@ -78,8 +85,8 @@ export class Vector {
      * @param {number} max max number of the given range
      * @returns {number[]} random vector of the given dimension
      */
-    static createRandomVector = (dim, min, max) => {
-      const vector = Vector.zerosVect(dim)
+    static randIntArr = (dim, min, max) => {
+      const vector = Vector.zerosArr(dim)
 
       for (let i = 0; i < dim; i++) {
         let num = parseInt(Math.random() * (max - min) + min)
@@ -92,6 +99,15 @@ export class Vector {
 
       return vector
     }
+
+    /**
+     *
+     * @param dim
+     * @param min
+     * @param max
+     * @returns {Vector}
+     */
+      static randInt = (dim, min, max) => new Vector(Vector.randIntArr(dim, min, max))
 
     /**
    * Function that i use to return the array if i give a vector obj
@@ -270,7 +286,7 @@ export class Vector {
           if (vector.length !== matrix.length) {
             throw new Error('Cannot perform the vector matrix multiplication, because of incompatible dimension')
           } else {
-            const resVector = Vector.rowVect(Vector.zerosVect(vector.length))
+            const resVector = Vector.rowVect(Vector.zerosArr(vector.length))
 
             for (let i = 0; i < vector.length; i++) {
               resVector.vector[i] = sum(zipWith(product, vector, Matrix.getCol(matrix, i)))
@@ -295,7 +311,7 @@ export class Vector {
           if (vector.length !== matrix.length) {
             throw new Error('Dimension are incompatible')
           } else {
-            const matrix = Matrix.zerosSqMat(vector.length)
+            const matrix = Matrix.zeros2dSq(vector.length)
 
             for (let i = 0; i < vector.length; i++) {
               matrix[i] = matrix.map(x => x * vector[i])
