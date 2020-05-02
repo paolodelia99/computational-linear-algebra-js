@@ -1,4 +1,4 @@
-import { zip, dotProduct, zipWith, product } from './utils/functions'
+import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -198,114 +198,114 @@ export class Matrix {
         return arr
       }
 
-    /**
-     * static method that checks if a matrix is square
-     * @param {number[][] | Matrix} matrix
-     * @returns {boolean} true if is square otherwise false
-     */
-    static isSquare = (matrix) => {
-      // Check the matrix type
-      matrix = Array.isArray(matrix) ? matrix : matrix.matrix
-
-      let isSquare = true
-      const n = matrix.length // dimension of the matrix
-
-      for (let i = 0; i < n; i++) {
-        if (matrix[i].length !== n) {
-          isSquare = false
-          break
-        }
-      }
-
-      return isSquare
-    };
-
-    /**
-     * Check if a matrix is square
-     * @returns {boolean} true if is square otherwise false
-     */
-    isSquare = () => Matrix.isSquare(this._matrix);
-
-    /**
-     * If the passed matrix is square it return the trace of the given matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number} the trace of the give matrix
-     */
-    static trace = matrix => {
-      // Check matrix type
-      matrix = Matrix.checkMatrixType(matrix)
-      // Initialize the trace
-      let trace = 0
-
-      for (let i = 0; i < matrix.length; i++) { trace += matrix[i][i] }
-
-      return trace
-    };
-
-    /**
-     * Return the matrix trace, if the matrix is square
-     * @returns {number} the trace of the matrix
-     */
-    trace = () => Matrix.trace(this.matrix);
-
-    /**
-     * Static function the return the transpose of the given matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number[][]}
-     */
-    static getTranspose = matrix =>
-      Array.isArray(matrix) ? matrix[0].map((_, iCol) => matrix.map(row => row[iCol])) : matrix.matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
-
-    /**
-     * Get the transpose of the matrix
-     * @returns {number[][]} the transpose matrix
-     */
-    getTranspose = () =>
-      Matrix.getTranspose(this._matrix);
-
-    /**
-     * Transpose the matrix
-     * @returns {Matrix}
-     */
-    transpose = () => {
-      this._matrix = Matrix.getTranspose(this._matrix)
-      return this
-    }
-
-    /**
-     * Static method for printing matrix
-     * @param { number[][] | Matrix}matrix
-     */
-    static print = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
-
-    /**
-     * Print the matrix
-     */
-    print = () => Matrix.print(this._matrix);
-
-    // fixme: redo
-    /**
-     * Static method that compute the inverse of the give matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number[][]} Return the inverse of the given matrix
-     */
-    static getInverse = matrix => {
-      // todo: check if the determinant is different than zero
-      if (!Matrix.isSquare(matrix)) {
-        throw new Error("You can't get the inverse of a non square matrix")
-      } else {
+      /**
+       * static method that checks if a matrix is square
+       * @param {number[][] | Matrix} matrix
+       * @returns {boolean} true if is square otherwise false
+       */
+      static isSquare = (matrix) => {
+        // Check the matrix type
         matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
-        const identityMatrix = Matrix.identity2d(matrix.length)
-        const inverse = []
-        const { L, U } = Matrix.luDecomposition(matrix)
+        let isSquare = true
+        const n = matrix.length // dimension of the matrix
 
-        for (let j = 0; j < matrix.length; j++) { inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix, j))) }
+        for (let i = 0; i < n; i++) {
+          if (matrix[i].length !== n) {
+            isSquare = false
+            break
+          }
+        }
 
-        // Transpose the inverse before returning
-        return Matrix.getTranspose(inverse)
+        return isSquare
+      };
+
+      /**
+       * Check if a matrix is square
+       * @returns {boolean} true if is square otherwise false
+       */
+      isSquare = () => Matrix.isSquare(this._matrix);
+
+      /**
+       * If the passed matrix is square it return the trace of the given matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number} the trace of the give matrix
+       */
+      static trace = matrix => {
+        // Check matrix type
+        matrix = Matrix.checkMatrixType(matrix)
+        // Initialize the trace
+        let trace = 0
+
+        for (let i = 0; i < matrix.length; i++) { trace += matrix[i][i] }
+
+        return trace
+      };
+
+      /**
+       * Return the matrix trace, if the matrix is square
+       * @returns {number} the trace of the matrix
+       */
+      trace = () => Matrix.trace(this.matrix);
+
+      /**
+       * Static function the return the transpose of the given matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number[][]}
+       */
+      static getTranspose = matrix =>
+        Array.isArray(matrix) ? matrix[0].map((_, iCol) => matrix.map(row => row[iCol])) : matrix.matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
+
+      /**
+       * Get the transpose of the matrix
+       * @returns {number[][]} the transpose matrix
+       */
+      getTranspose = () =>
+        Matrix.getTranspose(this._matrix);
+
+      /**
+       * Transpose the matrix
+       * @returns {Matrix}
+       */
+      transpose = () => {
+        this._matrix = Matrix.getTranspose(this._matrix)
+        return this
       }
-    };
+
+      /**
+       * Static method for printing matrix
+       * @param { number[][] | Matrix}matrix
+       */
+      static print = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
+
+      /**
+       * Print the matrix
+       */
+      print = () => Matrix.print(this._matrix);
+
+      // fixme: redo
+      /**
+       * Static method that compute the inverse of the give matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number[][]} Return the inverse of the given matrix
+       */
+      static getInverse = matrix => {
+        // todo: check if the determinant is different than zero
+        if (!Matrix.isSquare(matrix)) {
+          throw new Error("You can't get the inverse of a non square matrix")
+        } else {
+          matrix = Array.isArray(matrix) ? matrix : matrix.matrix
+
+          const identityMatrix = Matrix.identity2d(matrix.length)
+          const inverse = []
+          const { L, U } = Matrix.luDecomposition(matrix)
+
+          for (let j = 0; j < matrix.length; j++) { inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix, j))) }
+
+          // Transpose the inverse before returning
+          return Matrix.getTranspose(inverse)
+        }
+      };
 
     /**
      * Compute the inverse of a matrix
@@ -355,6 +355,16 @@ export class Matrix {
         return det
       }
     };
+
+    /**
+     * fixme: add desc
+     * @param matrix
+     * @returns {number}
+     */
+      static frobeniusNorm = matrix => {
+        matrix = Matrix.checkMatrixType(matrix)
+        return Math.sqrt(matrix.map(row => sumOfSquares(row)).reduce(add))
+      }
 
     /**
      * Static method that return the input column of the given matrix

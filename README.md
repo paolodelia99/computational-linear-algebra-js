@@ -236,7 +236,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Kronecker product
     - [ ] Rotation matrix
     - [ ] Matrix norm 
-        - [ ] Frobenius norm
+        - [x] Frobenius norm
         - [ ] L1 norm
         - [ ] L2 norm
         - [ ] L-Infinity norm 

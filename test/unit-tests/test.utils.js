@@ -1,4 +1,4 @@
-import { zipWith, dotProduct, sum, product } from '../../src/utils/functions'
+import { zipWith, dotProduct, sum, product, sumOfSquares } from '../../src/utils/functions'
 import assert from 'assert'
 
 describe('test product function', () => {
@@ -25,5 +25,13 @@ describe('Test zip with', () => {
 describe('Test the dot product of the given arrays', () => {
   it('should give the dot product of the given arrays', function () {
     assert.deepStrictEqual(dotProduct([1, 1, 2], [0, 2, 1]), 4)
+  })
+})
+
+describe('Test sum of squares high order function', () => {
+  it('should give the sum of the quare of the given array', function () {
+    const a = [1, 3, 12]
+
+    assert.deepStrictEqual(sumOfSquares(a), 154)
   })
 })

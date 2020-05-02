@@ -773,3 +773,11 @@ describe('Test to String', () => {
     console.assert(matrix.toString(), console.log(matrix.matrix))
   })
 })
+
+describe('Test Frobenius norm', () => {
+  it('should give the Frobenius norm of a matrix', function () {
+    const matrix = [[1, 0, 1], [-1, 2, 1], [0, 1, 1]]
+
+    assert.deepStrictEqual(Matrix.frobeniusNorm(matrix), Math.sqrt(10))
+  })
+})
