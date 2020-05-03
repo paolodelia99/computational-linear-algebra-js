@@ -1,4 +1,4 @@
-import { zipWith, dotProduct, sum, product, sumOfSquares } from '../../src/utils/functions'
+import { zipWith, dotProduct, sum, product, sumOfSquares } from '../../src/utils/general_purpose_util_function'
 import assert from 'assert'
 
 describe('test product function', () => {

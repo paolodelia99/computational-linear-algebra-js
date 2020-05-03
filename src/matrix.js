@@ -1,4 +1,5 @@
-import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/functions'
+import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/general_purpose_util_function'
+import { getCS, getPQ, getR } from './utils/matrix_utils_functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -227,6 +228,33 @@ export class Matrix {
       isSquare = () => Matrix.isSquare(this._matrix);
 
       /**
+       * Check if the given matrix is symmetric
+       * @param {number[][] | Matrix} matrix
+       * @returns {boolean} returns true if the matrix is symmetric otherwise false
+       */
+        static isSymmetric = matrix => {
+          // Check matrix type
+          matrix = Matrix.checkMatrixType(matrix)
+          const transpose = Matrix.getTranspose(matrix)
+
+          if (matrix.length !== matrix[0].length) { throw new Error('Non square matrices aren\'t symmetric') }
+
+          for (let i = 0; i < matrix.length; i++) {
+            for (let j = 0; j < matrix[i].length; j++) {
+              if (matrix[i][j] !== transpose[i][j]) { return false }
+            }
+          }
+
+          return true
+        }
+
+      /**
+       * Check if the matrix is symmetric
+       * @returns {boolean}  returns true if the matrix is symmetric otherwise false
+       */
+      isSymmetric = () => Matrix.isSymmetric(this._matrix)
+
+      /**
        * If the passed matrix is square it return the trace of the given matrix
        * @param {number[][] | Matrix} matrix
        * @returns {number} the trace of the give matrix
@@ -355,6 +383,48 @@ export class Matrix {
         return det
       }
     };
+
+    /**
+     *
+     * @param matrix
+     * @returns {{}}
+     */
+    static jacobi = matrix => {
+      // Check the matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      if (!Matrix.isSquare(matrix)) { throw new Error('Matrix must square') }
+
+      let mCopy = Matrix.clone(matrix)
+      let v = Number.MAX_SAFE_INTEGER
+      const n = mCopy.length
+
+      while (Math.abs(v) > 0.0001) {
+        const [p, q] = getPQ(mCopy)
+        v = mCopy[p][q]
+        const [c, s] = getCS(p, q, mCopy)
+        const r = getR(c, s, p, q, mCopy.length)
+        const rt = Matrix.getTranspose(r)
+
+        mCopy = Matrix.mul(rt, Matrix.mul(mCopy, r))
+      }
+
+      // Get the eigenvalues from the diagonal
+      const e = []
+      for (let i = 0; i < n; i++) {
+        e.push(mCopy[i][i])
+      }
+
+      e.sort((a, b) => b - a) // sort the eigenvalues in decreasing order
+
+      // Store the eigenvalues in a object
+      const eigenvalues = {}
+      for (let i = 0; i < n; i++) {
+        eigenvalues[i + 1] = e[i]
+      }
+
+      return eigenvalues
+    }
 
     /**
      * fixme: add desc

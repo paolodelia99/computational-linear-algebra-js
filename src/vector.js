@@ -1,4 +1,4 @@
-import { product, sum, zip, zipWith } from './utils/functions'
+import { product, sum, zip, zipWith } from './utils/general_purpose_util_function'
 import { Matrix } from './matrix'
 
 /**

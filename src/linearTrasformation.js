@@ -1,5 +1,5 @@
 import { Matrix } from './matrix'
-import { zip } from './utils/functions'
+import { zip } from './utils/general_purpose_util_function'
 import { Vector } from './vector'
 
 export class LinearTransformation {

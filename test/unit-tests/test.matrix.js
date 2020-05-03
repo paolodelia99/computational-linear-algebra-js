@@ -781,3 +781,38 @@ describe('Test Frobenius norm', () => {
     assert.deepStrictEqual(Matrix.frobeniusNorm(matrix), Math.sqrt(10))
   })
 })
+
+describe('Test is matrix symmetric', () => {
+  it('should give true', function () {
+    const m = new Matrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+    const m1 = Matrix.clone(m)
+
+    assert.deepStrictEqual(m.isSymmetric(), true)
+    assert.deepStrictEqual(Matrix.isSymmetric(m1), true)
+  })
+
+  it('should trhow an error', function () {
+    const m = [[1, 2], [2, 3], [2, 3]]
+
+    try {
+      Matrix.isSymmetric(m)
+      assert.fail('Should throw an exception')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Non square matrices aren\'t symmetric')
+    }
+  })
+})
+
+describe('Test jacobi approximation for the eigenvalues', () => {
+  it('should give the eigenvalues of the given matrix', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, -1050, 700]]
+    const eigenvalues = {
+      1: 2585.253810928922,
+      2: 37.10149136512768,
+      3: 1.4780548447782074,
+      4: 0.16664286117192628
+    }
+
+    assert.deepStrictEqual(Matrix.jacobi(a), eigenvalues)
+  })
+})

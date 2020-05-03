@@ -254,6 +254,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] Euclidean distance between two vectors
     - [x] Orthogonality and orthonormality
     - [x] Angle between two vectors
+    - [ ] redefine the difference between row an col vector and see if does make sense
     - [ ] Check Linear Dependency
     - [ ] Test post it orthonormality
     - [ ] Projections
