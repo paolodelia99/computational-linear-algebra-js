@@ -1,5 +1,5 @@
 import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/general_purpose_util_function'
-import { getCS, getPQ, getR } from './utils/matrix_utils_functions'
+import { getCosSin, maxNoDiag, jacobiRotate } from './utils/matrix_utils_functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -385,25 +385,27 @@ export class Matrix {
     };
 
     /**
-     *
-     * @param matrix
-     * @returns {{}}
+     * Jacobi algorithm for finding the eigenvalues of the given matrix
+     * @param {number[][] | Matrix}matrix
+     * @returns {{}} an object containing the eigenvalues in order
      */
     static jacobi = matrix => {
       // Check the matrix type
       matrix = Matrix.checkMatrixType(matrix)
 
-      if (!Matrix.isSquare(matrix)) { throw new Error('Matrix must square') }
+      if (!Matrix.isSquare(matrix)) { throw new Error('Matrix must be square') }
+
+      if (!Matrix.isSymmetric(matrix)) { throw new Error('Matrix must be symmetric') }
 
       let mCopy = Matrix.clone(matrix)
       let v = Number.MAX_SAFE_INTEGER
       const n = mCopy.length
 
       while (Math.abs(v) > 0.0001) {
-        const [p, q] = getPQ(mCopy)
+        const [p, q] = maxNoDiag(mCopy)
         v = mCopy[p][q]
-        const [c, s] = getCS(p, q, mCopy)
-        const r = getR(c, s, p, q, mCopy.length)
+        const [c, s] = getCosSin(p, q, mCopy)
+        const r = jacobiRotate(c, s, p, q, mCopy.length)
         const rt = Matrix.getTranspose(r)
 
         mCopy = Matrix.mul(rt, Matrix.mul(mCopy, r))
@@ -427,9 +429,9 @@ export class Matrix {
     }
 
     /**
-     * fixme: add desc
-     * @param matrix
-     * @returns {number}
+     * Frobeniuns norm of the given matrix
+     * @param {number[][] | Matrix} matrix
+     * @returns {number} the frobenius norm of the matrix
      */
       static frobeniusNorm = matrix => {
         matrix = Matrix.checkMatrixType(matrix)

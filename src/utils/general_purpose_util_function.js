@@ -42,13 +42,22 @@ export const sum = arr =>
  */
 export const product = (a, b) => a * b
 
-// fixme: test
+/**
+ *
+ * @param v
+ * @returns {number}
+ */
 export const square = v => v * v
 
-// fixme: test
-export const pipe = fn => v => fn.reduce((x, f) => f(x), v)
+// // fixme: test
+// export const pipe = fn => v => fn.reduce((x, f) => f(x), v)
 
-// fixme: test
+/**
+ *
+ * @param a
+ * @param b
+ * @returns {*}
+ */
 export const add = (a, b) => a + b
 
 /**

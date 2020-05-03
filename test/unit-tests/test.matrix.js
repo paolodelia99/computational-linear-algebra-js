@@ -807,12 +807,34 @@ describe('Test jacobi approximation for the eigenvalues', () => {
   it('should give the eigenvalues of the given matrix', function () {
     const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, -1050, 700]]
     const eigenvalues = {
-      1: 2585.253810928922,
-      2: 37.10149136512768,
-      3: 1.4780548447782074,
-      4: 0.16664286117192628
+      1: 2585.253810928919,
+      2: 37.10149136512766,
+      3: 1.4780548447781758,
+      4: 0.16664286117191907
     }
 
     assert.deepStrictEqual(Matrix.jacobi(a), eigenvalues)
+  })
+
+  it('should throw an error cause the matrix isn\'t square', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050]]
+
+    try {
+      Matrix.jacobi(a)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Matrix must be square')
+    }
+  })
+
+  it('should throw an error cause the matrix isn\'t symmetric', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, 1050, 700]]
+
+    try {
+      Matrix.jacobi(a)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Matrix must be symmetric')
+    }
   })
 })

@@ -3,14 +3,14 @@
  * @param M
  * @returns {[number, number]}
  */
-export const getPQ = M => {
+export const maxNoDiag = M => {
   let p = 0
   let q = 0
   let m = -1
   const n = M.length // Size of the matrix
 
-  for (let i = 1; i < n; i++) {
-    for (let j = 0; j < i; j++) {
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
       if (m < Math.abs(M[i][j])) {
         m = Math.abs(M[i][j])
         p = i
@@ -28,9 +28,17 @@ export const getPQ = M => {
  * @param M
  * @returns {[number, number]}
  */
-export const getCS = (p, q, M) => {
+export const getCosSin = (p, q, M) => {
+  if (M[p][q] === 0.0) { return [1.0, 0.0] }
+
   const µ = (M[q][q] - M[p][p]) / (2 * M[p][q])
-  const t = -Math.sqrt(µ ** 2 + 1) - µ
+  let t
+
+  if (µ >= 0) {
+    t = 1.0 / (µ + Math.sqrt(1.0 + µ ** 2))
+  } else {
+    t = -1.0 / (-µ + Math.sqrt(1.0 + µ ** 2))
+  }
 
   const c = 1 / Math.sqrt(1 + t ** 2)
   const s = t / Math.sqrt(1 + t ** 2)
@@ -47,7 +55,7 @@ export const getCS = (p, q, M) => {
  * @param n
  * @returns {[]}
  */
-export const getR = (c, s, p, q, n) => {
+export const jacobiRotate = (c, s, p, q, n) => {
   const R = []
   for (let i = 0; i < n; i++) {
     R[i] = []

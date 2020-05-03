@@ -221,6 +221,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [ ] Cholesky
         - [ ] Singular Value Decomposition
     - [ ] eigenvalues and eigenvectors
+        - [x] Jacobi algo
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
     - [ ] matrix check
