@@ -428,6 +428,21 @@ export class Matrix {
       return eigenvalues
     }
 
+    static powerIteration = (matrix, num_it=100) => {
+      // Check matix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      let b_k = Vector.randArr(matrix[0].length)
+
+      for (let i = 0; i < num_it; i++) {
+        let b_k1 = Matrix.mul(matrix, b_k)
+        let b_k1Norm = Vector.getNorm(b_k1)
+        b_k = b_k.map( x => x / b_k1Norm)
+      }
+
+      return b_k
+    }
+
     /**
      * Frobeniuns norm of the given matrix
      * @param {number[][] | Matrix} matrix

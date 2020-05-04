@@ -104,6 +104,17 @@ export class Vector {
       return vector
     }
 
+    // fixme to test
+    static randArr = (dim) => {
+      const vector = Vector.zerosArr(dim)
+
+      for (let i = 0; i < dim; i++) {
+        vector[i] = Math.random()
+      }
+
+      return vector
+    }
+
     /**
      *
      * @param dim

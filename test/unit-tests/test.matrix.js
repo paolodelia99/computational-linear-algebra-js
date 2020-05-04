@@ -838,3 +838,11 @@ describe('Test jacobi approximation for the eigenvalues', () => {
     }
   })
 })
+
+describe("Test power iteration for obtaining the eigenvalues", () => {
+  it('should give the eigen values', function () {
+    const m = [[2, 0, 0], [-1, 3, 3], [6, -6, -6]]
+
+    assert.deepStrictEqual(Matrix.powerIteration(m), [-3, 0, 2])
+  })
+})
