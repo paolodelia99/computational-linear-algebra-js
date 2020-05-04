@@ -112,8 +112,8 @@ export class Matrix {
      * @param {number} dim the dimension of the 2d array that represent the rotMatrix
      * @param {number} angle the rotation angle
      * @param {string} angleType the type of angle passed which can be rad or deg
-     * @param {number} i // fixme da scrivere qualcosa
-     * @param {number} j // fixme da scrivere qualcosa
+     * @param {number} i i-th row an col of the given rotation
+     * @param {number} j j-th row an col of the given rotation
      * @returns { number[][] } the n dimensional rotation matrix of the given dimension and angle
      */
       static rot2d = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
@@ -142,11 +142,11 @@ export class Matrix {
 
       /**
      *
-     * @param {number} dim
-     * @param {number} angle
-     * @param {string} angleType
-     * @param {number} i
-     * @param {number} j
+     * @param {number} dim the dimension of the Matrix that represent the rotMatrix
+     * @param {number} angle the rotation angle
+     * @param {string} angleType the type of angle passed which can be rad or deg
+     * @param {number} i i-th row an col of the given rotation
+     * @param {number} j j-th row an col of the given rotation
      * @returns {Matrix} the matrix object representing the given rotation
      */
       static rot = (dim, angle, angleType = 'deg', i = 1, j = 2) => new Matrix(Matrix.rot2d(dim, angle, angleType, i, j))

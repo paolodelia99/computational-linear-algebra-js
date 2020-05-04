@@ -75,8 +75,12 @@ export class Vector {
      */
     static zerosArr = dim => Array(dim).fill(0)
 
-    // todo : to test
-    static zeros = dim => new Vector(Vector.zerosArr(dim))
+    /**
+     * Create a empty Vector of the given dimension
+     * @param {number} dim
+     * @returns {Vector} empty Vector object of the given dimension
+     */
+      static zeros = dim => new Vector(Vector.zerosArr(dim))
 
     /**
      * Create a random vector of the given dimension, filling it with number of the given range
@@ -329,7 +333,7 @@ export class Vector {
         this._vector = resVector.vector
         return this
       } else {
-        throw new Error('Cannot store a matrix in the vector object') // fixme: more explicative
+        throw new Error('Cannot store a matrix in the vector object')
       }
     }
 
