@@ -221,6 +221,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [ ] Cholesky
         - [ ] Singular Value Decomposition
     - [ ] eigenvalues and eigenvectors
+        - [x] Jacobi algo
     - [ ] Precision 
     - [ ] matrix validity method (check if the input matrix is valid)
     - [ ] matrix check
@@ -236,7 +237,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Kronecker product
     - [ ] Rotation matrix
     - [ ] Matrix norm 
-        - [ ] Frobenius norm
+        - [x] Frobenius norm
         - [ ] L1 norm
         - [ ] L2 norm
         - [ ] L-Infinity norm 
@@ -254,6 +255,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] Euclidean distance between two vectors
     - [x] Orthogonality and orthonormality
     - [x] Angle between two vectors
+    - [ ] redefine the difference between row an col vector and see if does make sense
     - [ ] Check Linear Dependency
     - [ ] Test post it orthonormality
     - [ ] Projections

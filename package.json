@@ -1,6 +1,6 @@
 {
   "name": "computational-linear-algebra-js",
-  "version": "1.1.1",
+  "version": "1.3.0",
   "description": "A linear algebra library",
   "author": "Paolo D'Elia <paolo.delia00@gmail.com> (https://github.com/paolodelia99)",
   "main": "./main/es5",

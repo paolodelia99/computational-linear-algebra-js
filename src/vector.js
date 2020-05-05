@@ -1,4 +1,4 @@
-import { product, sum, zip, zipWith } from './utils/functions'
+import { product, sum, zip, zipWith } from './utils/general_purpose_util_function'
 import { Matrix } from './matrix'
 
 /**
@@ -75,8 +75,12 @@ export class Vector {
      */
     static zerosArr = dim => Array(dim).fill(0)
 
-    // todo : to test
-    static zeros = dim => new Vector(Vector.zerosArr(dim))
+    /**
+     * Create a empty Vector of the given dimension
+     * @param {number} dim
+     * @returns {Vector} empty Vector object of the given dimension
+     */
+      static zeros = dim => new Vector(Vector.zerosArr(dim))
 
     /**
      * Create a random vector of the given dimension, filling it with number of the given range
@@ -100,6 +104,17 @@ export class Vector {
       return vector
     }
 
+    // fixme to test
+    static randArr = (dim) => {
+      const vector = Vector.zerosArr(dim)
+
+      for (let i = 0; i < dim; i++) {
+        vector[i] = Math.random()
+      }
+
+      return vector
+    }
+
     /**
      *
      * @param dim
@@ -118,7 +133,7 @@ export class Vector {
 
     /**
      * Static method that compute the norm of a vector
-     * @param {number[] | Vector} vector
+     * @param {number[][]} vector
      * @returns {number} the norm of a vector
      */
     static getNorm = (vector) => {
@@ -329,7 +344,7 @@ export class Vector {
         this._vector = resVector.vector
         return this
       } else {
-        throw new Error('Cannot store a matrix in the vector object') // fixme: more explicative
+        throw new Error('Cannot store a matrix in the vector object')
       }
     }
 

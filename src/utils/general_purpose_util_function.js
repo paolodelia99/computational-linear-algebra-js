@@ -41,3 +41,28 @@ export const sum = arr =>
  * @returns {number} the product of a and b
  */
 export const product = (a, b) => a * b
+
+/**
+ *
+ * @param v
+ * @returns {number}
+ */
+export const square = v => v * v
+
+// // fixme: test
+// export const pipe = fn => v => fn.reduce((x, f) => f(x), v)
+
+/**
+ *
+ * @param a
+ * @param b
+ * @returns {*}
+ */
+export const add = (a, b) => a + b
+
+/**
+ *
+ * @param array
+ * @returns {*} the sum of the squares of the array
+ */
+export const sumOfSquares = array => array.map(square).reduce(add)

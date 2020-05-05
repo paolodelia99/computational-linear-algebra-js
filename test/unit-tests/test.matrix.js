@@ -168,19 +168,19 @@ describe('test rotation matrix function', () => {
 
   describe('Test 3d Matrix roation', () => {
     it('should give the 3d rotation matrix on the x-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 2, 3)
 
       assert.deepStrictEqual(rot3DX, [[1, 0, 0], [0, c, -s], [0, s, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 2)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1, 3)
 
       assert.deepStrictEqual(rot3DX, [[c, 0, s], [0, 1, 0], [-s, 0, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 3)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1, 2)
 
       assert.deepStrictEqual(rot3DX, [[c, -s, 0], [s, c, 0], [0, 0, 1]])
     })
@@ -771,5 +771,116 @@ describe('Test to String', () => {
     const matrix = new Matrix([[1, 1, 0], [2, 2, 3], [1, -1, 2]])
 
     console.assert(matrix.toString(), console.log(matrix.matrix))
+  })
+})
+
+describe('Test Frobenius norm', () => {
+  it('should give the Frobenius norm of a matrix', function () {
+    const matrix = [[1, 0, 1], [-1, 2, 1], [0, 1, 1]]
+
+    assert.deepStrictEqual(Matrix.getNorm(matrix), Math.sqrt(10))
+  })
+})
+
+describe('Test is matrix symmetric', () => {
+  it('should give true', function () {
+    const m = new Matrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
+    const m1 = Matrix.clone(m)
+
+    assert.deepStrictEqual(m.isSymmetric(), true)
+    assert.deepStrictEqual(Matrix.isSymmetric(m1), true)
+  })
+
+  it('should trhow an error', function () {
+    const m = [[1, 2], [2, 3], [2, 3]]
+
+    try {
+      Matrix.isSymmetric(m)
+      assert.fail('Should throw an exception')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Non square matrices aren\'t symmetric')
+    }
+  })
+})
+
+describe('Test jacobi approximation for the eigenvalues', () => {
+  it('should give the eigenvalues of the given matrix', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, -1050, 700]]
+    const eigenvalues = {
+      1: 2585.253810928919,
+      2: 37.10149136512766,
+      3: 1.4780548447781758,
+      4: 0.16664286117191907
+    }
+
+    assert.deepStrictEqual(Matrix.jacobi(a), eigenvalues)
+  })
+
+  it('should throw an error cause the matrix isn\'t square', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050]]
+
+    try {
+      Matrix.jacobi(a)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Matrix must be square')
+    }
+  })
+
+  it('should throw an error cause the matrix isn\'t symmetric', function () {
+    const a = [[4, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, 1050, 700]]
+
+    try {
+      Matrix.jacobi(a)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Matrix must be symmetric')
+    }
+  })
+})
+
+describe('Test power iteration for obtaining the biggest eigenvector', () => {
+  it('should give the biggest eigenvector', function () {
+    const m = [[2, 0, 0], [-1, 3, 3], [6, -6, -6]]
+
+    assert.deepStrictEqual(Matrix.powerIteration(m, 1000), [0, -0.5, 1])
+  })
+})
+
+describe('Test qr decomposition', () => {
+  const m = new Matrix([[12, -51, 4], [6, 167, -68], [-4, 24, -41]])
+
+  it('should give the qr decomposition', function () {
+    const resObject = {
+      Q: [
+        [0.8571428571428571, -0.3942857142857142, 0.3314285714285714],
+        [0.42857142857142855, 0.9028571428571427, -0.03428571428571431],
+        [-0.2857142857142857, 0.17142857142857143, 0.9428571428571428]
+      ],
+      R: [
+        [14, 21.000000000000007, -13.999999999999998],
+        [0, 175, -70],
+        [0, 0, -35]
+      ]
+    }
+
+    assert.deepStrictEqual(Matrix.qrDecomposition(m), resObject)
+  })
+
+  it('should give the qr decomposition of the matrix object', function () {
+    const resObject = {
+      Q: [
+        [0.8571428571428571, -0.3942857142857142, 0.3314285714285714],
+        [0.42857142857142855, 0.9028571428571427, -0.03428571428571431],
+        [-0.2857142857142857, 0.17142857142857143, 0.9428571428571428]
+      ],
+      R: [
+        [14, 21.000000000000007, -13.999999999999998],
+        [0, 175, -70],
+        [0, 0, -35]
+      ]
+    }
+
+    assert.deepStrictEqual(m.qrDecomposition(), resObject)
   })
 })

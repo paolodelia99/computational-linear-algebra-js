@@ -1,4 +1,5 @@
-import { zip, dotProduct, zipWith, product } from './utils/functions'
+import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/general_purpose_util_function'
+import { getCosSin, maxNoDiag, jacobiRotate, givens, givensRot } from './utils/matrix_utils_functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -100,7 +101,7 @@ export class Matrix {
     };
 
     /**
-     *
+     * Create a matrix obj representing the identity matrix of the given dimension
      * @param {number} dim
      * @returns {Matrix} the matrix obj representing the identity matrix
      */
@@ -111,8 +112,8 @@ export class Matrix {
      * @param {number} dim the dimension of the 2d array that represent the rotMatrix
      * @param {number} angle the rotation angle
      * @param {string} angleType the type of angle passed which can be rad or deg
-     * @param {number} i // fixme da scrivere qualcosa
-     * @param {number} j // fixme da scrivere qualcosa
+     * @param {number} i i-th row an col of the given rotation
+     * @param {number} j j-th row an col of the given rotation, j must be greater than i
      * @returns { number[][] } the n dimensional rotation matrix of the given dimension and angle
      */
       static rot2d = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
@@ -122,30 +123,42 @@ export class Matrix {
         if (dim === 2) {
           return [[c, -s], [s, c]]
         } else if (dim === 3) {
-          if (i === 1) {
-            return [[1, 0, 0], [0, c, -s], [0, s, c]]
-          } else if (i === 2) {
-            return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
-          } else {
+          // Check if j > i
+          if (j <= i) {
+            throw new Error('The i-th col of the rotation must be less than the j-th column')
+          }
+
+          if (i === 1 && j === 2) {
             return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+          } else if (i === 2 && j === 3) {
+            return [[1, 0, 0], [0, c, -s], [0, s, c]]
+          } else if (i === 1 && j === 3) {
+            return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
           }
         } else {
+          // Check if j > i
+          if (j <= i) {
+            throw new Error('The i-th col of the rotation must be less than the j-th column')
+          }
+
           const idMatrix = Matrix.identity2d(dim)
+
           idMatrix[i - 1][i - 1] = c
           idMatrix[i - 1][j - 1] = -s
           idMatrix[j - 1][i - 1] = s
           idMatrix[j - 1][j - 1] = c
+
           return idMatrix
         }
       }
 
       /**
      *
-     * @param {number} dim
-     * @param {number} angle
-     * @param {string} angleType
-     * @param {number} i
-     * @param {number} j
+     * @param {number} dim the dimension of the Matrix that represent the rotMatrix
+     * @param {number} angle the rotation angle
+     * @param {string} angleType the type of angle passed which can be rad or deg
+     * @param {number} i i-th row an col of the given rotation
+     * @param {number} j j-th row an col of the given rotation
      * @returns {Matrix} the matrix object representing the given rotation
      */
       static rot = (dim, angle, angleType = 'deg', i = 1, j = 2) => new Matrix(Matrix.rot2d(dim, angle, angleType, i, j))
@@ -170,9 +183,14 @@ export class Matrix {
 
     /**
      * Clone the matrix
-     * @returns {number[][] | Matrix}
+     * @param { number[][] | Matrix } matrix
+     * @returns {number[][]}
      */
-    static clone = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
+    static clone = (matrix) => {
+      matrix = Matrix.checkMatrixType(matrix)
+      const clone = matrix.map(a => a.slice())
+      return clone
+    }
 
     /**
      * Get a copy of the matrix
@@ -198,114 +216,141 @@ export class Matrix {
         return arr
       }
 
-    /**
-     * static method that checks if a matrix is square
-     * @param {number[][] | Matrix} matrix
-     * @returns {boolean} true if is square otherwise false
-     */
-    static isSquare = (matrix) => {
-      // Check the matrix type
-      matrix = Array.isArray(matrix) ? matrix : matrix.matrix
-
-      let isSquare = true
-      const n = matrix.length // dimension of the matrix
-
-      for (let i = 0; i < n; i++) {
-        if (matrix[i].length !== n) {
-          isSquare = false
-          break
-        }
-      }
-
-      return isSquare
-    };
-
-    /**
-     * Check if a matrix is square
-     * @returns {boolean} true if is square otherwise false
-     */
-    isSquare = () => Matrix.isSquare(this._matrix);
-
-    /**
-     * If the passed matrix is square it return the trace of the given matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number} the trace of the give matrix
-     */
-    static trace = matrix => {
-      // Check matrix type
-      matrix = Matrix.checkMatrixType(matrix)
-      // Initialize the trace
-      let trace = 0
-
-      for (let i = 0; i < matrix.length; i++) { trace += matrix[i][i] }
-
-      return trace
-    };
-
-    /**
-     * Return the matrix trace, if the matrix is square
-     * @returns {number} the trace of the matrix
-     */
-    trace = () => Matrix.trace(this.matrix);
-
-    /**
-     * Static function the return the transpose of the given matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number[][]}
-     */
-    static getTranspose = matrix =>
-      Array.isArray(matrix) ? matrix[0].map((_, iCol) => matrix.map(row => row[iCol])) : matrix.matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
-
-    /**
-     * Get the transpose of the matrix
-     * @returns {number[][]} the transpose matrix
-     */
-    getTranspose = () =>
-      Matrix.getTranspose(this._matrix);
-
-    /**
-     * Transpose the matrix
-     * @returns {Matrix}
-     */
-    transpose = () => {
-      this._matrix = Matrix.getTranspose(this._matrix)
-      return this
-    }
-
-    /**
-     * Static method for printing matrix
-     * @param { number[][] | Matrix}matrix
-     */
-    static print = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
-
-    /**
-     * Print the matrix
-     */
-    print = () => Matrix.print(this._matrix);
-
-    // fixme: redo
-    /**
-     * Static method that compute the inverse of the give matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number[][]} Return the inverse of the given matrix
-     */
-    static getInverse = matrix => {
-      // todo: check if the determinant is different than zero
-      if (!Matrix.isSquare(matrix)) {
-        throw new Error("You can't get the inverse of a non square matrix")
-      } else {
+      /**
+       * static method that checks if a matrix is square
+       * @param {number[][] | Matrix} matrix
+       * @returns {boolean} true if is square otherwise false
+       */
+      static isSquare = (matrix) => {
+        // Check the matrix type
         matrix = Array.isArray(matrix) ? matrix : matrix.matrix
 
-        const identityMatrix = Matrix.identity2d(matrix.length)
-        const inverse = []
-        const { L, U } = Matrix.luDecomposition(matrix)
+        let isSquare = true
+        const n = matrix.length // dimension of the matrix
 
-        for (let j = 0; j < matrix.length; j++) { inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix, j))) }
+        for (let i = 0; i < n; i++) {
+          if (matrix[i].length !== n) {
+            isSquare = false
+            break
+          }
+        }
 
-        // Transpose the inverse before returning
-        return Matrix.getTranspose(inverse)
+        return isSquare
+      };
+
+      /**
+       * Check if a matrix is square
+       * @returns {boolean} true if is square otherwise false
+       */
+      isSquare = () => Matrix.isSquare(this._matrix);
+
+      /**
+       * Check if the given matrix is symmetric
+       * @param {number[][] | Matrix} matrix
+       * @returns {boolean} returns true if the matrix is symmetric otherwise false
+       */
+        static isSymmetric = matrix => {
+          // Check matrix type
+          matrix = Matrix.checkMatrixType(matrix)
+          const transpose = Matrix.getTranspose(matrix)
+
+          if (matrix.length !== matrix[0].length) { throw new Error('Non square matrices aren\'t symmetric') }
+
+          for (let i = 0; i < matrix.length; i++) {
+            for (let j = 0; j < matrix[i].length; j++) {
+              if (matrix[i][j] !== transpose[i][j]) { return false }
+            }
+          }
+
+          return true
+        }
+
+      /**
+       * Check if the matrix is symmetric
+       * @returns {boolean}  returns true if the matrix is symmetric otherwise false
+       */
+      isSymmetric = () => Matrix.isSymmetric(this._matrix)
+
+      /**
+       * If the passed matrix is square it return the trace of the given matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number} the trace of the give matrix
+       */
+      static trace = matrix => {
+        // Check matrix type
+        matrix = Matrix.checkMatrixType(matrix)
+        // Initialize the trace
+        let trace = 0
+
+        for (let i = 0; i < matrix.length; i++) { trace += matrix[i][i] }
+
+        return trace
+      };
+
+      /**
+       * Return the matrix trace, if the matrix is square
+       * @returns {number} the trace of the matrix
+       */
+      trace = () => Matrix.trace(this.matrix);
+
+      /**
+       * Static function the return the transpose of the given matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number[][]}
+       */
+      static getTranspose = matrix =>
+        Array.isArray(matrix) ? matrix[0].map((_, iCol) => matrix.map(row => row[iCol])) : matrix.matrix[0].map((_, iCol) => matrix.map(row => row[iCol]));
+
+      /**
+       * Get the transpose of the matrix
+       * @returns {number[][]} the transpose matrix
+       */
+      getTranspose = () =>
+        Matrix.getTranspose(this._matrix);
+
+      /**
+       * Transpose the matrix
+       * @returns {Matrix}
+       */
+      transpose = () => {
+        this._matrix = Matrix.getTranspose(this._matrix)
+        return this
       }
-    };
+
+      /**
+       * Static method for printing matrix
+       * @param { number[][] | Matrix}matrix
+       */
+      static print = (matrix) => Array.isArray(matrix) ? matrix.map(x => console.log(x)) : matrix.matrix.map(x => console.log(x));
+
+      /**
+       * Print the matrix
+       */
+      print = () => Matrix.print(this._matrix);
+
+      // fixme: redo
+      /**
+       * Static method that compute the inverse of the give matrix
+       * @param {number[][] | Matrix} matrix
+       * @returns {number[][]} Return the inverse of the given matrix
+       */
+      static getInverse = matrix => {
+        // todo: check if the determinant is different than zero
+        if (!Matrix.isSquare(matrix)) {
+          throw new Error("You can't get the inverse of a non square matrix")
+        } else {
+          matrix = Array.isArray(matrix) ? matrix : matrix.matrix
+
+          const identityMatrix = Matrix.identity2d(matrix.length)
+          const inverse = []
+          const { L, U } = Matrix.luDecomposition(matrix)
+
+          for (let j = 0; j < matrix.length; j++) { inverse.push(Matrix.solveUsingLU(L, U, Matrix.getCol(identityMatrix, j))) }
+
+          // Transpose the inverse before returning
+          return Matrix.getTranspose(inverse)
+        }
+      };
 
     /**
      * Compute the inverse of a matrix
@@ -355,6 +400,126 @@ export class Matrix {
         return det
       }
     };
+
+    /**
+     * Jacobi algorithm for finding the eigenvalues of the given matrix
+     * @param {number[][] | Matrix}matrix
+     * @returns {{}} an object containing the eigenvalues in order
+     */
+    static jacobi = matrix => {
+      // Check the matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      if (!Matrix.isSquare(matrix)) { throw new Error('Matrix must be square') }
+
+      if (!Matrix.isSymmetric(matrix)) { throw new Error('Matrix must be symmetric') }
+
+      let mCopy = Matrix.clone(matrix)
+      let v = Number.MAX_SAFE_INTEGER
+      const n = mCopy.length
+
+      while (Math.abs(v) > 0.0001) {
+        const [p, q] = maxNoDiag(mCopy)
+        v = mCopy[p][q]
+        const [c, s] = getCosSin(p, q, mCopy)
+        const r = jacobiRotate(c, s, p, q, mCopy.length)
+        const rt = Matrix.getTranspose(r)
+
+        mCopy = Matrix.mul(rt, Matrix.mul(mCopy, r))
+      }
+
+      // Get the eigenvalues from the diagonal
+      const e = []
+      for (let i = 0; i < n; i++) {
+        e.push(mCopy[i][i])
+      }
+
+      e.sort((a, b) => b - a) // sort the eigenvalues in decreasing order
+
+      // Store the eigenvalues in a object
+      const eigenvalues = {}
+      for (let i = 0; i < n; i++) {
+        eigenvalues[i + 1] = e[i]
+      }
+
+      return eigenvalues
+    }
+
+    /**
+     * Finds the max eigenvector of the matrix
+     * @param {number[][] | Matrix} matrix
+     * @param {number} numIt
+     * @returns {number[]} the eigenvector associate to the max eigenvalue of the given matrix
+     */
+      static powerIteration = (matrix, numIt = 1000) => {
+        // Check matix type
+        matrix = Matrix.checkMatrixType(matrix)
+
+        let bK = Vector.randArr(matrix[0].length)
+
+        for (let i = 0; i < numIt; i++) {
+          const bK1 = Matrix.mul(matrix, bK)
+          const bK1Norm = Vector.getNorm(bK1)
+          bK = bK1.map(x => x / bK1Norm)
+        }
+
+        let maxEl = bK[0]
+
+        for (let i = 1; i < bK.length; i++) {
+          if (maxEl < bK[i]) { maxEl = bK[i] }
+        }
+
+        bK = bK.map(x => x / maxEl)
+
+        for (let i = 0; i < bK.length; i++) {
+          if (Math.abs(bK[i]) <= 1.00e-150) {
+            bK[i] = 0
+          }
+        }
+
+        return bK
+      }
+
+    /**
+     *
+     * @param matrix
+     * @returns {{Q: number[][], R: number[][]}}
+     */
+    static qrDecomposition = matrix => {
+      // Check matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      const n = matrix[0].length; const m = matrix.length
+      let q = Matrix.identity2d(matrix.length)
+      let r = Matrix.clone(matrix)
+
+      for (let j = 0; j < n; j++) {
+        for (let i = m - 1; i >= j + 1; i--) {
+          const [c, s] = givens(r[i - 1][j], r[i][j])
+          const rotMat = givensRot(m, i, c, s)
+          r = Matrix.mul(Matrix.getTranspose(rotMat), r)
+          q = Matrix.mul(q, rotMat)
+        }
+      }
+
+      return { Q: q, R: r }
+    }
+
+    /**
+     * Return the qr decomposition of the matrix
+     * @returns {{Q: number[][], R: number[][]}}
+     */
+    qrDecomposition = () => Matrix.qrDecomposition(this._matrix)
+
+    /**
+    * Frobeniuns norm of the given matrix
+    * @param {number[][] | Matrix} matrix
+    * @returns {number} the frobenius norm of the matrix
+    */
+    static getNorm = matrix => {
+      matrix = Matrix.checkMatrixType(matrix)
+      return Math.sqrt(matrix.map(row => sumOfSquares(row)).reduce(add))
+    }
 
     /**
      * Static method that return the input column of the given matrix
