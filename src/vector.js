@@ -133,7 +133,7 @@ export class Vector {
 
     /**
      * Static method that compute the norm of a vector
-     * @param {number[] | Vector} vector
+     * @param {number[][]} vector
      * @returns {number} the norm of a vector
      */
     static getNorm = (vector) => {

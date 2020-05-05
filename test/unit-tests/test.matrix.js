@@ -168,19 +168,19 @@ describe('test rotation matrix function', () => {
 
   describe('Test 3d Matrix roation', () => {
     it('should give the 3d rotation matrix on the x-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 2, 3)
 
       assert.deepStrictEqual(rot3DX, [[1, 0, 0], [0, c, -s], [0, s, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 2)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1, 3)
 
       assert.deepStrictEqual(rot3DX, [[c, 0, s], [0, 1, 0], [-s, 0, c]])
     })
 
     it('should give the 3d rotation matrix on the y-axis', function () {
-      const rot3DX = Matrix.rot2d(3, 30, 'deg', 3)
+      const rot3DX = Matrix.rot2d(3, 30, 'deg', 1, 2)
 
       assert.deepStrictEqual(rot3DX, [[c, -s, 0], [s, c, 0], [0, 0, 1]])
     })
@@ -839,10 +839,10 @@ describe('Test jacobi approximation for the eigenvalues', () => {
   })
 })
 
-describe("Test power iteration for obtaining the eigenvalues", () => {
-  it('should give the eigen values', function () {
+describe('Test power iteration for obtaining the biggest eigenvector', () => {
+  it('should give the biggest eigenvector', function () {
     const m = [[2, 0, 0], [-1, 3, 3], [6, -6, -6]]
 
-    assert.deepStrictEqual(Matrix.powerIteration(m), [-3, 0, 2])
+    assert.deepStrictEqual(Matrix.powerIteration(m, 1000), [0, -0.5, 1])
   })
 })

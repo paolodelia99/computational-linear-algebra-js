@@ -101,7 +101,7 @@ export class Matrix {
     };
 
     /**
-     *
+     * Create a matrix obj representing the identity matrix of the given dimension
      * @param {number} dim
      * @returns {Matrix} the matrix obj representing the identity matrix
      */
@@ -113,7 +113,7 @@ export class Matrix {
      * @param {number} angle the rotation angle
      * @param {string} angleType the type of angle passed which can be rad or deg
      * @param {number} i i-th row an col of the given rotation
-     * @param {number} j j-th row an col of the given rotation
+     * @param {number} j j-th row an col of the given rotation, j must be greater than i
      * @returns { number[][] } the n dimensional rotation matrix of the given dimension and angle
      */
       static rot2d = (dim, angle, angleType = 'deg', i = 1, j = 2) => {
@@ -123,19 +123,31 @@ export class Matrix {
         if (dim === 2) {
           return [[c, -s], [s, c]]
         } else if (dim === 3) {
-          if (i === 1) {
-            return [[1, 0, 0], [0, c, -s], [0, s, c]]
-          } else if (i === 2) {
-            return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
-          } else {
+          // Check if j > i
+          if (j <= i) {
+            throw new Error('The i-th col of the rotation must be less than the j-th column')
+          }
+
+          if (i === 1 && j === 2) {
             return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+          } else if (i === 2 && j === 3) {
+            return [[1, 0, 0], [0, c, -s], [0, s, c]]
+          } else if (i === 1 && j === 3) {
+            return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
           }
         } else {
+          // Check if j > i
+          if (j <= i) {
+            throw new Error('The i-th col of the rotation must be less than the j-th column')
+          }
+
           const idMatrix = Matrix.identity2d(dim)
+
           idMatrix[i - 1][i - 1] = c
           idMatrix[i - 1][j - 1] = -s
           idMatrix[j - 1][i - 1] = s
           idMatrix[j - 1][j - 1] = c
+
           return idMatrix
         }
       }
@@ -431,34 +443,39 @@ export class Matrix {
     /**
      * Finds the max eigenvector of the matrix
      * @param {number[][] | Matrix} matrix
-     * @param {number} num_it
+     * @param {number} numIt
      * @returns {number[]} the eigenvector associate to the max eigenvalue of the given matrix
      */
-      static powerIteration = (matrix, num_it=100) => {
+      static powerIteration = (matrix, numIt = 1000) => {
         // Check matix type
         matrix = Matrix.checkMatrixType(matrix)
 
-        let b_k = Vector.randArr(matrix[0].length)
+        let bK = Vector.randArr(matrix[0].length)
 
-        for (let i = 0; i < num_it; i++) {
-          let b_k1 = Matrix.mul(matrix, b_k)
-          let b_k1Norm = Vector.getNorm(b_k1)
-          b_k = b_k1.map( x => x / b_k1Norm)
+        for (let i = 0; i < numIt; i++) {
+          const bK1 = Matrix.mul(matrix, bK)
+          const bK1Norm = Vector.getNorm(bK1)
+          bK = bK1.map(x => x / bK1Norm)
         }
 
-        let maxEl = b_k[0]
+        let maxEl = bK[0]
 
-        for (let i = 1; i < b_k.length; i++) {
-          if (maxEl < b_k[i])
-            maxEl = b_k[i]
+        for (let i = 1; i < bK.length; i++) {
+          if (maxEl < bK[i]) { maxEl = bK[i] }
         }
 
-        b_k = b_k.map(x => x / maxEl)
+        bK = bK.map(x => x / maxEl)
 
-        return b_k
+        for (let i = 0; i < bK.length; i++) {
+          if (Math.abs(bK[i]) <= 1.00e-150) {
+            bK[i] = 0
+          }
+        }
+
+        return bK
       }
 
-    /**
+      /**
      * Frobeniuns norm of the given matrix
      * @param {number[][] | Matrix} matrix
      * @returns {number} the frobenius norm of the matrix
