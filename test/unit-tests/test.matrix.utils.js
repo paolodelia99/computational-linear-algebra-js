@@ -39,4 +39,8 @@ describe('Test givens method for qr decomposition', () => {
   it('should give the rigth theta and gamma', function () {
     assert.deepStrictEqual(givens(1, 1), [1 / Math.sqrt(2), 1 / Math.sqrt(2)])
   })
+
+  it('should give 1 and 0 if b === 0', function () {
+    assert.deepStrictEqual(givens(1, 0), [1, 0])
+  })
 })
