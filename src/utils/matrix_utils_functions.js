@@ -1,3 +1,5 @@
+import { Matrix } from '../matrix'
+
 /**
  *
  * @param M
@@ -44,6 +46,33 @@ export const getCosSin = (p, q, M) => {
   const s = t / Math.sqrt(1 + t ** 2)
 
   return [c, s]
+}
+
+export const givens = (a, b) => {
+  if (b === 0) {
+    return [1, 0]
+  } else if (Math.abs(b) > Math.abs(a)) {
+    const t = a / b
+    const theta = 1 / Math.sqrt(1 + t ** 2)
+    const gamma = theta * t
+    return [gamma, theta]
+  } else {
+    const t = b / a
+    const gamma = 1 / Math.sqrt(1 + t ** 2)
+    const theta = gamma * t
+    return [gamma, theta]
+  }
+}
+
+export const givensRot = (dim, i, j, c, s) => {
+  const rotM = Matrix.identity2d(dim)
+
+  rotM[i - 1][i - 1] = c
+  rotM[i - 1][i] = -s
+  rotM[i][i - 1] = s
+  rotM[i][i] = c
+
+  return rotM
 }
 
 /**

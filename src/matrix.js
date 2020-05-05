@@ -1,5 +1,5 @@
 import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/general_purpose_util_function'
-import { getCosSin, maxNoDiag, jacobiRotate } from './utils/matrix_utils_functions'
+import { getCosSin, maxNoDiag, jacobiRotate, givens, givensRot } from './utils/matrix_utils_functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -183,9 +183,14 @@ export class Matrix {
 
     /**
      * Clone the matrix
-     * @returns {number[][] | Matrix}
+     * @param { number[][] | Matrix } matrix
+     * @returns {number[][]}
      */
-    static clone = (matrix) => Array.isArray(matrix) ? matrix.map(a => a.slice()) : matrix._matrix.map(a => a.slice());
+    static clone = (matrix) => {
+      matrix = Matrix.checkMatrixType(matrix)
+      const clone = matrix.map(a => a.slice())
+      return clone
+    }
 
     /**
      * Get a copy of the matrix
@@ -475,12 +480,32 @@ export class Matrix {
         return bK
       }
 
+      static qrDecomposition = matrix => {
+        // Check matrix type
+        matrix = Matrix.checkMatrixType(matrix)
+
+        const n = matrix[0].length; const m = matrix.length
+        let q = Matrix.identity2d(matrix.length)
+        let r = Matrix.clone(matrix)
+
+        for (let j = 0; j < n; j++) {
+          for (let i = m - 1; i >= j + 1; i--) {
+            const [c, s] = givens(r[i - 1][j], r[i][j])
+            const rotMat = givensRot(m, i, j, c, s)
+            r = Matrix.mul(Matrix.getTranspose(rotMat), r)
+            q = Matrix.mul(q, rotMat)
+          }
+        }
+
+        return { Q: q, R: r }
+      }
+
       /**
      * Frobeniuns norm of the given matrix
      * @param {number[][] | Matrix} matrix
      * @returns {number} the frobenius norm of the matrix
      */
-      static frobeniusNorm = matrix => {
+      static getNorm = matrix => {
         matrix = Matrix.checkMatrixType(matrix)
         return Math.sqrt(matrix.map(row => sumOfSquares(row)).reduce(add))
       }
