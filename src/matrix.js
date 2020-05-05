@@ -428,20 +428,35 @@ export class Matrix {
       return eigenvalues
     }
 
-    static powerIteration = (matrix, num_it=100) => {
-      // Check matix type
-      matrix = Matrix.checkMatrixType(matrix)
+    /**
+     * Finds the max eigenvector of the matrix
+     * @param {number[][] | Matrix} matrix
+     * @param {number} num_it
+     * @returns {number[]} the eigenvector associate to the max eigenvalue of the given matrix
+     */
+      static powerIteration = (matrix, num_it=100) => {
+        // Check matix type
+        matrix = Matrix.checkMatrixType(matrix)
 
-      let b_k = Vector.randArr(matrix[0].length)
+        let b_k = Vector.randArr(matrix[0].length)
 
-      for (let i = 0; i < num_it; i++) {
-        let b_k1 = Matrix.mul(matrix, b_k)
-        let b_k1Norm = Vector.getNorm(b_k1)
-        b_k = b_k.map( x => x / b_k1Norm)
+        for (let i = 0; i < num_it; i++) {
+          let b_k1 = Matrix.mul(matrix, b_k)
+          let b_k1Norm = Vector.getNorm(b_k1)
+          b_k = b_k1.map( x => x / b_k1Norm)
+        }
+
+        let maxEl = b_k[0]
+
+        for (let i = 1; i < b_k.length; i++) {
+          if (maxEl < b_k[i])
+            maxEl = b_k[i]
+        }
+
+        b_k = b_k.map(x => x / maxEl)
+
+        return b_k
       }
-
-      return b_k
-    }
 
     /**
      * Frobeniuns norm of the given matrix
