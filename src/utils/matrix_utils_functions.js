@@ -48,6 +48,12 @@ export const getCosSin = (p, q, M) => {
   return [c, s]
 }
 
+/**
+ *
+ * @param a
+ * @param b
+ * @returns {[number, number]|[number, number]}
+ */
 export const givens = (a, b) => {
   if (b === 0) {
     return [1, 0]
@@ -64,7 +70,15 @@ export const givens = (a, b) => {
   }
 }
 
-export const givensRot = (dim, i, j, c, s) => {
+/**
+ *
+ * @param dim
+ * @param i
+ * @param c
+ * @param s
+ * @returns {number[][]}
+ */
+export const givensRot = (dim, i, c, s) => {
   const rotM = Matrix.identity2d(dim)
 
   rotM[i - 1][i - 1] = c

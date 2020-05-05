@@ -848,8 +848,9 @@ describe('Test power iteration for obtaining the biggest eigenvector', () => {
 })
 
 describe('Test qr decomposition', () => {
+  const m = new Matrix([[12, -51, 4], [6, 167, -68], [-4, 24, -41]])
+
   it('should give the qr decomposition', function () {
-    const m = new Matrix([[12, -51, 4], [6, 167, -68], [-4, 24, -41]])
     const resObject = {
       Q: [
         [0.8571428571428571, -0.3942857142857142, 0.3314285714285714],
@@ -864,5 +865,22 @@ describe('Test qr decomposition', () => {
     }
 
     assert.deepStrictEqual(Matrix.qrDecomposition(m), resObject)
+  })
+
+  it('should give the qr decomposition of the matrix object', function () {
+    const resObject = {
+      Q: [
+        [0.8571428571428571, -0.3942857142857142, 0.3314285714285714],
+        [0.42857142857142855, 0.9028571428571427, -0.03428571428571431],
+        [-0.2857142857142857, 0.17142857142857143, 0.9428571428571428]
+      ],
+      R: [
+        [14, 21.000000000000007, -13.999999999999998],
+        [0, 175, -70],
+        [0, 0, -35]
+      ]
+    }
+
+    assert.deepStrictEqual(m.qrDecomposition(), resObject)
   })
 })

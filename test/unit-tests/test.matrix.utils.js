@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { getCosSin, maxNoDiag, jacobiRotate } from '../../src/utils/matrix_utils_functions'
+import { getCosSin, maxNoDiag, jacobiRotate, givensRot, givens } from '../../src/utils/matrix_utils_functions'
 
 describe('Test get cos sin for jacobi algo', () => {
   it('should give the right cos ans sin', function () {
@@ -26,5 +26,17 @@ describe('Test max no Diag', () => {
 describe('Test jacobiRotate', () => {
   it('should give the matrix rotated', function () {
     assert.deepStrictEqual(jacobiRotate(1, 1, 0, 1, 3), [[1, 1, 0], [-1, 1, 0], [0, 0, 1]])
+  })
+})
+
+describe('Test givenRot for qr decomposition', function () {
+  it('should give the right given rot matrix', function () {
+    assert.deepStrictEqual(givensRot(3, 1, 1, 1), [[1, -1, 0], [1, 1, 0], [0, 0, 1]])
+  })
+})
+
+describe('Test givens method for qr decomposition', () => {
+  it('should give the rigth theta and gamma', function () {
+    assert.deepStrictEqual(givens(1, 1), [1 / Math.sqrt(2), 1 / Math.sqrt(2)])
   })
 })

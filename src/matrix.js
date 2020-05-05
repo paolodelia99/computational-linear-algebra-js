@@ -480,35 +480,46 @@ export class Matrix {
         return bK
       }
 
-      static qrDecomposition = matrix => {
-        // Check matrix type
-        matrix = Matrix.checkMatrixType(matrix)
-
-        const n = matrix[0].length; const m = matrix.length
-        let q = Matrix.identity2d(matrix.length)
-        let r = Matrix.clone(matrix)
-
-        for (let j = 0; j < n; j++) {
-          for (let i = m - 1; i >= j + 1; i--) {
-            const [c, s] = givens(r[i - 1][j], r[i][j])
-            const rotMat = givensRot(m, i, j, c, s)
-            r = Matrix.mul(Matrix.getTranspose(rotMat), r)
-            q = Matrix.mul(q, rotMat)
-          }
-        }
-
-        return { Q: q, R: r }
-      }
-
-      /**
-     * Frobeniuns norm of the given matrix
-     * @param {number[][] | Matrix} matrix
-     * @returns {number} the frobenius norm of the matrix
+    /**
+     *
+     * @param matrix
+     * @returns {{Q: number[][], R: number[][]}}
      */
-      static getNorm = matrix => {
-        matrix = Matrix.checkMatrixType(matrix)
-        return Math.sqrt(matrix.map(row => sumOfSquares(row)).reduce(add))
+    static qrDecomposition = matrix => {
+      // Check matrix type
+      matrix = Matrix.checkMatrixType(matrix)
+
+      const n = matrix[0].length; const m = matrix.length
+      let q = Matrix.identity2d(matrix.length)
+      let r = Matrix.clone(matrix)
+
+      for (let j = 0; j < n; j++) {
+        for (let i = m - 1; i >= j + 1; i--) {
+          const [c, s] = givens(r[i - 1][j], r[i][j])
+          const rotMat = givensRot(m, i, c, s)
+          r = Matrix.mul(Matrix.getTranspose(rotMat), r)
+          q = Matrix.mul(q, rotMat)
+        }
       }
+
+      return { Q: q, R: r }
+    }
+
+    /**
+     * Return the qr decomposition of the matrix
+     * @returns {{Q: number[][], R: number[][]}}
+     */
+    qrDecomposition = () => Matrix.qrDecomposition(this._matrix)
+
+    /**
+    * Frobeniuns norm of the given matrix
+    * @param {number[][] | Matrix} matrix
+    * @returns {number} the frobenius norm of the matrix
+    */
+    static getNorm = matrix => {
+      matrix = Matrix.checkMatrixType(matrix)
+      return Math.sqrt(matrix.map(row => sumOfSquares(row)).reduce(add))
+    }
 
     /**
      * Static method that return the input column of the given matrix
