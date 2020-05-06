@@ -1,6 +1,7 @@
 import { Vector } from '../../src/vector'
-import assert from 'assert'
 import { Matrix } from '../../src/entry'
+import assert from 'assert'
+import sinon from 'sinon'
 
 describe('test vector creation', () => {
   it('should create the vector in both ways', function () {
@@ -72,16 +73,31 @@ describe('Test is vector function', () => {
   })
 })
 
-// describe('Test vector printing', () => {
-//   it('should print the vector', function () {
-//     const vector = new Vector([1, 2, 1])
-//
-//     // Test static method
-//     assert.deepStrictEqual(Vector.print(vector), '[1, 2, 1]')
-//     // Test instance method
-//     console.assert(vector.print(), console.log(vector.vector))
-//   })
-// })
+describe('Test vector printing', () => {
+  it('should print the given vector', function () {
+    const vector = new Vector([1, 2, 1])
+
+    const spy = sinon.spy(console, 'log')
+
+    Vector.print(vector)
+
+    assert(spy.calledWith([1, 2, 1]))
+
+    spy.restore()
+  })
+
+  it('should print the given vector', function () {
+    const vector = new Vector([1, 2, 1])
+
+    const spy = sinon.spy(console, 'log')
+
+    vector.print()
+
+    assert(spy.calledWith([1, 2, 1]))
+
+    spy.restore()
+  })
+})
 
 describe('Test array and vector creation', () => {
   describe('Test creation of an empty array', () => {
@@ -400,5 +416,20 @@ describe('Test to string', () => {
     const v = new Vector([1, 2, 3])
 
     assert.deepStrictEqual(v.toString(), [1, 2, 3])
+  })
+})
+
+describe('Test clone vector', () => {
+  it('should give a the clone of the given vector', function () {
+    const v = new Vector([1, 2, 3])
+
+    assert.deepStrictEqual(Vector.clone(v), v.vector)
+  })
+
+  // Test instance method
+  it('should give the copy of the vector obj', function () {
+    const v = new Vector([1, 2, 3])
+
+    assert.deepStrictEqual(v.clone(), v.vector)
   })
 })

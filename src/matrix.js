@@ -402,7 +402,7 @@ export class Matrix {
     };
 
     /**
-     * Jacobi algorithm for finding the eigenvalues of the given matrix
+     * Jacobi algorithm for finding the eigenvalues of the a symmetric and positive define matrix
      * @param {number[][] | Matrix}matrix
      * @returns {{}} an object containing the eigenvalues in order
      */
@@ -448,7 +448,7 @@ export class Matrix {
     /**
      * Finds the max eigenvector of the matrix
      * @param {number[][] | Matrix} matrix
-     * @param {number} numIt
+     * @param {number} numIt maximum number of iteration
      * @returns {number[]} the eigenvector associate to the max eigenvalue of the given matrix
      */
       static powerIteration = (matrix, numIt = 1000) => {
@@ -495,8 +495,8 @@ export class Matrix {
 
       for (let j = 0; j < n; j++) {
         for (let i = m - 1; i >= j + 1; i--) {
-          const [c, s] = givens(r[i - 1][j], r[i][j])
-          const rotMat = givensRot(m, i, c, s)
+          const [c, s] = givens(r[i - 1][j], r[i][j]) // sin and cos for the given rotation matrix
+          const rotMat = givensRot(m, i, c, s) // the matrix the rotate the R matrix
           r = Matrix.mul(Matrix.getTranspose(rotMat), r)
           q = Matrix.mul(q, rotMat)
         }
@@ -658,7 +658,7 @@ export class Matrix {
      * @param {number} endRow
      * @param {number} startCol
      * @param {number} endCol
-     * @returns {number[][] | number[]}
+     * @returns {number[][] | number[]} a sub matrix of the given matrix[startRow:endRow][startCol:endCol]
      */
     static getSubMatrix = (matrix, startRow, endRow, startCol, endCol) => {
       // Check matrix type
@@ -679,7 +679,7 @@ export class Matrix {
      * @param {number} rowEnd
      * @param {number} colStart
      * @param {number} colEnd
-     * @returns {number[][] | number[]} sub matrix
+     * @returns {number[][] | number[]} a sub matrix of the given matrix[startRow:endRow][startCol:endCol]
      */
     getSubMatrix = (rowStart, rowEnd, colStart, colEnd) => Matrix.getSubMatrix(this._matrix, rowStart, rowEnd, colStart, colEnd);
 
@@ -735,8 +735,8 @@ export class Matrix {
 
     /**
    * Static method that solve linear system with the gaussian elimination
-   * @param {number[][] | Matrix}matrix
-   * @param {number[] | Vector}vector
+   * @param {number[][] | Matrix} matrix
+   * @param {number[] | Vector} vector
    * @returns {number[][]} the solution of the linear system
    */
     static gaussSolve = (matrix, vector) => {
@@ -812,7 +812,7 @@ export class Matrix {
     static getLUDecomposition = (matrix) => {
       // throw an error is the matrix is not square
       if (!Matrix.isSquare(matrix)) {
-        throw new Error('Cannot decompose with LU two non square matrices')
+        throw new Error('Cannot decompose with LU a non square matrix')
       } else {
         const mat = Matrix.clone(matrix)
         const n = matrix.length
@@ -841,10 +841,10 @@ export class Matrix {
 
     /**
      * Static method that solves the linear system using lu decomposition
-     * @param {number[][]} lower
-     * @param {number[][]} upper
-     * @param {number[]} rightPart
-     * @returns { number[] }
+     * @param {number[][]} lower the lower triangular matrix from the LU Decomposition
+     * @param {number[][]} upper the upper triangular matrix from the LU Decomposition
+     * @param {number[]} rightPart the right part of the linear system
+     * @returns { number[] } the solution of the linear system
      */
     static solveUsingLU = (lower, upper, rightPart) => {
       // throw an error is the matrix is not square
@@ -879,7 +879,7 @@ export class Matrix {
 
     /**
      * Solve the linear system using lu decomposition
-     * @param rightPart
+     * @param {number[]} rightPart
      * @returns {number[]} solution of the linear system
      */
     solveUsingLU = (rightPart) => {
@@ -1008,11 +1008,6 @@ export class Matrix {
       matrix1 = Matrix.checkMatrixType(matrix1)
       matrix2 = Matrix.checkMatrixType(matrix2)
 
-      // Check the input type
-      if (!(Array.isArray(matrix1) && Array.isArray(matrix2))) {
-        throw new Error('Type Error')
-      }
-
       // Check if matrices are square matrices
       if (!(matrix1.length === matrix1[0].length && matrix2.length === matrix2[0].length && matrix1.length === matrix2[0].length)) {
         throw new Error("The matrices aren't square matrices")
@@ -1109,9 +1104,9 @@ export class Matrix {
 
     /**
      *
-     * @param matrix1
-     * @param matrix2
-     * @returns {number[][]}
+     * @param {number[][] | Matrix} matrix1
+     * @param {number[][] | Matrix} matrix2
+     * @returns {number[][]} the hammard product between the given matrices
      */
       static hammardProduct = (matrix1, matrix2) => {
         // Check matrices type

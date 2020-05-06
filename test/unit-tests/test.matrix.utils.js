@@ -36,11 +36,16 @@ describe('Test givenRot for qr decomposition', function () {
 })
 
 describe('Test givens method for qr decomposition', () => {
-  it('should give the rigth theta and gamma', function () {
+  it('should give the right theta and gamma', function () {
     assert.deepStrictEqual(givens(1, 1), [1 / Math.sqrt(2), 1 / Math.sqrt(2)])
   })
 
   it('should give 1 and 0 if b === 0', function () {
     assert.deepStrictEqual(givens(1, 0), [1, 0])
+  })
+
+  it('should give the right theta and gamma', function () {
+    const res = 1 / Math.sqrt(1 + (1 / 2) ** 2)
+    assert.deepStrictEqual(givens(1, 2), [res / 2, res])
   })
 })

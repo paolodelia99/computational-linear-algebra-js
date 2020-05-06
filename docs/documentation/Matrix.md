@@ -623,6 +623,7 @@ multiply the matrix by the given matrix using the Strassen algorithm
  ```
 Performs the hammard product of the matrix by the given matrix
 
+
 > this method can be chained 
 
 #### Parameters

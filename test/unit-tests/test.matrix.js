@@ -166,6 +166,10 @@ describe('test rotation matrix function', () => {
     assert.deepStrictEqual(rotMatrix, [[c, -s], [s, c]])
   })
 
+  it('should throw an error if j <= i', function () {
+
+  })
+
   describe('Test 3d Matrix roation', () => {
     it('should give the 3d rotation matrix on the x-axis', function () {
       const rot3DX = Matrix.rot2d(3, 30, 'deg', 2, 3)
@@ -183,6 +187,15 @@ describe('test rotation matrix function', () => {
       const rot3DX = Matrix.rot2d(3, 30, 'deg', 1, 2)
 
       assert.deepStrictEqual(rot3DX, [[c, -s, 0], [s, c, 0], [0, 0, 1]])
+    })
+
+    it('should throw an error if j <= i', function () {
+      try {
+        Matrix.rot2d(3, 30, 'deg', 3, 1)
+        assert.fail('Should throw an error')
+      } catch (e) {
+        assert.deepStrictEqual(e.message, 'The i-th col of the rotation must be less than the j-th column')
+      }
     })
   })
 
@@ -203,6 +216,15 @@ describe('test rotation matrix function', () => {
       const rot4D = Matrix.rot2d(5, 30, 'deg', 2, 4)
 
       assert.deepStrictEqual(rot4D, [[1, 0, 0, 0, 0], [0, c, 0, -s, 0], [0, 0, 1, 0, 0], [0, s, 0, c, 0], [0, 0, 0, 0, 1]])
+    })
+
+    it('should throw an error if j <= i', function () {
+      try {
+        Matrix.rot2d(4, 30, 'deg', 3, 1)
+        assert.fail('Should throw an error')
+      } catch (e) {
+        assert.deepStrictEqual(e.message, 'The i-th col of the rotation must be less than the j-th column')
+      }
     })
   })
 })
@@ -466,6 +488,15 @@ describe('test lu decomposition', function () {
     assert.deepStrictEqual(matrix.upper.valueOf(), [[1, 2, -1], [0, 2, 3], [0, 0, 4]])
 
     assert.deepStrictEqual(matrix.lower.valueOf(), [[1, 0, 0], [1, 1, 0], [2, 1, 1]])
+  })
+
+  it('should thrown an error if the matrix isn\'t a square matrix', function () {
+    try {
+      Matrix.getLUDecomposition([[1, 2], [1, 2], [1, 2]])
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Cannot decompose with LU a non square matrix')
+    }
   })
 
   // Testing instance method
@@ -763,6 +794,18 @@ describe('Test the hammard product', () => {
     const matrix2 = new Matrix([[2, 2, 1], [0, 3, 1], [0, 4, 2]])
 
     assert.deepStrictEqual(matrix.hammardProduct(matrix2).matrix, [[2, 2, 0], [0, 6, 3], [0, -4, 4]])
+  })
+
+  it('should throw an error if the matrices size don\'t match', function () {
+    const m1 = new Matrix([[1, 2], [1, 2]])
+    const m2 = new Matrix([[1, 2, 3], [1, 2, 3]])
+
+    try {
+      Matrix.hammardProduct(m1, m2)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'Cannot compute hammard product with different matrices')
+    }
   })
 })
 

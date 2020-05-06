@@ -57,16 +57,20 @@ export class Vector {
 
     /**
      * Static method the give a copy of the given vector
-     * @param {number[]} vector1
+     * @param {number[] | Vector} vector1
      * @returns {number[]} copy of the given vector
      */
-    static clone = (vector1) => vector1.slice();
+    static clone = (vector1) => {
+      vector1 = Vector.checkVectorType(vector1)
+
+      return vector1.slice()
+    }
 
     /**
      * Return a copy of the vector
      * @returns {number[]} copy the vector
      */
-    copy = () => Vector.clone(this.vector);
+    clone = () => Vector.clone(this.vector);
 
     /**
      * Create a empty array of the given dimension
@@ -104,18 +108,22 @@ export class Vector {
       return vector
     }
 
-    // fixme to test
-    static randArr = (dim) => {
-      const vector = Vector.zerosArr(dim)
+    /**
+     * Return a random array fill with random values between 0 and 1
+     * @param {number} dim length of the array
+     * @returns {number[]} array of the given dimension filled with random values
+     */
+      static randArr = (dim) => {
+        const vector = Vector.zerosArr(dim)
 
-      for (let i = 0; i < dim; i++) {
-        vector[i] = Math.random()
+        for (let i = 0; i < dim; i++) {
+          vector[i] = Math.random()
+        }
+
+        return vector
       }
 
-      return vector
-    }
-
-    /**
+      /**
      *
      * @param dim
      * @param min
