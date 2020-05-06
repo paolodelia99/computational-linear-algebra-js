@@ -11,9 +11,8 @@ Computational Linear algebra is an comprehensive Javascript library for linear a
 ## Features 
 
 - Efficient 
-- Runs on any JavaScript engine.
-- OOP oriented
-- type flexible
+- Runs on any JavaScript engine
+- flexible
 - open source
 
 ## Table of contents
@@ -217,7 +216,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] More general Gaussian elimination
     - [ ] Matrix decompositions
         - [x] LU
-        - [ ] QR
+        - [x] QR
         - [ ] Cholesky
         - [ ] Singular Value Decomposition
     - [ ] eigenvalues and eigenvectors
@@ -243,6 +242,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [ ] L-Infinity norm 
     - [ ] Pseudo-Inverse
     - [x] Rotation
+    - [ ] reshape function
     - [ ] redo inverse
     - [ ] Add resize function 
     
@@ -259,7 +259,7 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Check Linear Dependency
     - [ ] Test post it orthonormality
     - [ ] Projections
-    - [ ] difference row vector and col vector
+    - [ ] outer product
 
 - Linear Transformation
     - [x] Linear Transformation applied to vectors
@@ -267,12 +267,11 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Injective, Surjective and Bijective
     - [ ] kernel
     - [ ] image
-    - [ ] Projections
     
 - Tensors
-  
-- class Vector Spaces ?? (see if it does make sense)
-    
+    - [ ] super class of Vector and Matrix
+    - [ ] generic n-d array
+      
 - Code Stuff
     - [x] compile js in prev version using babel
     - [x] build npm package
@@ -282,8 +281,9 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [ ] add new types of vector and matrix creation
     - [ ] include in the coverage the methods that uses dependencies methods (parallel multiplication)
     - [ ] Compatible with Typescript
+    - [ ] Browser cdn
     - [x] Test with Browser stack
-    - [ ] on the html file
+    - [ ] C++ addons for improve the performance
 
 ## License
 

@@ -282,7 +282,7 @@ Matrix.getLUDecomposition(matrix)
 - matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to decompose using the LU decomposition
 
 #### Returns
-**{U : number[ ][ ], L: number[ ][ ]}**  decompose the give matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
+**{U : number[ ][ ], L: number[ ][ ]}**  decompose the given matrix using the LU decomposition and the return an Object formed by the U matrix and L matrix
 
 ---
 
@@ -298,6 +298,34 @@ Matrix.solveUsingLU(lower, upper, rightPart)
 
 #### Returns
 **number[ ]** solution of the linear system [matrix|vector] using the lu decomposition <!--fixme: more explicative line --> 
+
+---
+
+```javascript
+Matrix.qrDecomposition(matrix)
+```
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to decompose using the QR decomposition
+
+#### Returns
+**{Q : number[ ][ ], R: number[ ][ ]}**  decompose the given matrix using the QR decomposition and the return an Object formed by the Q matrix and R matrix
+
+---
+
+### `jacobi(matrix)`
+
+Jacobi algorithm for finding the eigenvalues of the a symmetric and positive define matrix
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj 
+
+> *Note*: the matrix must be symmetric and define positive
+
+#### Returns
+**{ }**  an object containing the eigenvalues in descending order
 
 ---
 

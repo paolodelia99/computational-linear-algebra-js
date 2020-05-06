@@ -14,6 +14,12 @@ There are few preferences regarding code contributions:
 
 What can I do?
 
-- //todo:this part
+- Search through the issues (if there are any) looking for something that looks interesting to you to pick up. 
+ Some issues are marked "help wanted", these are typically issues which should be relatively easy to pick up.
+
+- Complete the todo list. In the main [README](README.md) there is a huge todo list to waiting to be completed!
+
+- Introduce new features. Just come up with a new idea to implement? Code it and create a pull request!
+
 
 Thanks!
