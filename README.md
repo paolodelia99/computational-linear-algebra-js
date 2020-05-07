@@ -3,10 +3,10 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![Build Status](https://travis-ci.org/paolodelia99/computational-linear-algebra-js.svg?branch=master)](https://travis-ci.org/paolodelia99/computational-linear-algebra-js)
 [![Coverage Status](https://coveralls.io/repos/github/paolodelia99/computational-linear-algebra.js/badge.svg?branch=master)](https://coveralls.io/github/paolodelia99/computational-linear-algebra.js?branch=master)
-[![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](./license)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./license)
 [![Docs](https://img.shields.io/badge/docs-in%20progress-orange)](https://paolodelia99.github.io/computational-linear-algebra-js/#/)
 
-Computational Linear algebra is an comprehensive Javascript library for linear algebra.
+Computational Linear algebra is aiming to be comprehensive Javascript library for linear algebra.
 
 ## Features 
 
@@ -99,7 +99,7 @@ const { Matrix } =  require('computational-linear-algebra-js')
 const matrix1 = new Matrix( Matrix.randInt2d(1024, 1024, 1, 1000) );
 const matrix2 = new Matrix( Matrix.randInt2d(1024, 1024, 1, 1000) );
 
-Matrix.print(matrix1.multiplication(matrix2).matrix)
+Matrix.print(matrix1.multiply(matrix2).matrix)
 
 ```
 
@@ -212,38 +212,37 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
         - [x] ijkMultiplication
         - [x] Strassen algorithm
         - [x] parallel multiplication using gpu.js 
-        - remove ijkMul in favour of the funcional way, more faster
-    - [x] More general Gaussian elimination
+        - [x] remove ijkMul in favour of the funcional way, more faster
+    - [x] Gaussian elimination
     - [ ] Matrix decompositions
         - [x] LU
         - [x] QR
         - [ ] Cholesky
         - [ ] Singular Value Decomposition
     - [ ] eigenvalues and eigenvectors
-        - [x] Jacobi algo
-    - [ ] Precision 
-    - [ ] matrix validity method (check if the input matrix is valid)
+        - [x] Jacobi algo for eigenvalues
+        - [ ] algo to find the eigenvectors
+    - [ ] Improve precision (floating point numbers) 
     - [ ] matrix check
         - [x] orthogonal
+        - [x] symmetric
         - [ ] positive definite
         - [ ] upper triangular
         - [ ] lower triangular
-        - [ ] symmetric
     - [ ] rank of the matrix
-    - [ ] determinant without LU
-    - [ ] determinant of the inverse
+    - [ ] Determinant
+        - [ ] rewrite the algo to compute the determinant
     - [x] Hadamard product
     - [ ] Kronecker product
-    - [ ] Rotation matrix
+    - [x] Rotation matrix (Given rotation matrix)
     - [ ] Matrix norm 
         - [x] Frobenius norm
         - [ ] L1 norm
         - [ ] L2 norm
         - [ ] L-Infinity norm 
     - [ ] Pseudo-Inverse
-    - [x] Rotation
     - [ ] reshape function
-    - [ ] redo inverse
+    - [ ] redo the Inverse of a Matrix
     - [ ] Add resize function 
     
 - Vector 
@@ -256,9 +255,9 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [x] Orthogonality and orthonormality
     - [x] Angle between two vectors
     - [ ] redefine the difference between row an col vector and see if does make sense
-    - [ ] Check Linear Dependency
+    - [ ] Check Linear Dependency of the given vectors
     - [ ] Test post it orthonormality
-    - [ ] Projections
+    - [ ] Projection of a vector on another vector
     - [ ] outer product
 
 - Linear Transformation
@@ -271,8 +270,11 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
 - Tensors
     - [ ] super class of Vector and Matrix
     - [ ] generic n-d array
+    - [ ] Tensor algebra computations
       
 - Code Stuff
+    - [ ] C++ addons for improve the performance
+        - [ ] more used fuction (matrix multiplication,...)
     - [x] compile js in prev version using babel
     - [x] build npm package
     - [ ] better documentation
@@ -283,7 +285,6 @@ For those that wanna contribute to the project here's a todoList! Enjoy!
     - [ ] Compatible with Typescript
     - [ ] Browser cdn
     - [x] Test with Browser stack
-    - [ ] C++ addons for improve the performance
 
 ## License
 
