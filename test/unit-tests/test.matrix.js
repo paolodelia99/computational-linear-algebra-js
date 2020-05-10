@@ -927,3 +927,47 @@ describe('Test qr decomposition', () => {
     assert.deepStrictEqual(m.qrDecomposition(), resObject)
   })
 })
+
+describe('Test Cholesky decomposition', () => {
+  it('should give the cholesky decompostion of the matrix', function () {
+    const m = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]]
+    const resObj = {
+      L: [[2, 0, 0], [6, 1, 0], [-8, 5, 3]],
+      LT: [[2, 6, -8], [0, 1, 5], [0, 0, 3]]
+    }
+
+    assert.deepStrictEqual(Matrix.cholesky(m), resObj)
+  })
+
+  it('should give the decomposition of the matrix', function () {
+    const m = new Matrix([[4, 12, -16], [12, 37, -43], [-16, -43, 98]])
+    const resObj = {
+      L: [[2, 0, 0], [6, 1, 0], [-8, 5, 3]],
+      LT: [[2, 6, -8], [0, 1, 5], [0, 0, 3]]
+    }
+
+    assert.deepStrictEqual(m.cholesky(), resObj)
+  })
+
+  it('should throw an error if the matrix isn\'t square', function () {
+    const m = [[4, 12, -16], [12, 37, -43]]
+
+    try {
+      Matrix.cholesky(m)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'The matrix must be square')
+    }
+  })
+
+  it('should throw an error if the matrix isn\'t symmetric', function () {
+    const m = [[4, 12, -16], [12, 37, -43], [-16, -42, 98]]
+
+    try {
+      Matrix.cholesky(m)
+      assert.fail('Should throw an error')
+    } catch (e) {
+      assert.deepStrictEqual(e.message, 'The matrix must be symmetric')
+    }
+  })
+})

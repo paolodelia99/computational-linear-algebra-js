@@ -512,6 +512,50 @@ export class Matrix {
     qrDecomposition = () => Matrix.qrDecomposition(this._matrix)
 
     /**
+     * Return the Cholesky decomposition of the given matrix
+      * @param {number[][] | Matrix} matrix the matrix to decompose
+     * @returns {{LT: number[][], L: number[][]}} the object containing the two matrices L and L^T
+     */
+      static cholesky = matrix => {
+        matrix = Matrix.checkMatrixType(matrix)
+
+        if (!Matrix.isSquare(matrix)) {
+          throw new Error('The matrix must be square')
+        }
+
+        if (!Matrix.isSymmetric(matrix)) {
+          throw new Error('The matrix must be symmetric')
+        }
+
+        const n = matrix.length
+        const L = Matrix.zeros2dSq(n)
+
+        for (let i = 0; i < n; i++) {
+          for (let j = 0; j < i + 1; j++) {
+            let tmpSum = 0
+
+            for (let k = 0; k < j; k++) {
+              tmpSum += L[i][k] * L[j][k]
+            }
+
+            if (i === j) {
+              L[i][j] = Math.sqrt(matrix[i][i] - tmpSum)
+            } else {
+              L[i][j] = (1.0 / L[j][j] * (matrix[i][j] - tmpSum))
+            }
+          }
+        }
+
+        return { L: L, LT: Matrix.getTranspose(L) }
+      }
+
+    /**
+     * Return the Cholesky decomposition of the matrix
+     * @returns {{LT: number[][], L: number[][]}} the object containing the two matrices L and L^T
+     */
+    cholesky = () => Matrix.cholesky(this._matrix)
+
+    /**
     * Frobeniuns norm of the given matrix
     * @param {number[][] | Matrix} matrix
     * @returns {number} the frobenius norm of the matrix
