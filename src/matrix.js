@@ -446,41 +446,6 @@ export class Matrix {
     }
 
     /**
-     * Finds the max eigenvector of the matrix
-     * @param {number[][] | Matrix} matrix
-     * @param {number} numIt maximum number of iteration
-     * @returns {number[]} the eigenvector associate to the max eigenvalue of the given matrix
-     */
-      static powerIteration = (matrix, numIt = 1000) => {
-        // Check matix type
-        matrix = Matrix.checkMatrixType(matrix)
-
-        let bK = Vector.randArr(matrix[0].length)
-
-        for (let i = 0; i < numIt; i++) {
-          const bK1 = Matrix.mul(matrix, bK)
-          const bK1Norm = Vector.getNorm(bK1)
-          bK = bK1.map(x => x / bK1Norm)
-        }
-
-        let maxEl = bK[0]
-
-        for (let i = 1; i < bK.length; i++) {
-          if (maxEl < bK[i]) { maxEl = bK[i] }
-        }
-
-        bK = bK.map(x => x / maxEl)
-
-        for (let i = 0; i < bK.length; i++) {
-          if (Math.abs(bK[i]) <= 1.00e-150) {
-            bK[i] = 0
-          }
-        }
-
-        return bK
-      }
-
-    /**
      *
      * @param matrix
      * @returns {{Q: number[][], R: number[][]}}
@@ -490,7 +455,7 @@ export class Matrix {
       matrix = Matrix.checkMatrixType(matrix)
 
       const n = matrix[0].length; const m = matrix.length
-      let q = Matrix.identity2d(matrix.length)
+      let q
       let r = Matrix.clone(matrix)
 
       for (let j = 0; j < n; j++) {
@@ -498,7 +463,17 @@ export class Matrix {
           const [c, s] = givens(r[i - 1][j], r[i][j]) // sin and cos for the given rotation matrix
           const rotMat = givensRot(m, i, c, s) // the matrix the rotate the R matrix
           r = Matrix.mul(Matrix.getTranspose(rotMat), r)
-          q = Matrix.mul(q, rotMat)
+          if (q === undefined) {
+            q = rotMat
+          } else {
+            q = Matrix.mul(q, rotMat)
+          }
+        }
+      }
+
+      if (m > n) {
+        for (let i = m - n + 1; i < m; i++) {
+          r[i] = Vector.zerosArr(n)
         }
       }
 
