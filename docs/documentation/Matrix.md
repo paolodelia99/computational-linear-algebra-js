@@ -314,7 +314,26 @@ Matrix.qrDecomposition(matrix)
 
 ---
 
-### `jacobi(matrix)`
+
+```javascript
+Matrix.cholesky(matrix)
+```
+
+> *Note*: the matrix must be symmetric
+
+#### Parameters
+
+- matrix : **number[ ][ ] | Matrix** - the 2d array or the matrix obj to decompose using the Cholesky decomposition
+
+#### Returns
+**{L : number[ ][ ], LT: number[ ][ ]}**  decompose the given matrix using the Cholesky decomposition and the return an Object formed by the L matrix and its transpose matrix
+
+---
+
+
+```javascript
+Matrix.jacobi(matrix)
+```
 
 Jacobi algorithm for finding the eigenvalues of the a symmetric and positive define matrix
 
@@ -599,6 +618,26 @@ The LU Decomposition function that decompose the matrix in L and U
 
 > After the function has finished, the L and U matrices are accessible to the via attributes **lower** and **upper**
  
+---
+
+```javascript
+.qrDecomposition()
+```
+
+#### Returns
+**{Q : number[ ][ ], R: number[ ][ ]}**  decompose the given matrix using the QR decomposition and the return an Object formed by the Q matrix and R matrix
+
+---
+
+```javascript
+.cholesky()
+```
+
+> *Note*: the matrix must be symmetric
+
+#### Returns
+**{L : number[ ][ ], LT: number[ ][ ]}**  decompose the given matrix using the Cholesky decomposition and the return an Object formed by the L matrix and its transpose matrix
+
 ---
 
 ```javascript

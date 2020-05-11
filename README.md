@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](./license)
 [![Docs](https://img.shields.io/badge/docs-in%20progress-orange)](https://paolodelia99.github.io/computational-linear-algebra-js/#/)
 
-Computational Linear algebra is aiming to be comprehensive Javascript library for linear algebra.
+Computational Linear algebra is a Js library build just for fun and is aiming to be comprehensive Javascript library for linear algebra.
 
 ## Features 
 

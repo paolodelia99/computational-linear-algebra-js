@@ -1,5 +1,5 @@
-import { zip, dotProduct, zipWith, product, sumOfSquares, add } from './utils/general_purpose_util_function'
-import { getCosSin, maxNoDiag, jacobiRotate, givens, givensRot } from './utils/matrix_utils_functions'
+import { add, dotProduct, product, sumOfSquares, zip, zipWith } from './utils/general_purpose_util_function'
+import { getCosSin, givens, givensRot, jacobiRotate, maxNoDiag } from './utils/matrix_utils_functions'
 
 const { GPU } = require('gpu.js')
 const { Vector } = require('./vector')
@@ -188,8 +188,7 @@ export class Matrix {
      */
     static clone = (matrix) => {
       matrix = Matrix.checkMatrixType(matrix)
-      const clone = matrix.map(a => a.slice())
-      return clone
+      return matrix.map(a => a.slice())
     }
 
     /**
