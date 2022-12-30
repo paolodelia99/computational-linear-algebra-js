@@ -43,7 +43,7 @@
   "homepage": "https://github.com/paolodelia99/paolodelia99#readme",
   "dependencies": {
     "gpu.js": "^2.9.3",
-    "mocha": "^7.1.1"
+    "mocha": "^10.2.0"
   },
   "engines": {
     "node": ">=8.0.0"
